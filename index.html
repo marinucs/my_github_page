@@ -116,7 +116,7 @@
     .about-text { order: 2; }
     @media (min-width: 768px) { .about-text { order: 1; } }
     .about-text p { margin-bottom: 1rem; line-height: 1.75; }
-    .about-text strong { color: #fef3c7; font-weight: 400; font-family: monospace; }
+    .about-text strong { color: #fcd34d; font-weight: 600; }
     .about-photo {
       order: 1; width: 16rem; height: 16rem;
       padding: 0.25rem; border-radius: 1rem;
@@ -125,6 +125,13 @@
       transform: rotate(3deg);
       display: flex; align-items: center; justify-content: center;
       font-size: 5rem; flex-shrink: 0;
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0.85rem;
+      display: block;
     }
     @media (min-width: 768px) { .about-photo { order: 2; } }
 
@@ -229,6 +236,64 @@
     }
     .show-more-btn:hover { background: #f59e0b; }
     .project-hidden, .exp-hidden, .edu-hidden { display: none; }
+    .preview-hidden { display: none !important; }
+
+    .proj-img-wrap {
+      position: relative; display: flex; flex-direction: column;
+      align-items: center; border-radius: 0.75rem; overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
+      border: 1px solid #1f2937; transition: border-color 0.2s, background 0.2s;
+      width: 280px; height: 175px; cursor: pointer;
+    }
+    .proj-img-wrap:hover { border-color: #f59e0b; box-shadow: 0 20px 25px -5px rgba(245,158,11,0.3); }
+    .proj-placeholder {
+      width: 100%; height: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.5rem; padding: 2rem; min-height: 180px;
+    }
+    .proj-placeholder-icon { font-size: 3.5rem; opacity: 0.6; }
+    .proj-placeholder-label { font-size: 0.75rem; color: #6b7280; font-family: monospace; }
+    .bg-chat   { background: linear-gradient(135deg,#1a1a2e,#16213e); }
+    .bg-film   { background: linear-gradient(135deg,#1a0a0a,#2d1515); }
+    .bg-skins  { background: linear-gradient(135deg,#0a1a0a,#152d15); }
+    .bg-geo    { background: linear-gradient(135deg,#0a0a1a,#15152d); }
+    .bg-rpc    { background: linear-gradient(135deg,#1a1500,#2d2500); }
+    .bg-ttt    { background: linear-gradient(135deg,#1a0a15,#2d1525); }
+    .bg-casa   { background: linear-gradient(135deg,#1a0e00,#2d1e00); }
+    .bg-sumbot { background: linear-gradient(135deg,#001a1a,#002d2d); }
+    .achievement-imgs-placeholder {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .img-placeholder {
+      width: 20rem; max-width: 100%; height: 10rem;
+      border-radius: 0.75rem; border: 1px dashed #374151;
+      background: rgba(245,158,11,0.04);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.5rem; color: #4b5563; font-size: 0.8rem; font-family: monospace;
+    }
+
+    /* ── LIGHTBOX MODAL ── */
+    .modal {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.9); align-items: center; justify-content: center;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      position: relative; max-width: 90vw; max-height: 90vh;
+      border-radius: 0.5rem; overflow: hidden;
+    }
+    .modal-content img { width: 100%; height: 100%; object-fit: contain; }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(0,0,0,0.6); color: white;
+      border: none; width: 2.5rem; height: 2.5rem;
+      border-radius: 9999px; cursor: pointer; font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(0,0,0,0.8); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     /* ── CONTACT ── */
     .contact-intro { color: #d1d5db; margin-bottom: 0; }
@@ -296,9 +361,12 @@
   <section id="top" class="container" style="padding-top:9rem; padding-bottom:6rem;">
     <div class="hero-avatar">M</div>
     <h1>Hey, I'm Marina</h1>
+    <p style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.9rem;color:#9ca3af;margin-bottom:1.25rem;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Barcelona
+    </p>
     <p class="hero-desc">
       <strong>Solution-driven software engineer</strong> — curious mindset, always eager to learn.<br />
-      From Barcelona 🇪🇸 · Native Spanish &amp; Catalan · Fluent English (C1)
     </p>
     <nav class="hero-socials">
       <a class="social-btn" href="https://www.linkedin.com/in/marinucs" target="_blank" rel="noopener noreferrer">
@@ -326,12 +394,14 @@
       </h2>
       <article class="about-article">
         <div class="about-text">
-          <p>Hi! I'm <strong>Marina</strong>, a solution-driven and service-oriented software engineer with a curious mindset, always eager to learn. I care deeply about product quality — through best coding practices, design patterns, and <strong>SOLID principles</strong>.</p>
-          <p>Proficient in <strong>agile methodologies</strong> and PM tools, familiar with the ALM and the SDLC. I enjoy working across the stack, from data pipelines to backend APIs and mobile apps.</p>
-          <p>From <strong>Barcelona</strong> 🇪🇸 — native in Spanish and Catalan, fluent in English (C1).</p>
+          <p>I deeply care about product quality — through best coding practices, design patterns, and SOLID principles.</p>
+          <p>I have a strong attention to detail and enjoy working across the stack, from data pipelines to backend APIs.</p>
+          <p>I'm proficient in agile methodologies and PM tools, familiar with the ALM and the SDLC.</p>
+          <p>Native in Spanish and Catalan, fluent in English (C1).</p>
         </div>
-        <div class="about-photo">👩‍💻</div>
+        <div class="about-photo"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/v1778354671/profile_pic_obvmlh.png" alt="About Photo" width="250" height="300"></div>
       </article>
+
     </section>
 
     <!-- ═══════════════ EXPERIENCE ═══════════════ -->
@@ -362,7 +432,9 @@
             <img src="https://img.shields.io/badge/ETL-374151?style=for-the-badge&logoColor=white" alt="ETL" />
             <img src="https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white" alt="Snowflake" />
             <img src="https://img.shields.io/badge/CI%2FCD-374151?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD" />
-            <img src="https://img.shields.io/badge/Agile-374151?style=for-the-badge&logoColor=white" alt="Agile" />
+            <img src="https://img.shields.io/badge/Agile-974151?style=for-the-badge&logoColor=white" alt="Agile" />
+            <img src="https://img.shields.io/badge/Power_Bi-F2C811?style=flat-square&logo=codeforces&logoColor=black" alt="Power BI" />
+            <img src="https://img.shields.io/badge/Data-Modeling-ED8B00?style=for-the-badge&logoColor=white" alt="Data Modeling" />
           </div>
         </li>
 
@@ -382,10 +454,10 @@
           </div>
           <div class="skills-badges-wrap" style="margin-top:0.75rem;">
             <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
+            <img src="https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=confluence&logoColor=white" alt="Confluence" />
             <img src="https://img.shields.io/badge/Power_Automate-0066FF?style=for-the-badge&logo=power-automate&logoColor=white" alt="Power Automate" />
             <img src="https://img.shields.io/badge/SAP-0FAAFF?style=for-the-badge&logo=sap&logoColor=white" alt="SAP" />
-            <img src="https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=confluence&logoColor=white" alt="Confluence" />
-            <img src="https://img.shields.io/badge/ERP-374151?style=for-the-badge&logoColor=white" alt="ERP" />
+            <img src="https://img.shields.io/badge/Agile-974151?style=for-the-badge&logoColor=white" alt="Agile"/>
           </div>
         </li>
 
@@ -580,6 +652,12 @@
       <div class="projects-list">
 
         <article class="project-article project-hidden">
+          <div class="proj-img-wrap bg-chat preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">💬</div>
+              <div class="proj-placeholder-label">Android Chat</div>
+            </div>
+          </div>
           <div class="proj-body">
             <h3>Android Chat</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
@@ -592,12 +670,18 @@
         </article>
 
         <article class="project-article project-hidden">
+          <div class="proj-img-wrap bg-film preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">🎬</div>
+              <div class="proj-placeholder-label">FilmApp</div>
+            </div>
+          </div>
           <div class="proj-body">
             <h3>FilmApp</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
               <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
               <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-              <img src="https://img.shields.io/badge/TMDB_API-01D277?style=for-the-badge&logo=themoviedatabase&logoColor=white" alt="TMDB API" />
+              <img src="https://img.shields.io/badge/TMDB_API-BE398D?style=for-the-badge&logo=themoviedatabase&logoColor=white" alt="TMDB API" />
             </div>
             <p class="proj-desc">An Android app for tracking movies and TV shows — mark them as seen or pending. Integrates with The Internet Movie Database (TMDB) API.</p>
             <p class="proj-private">🔒 Available as a private project upon request</p>
@@ -605,6 +689,12 @@
         </article>
 
         <article class="project-article project-hidden">
+          <div class="proj-img-wrap bg-skins preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">🎮</div>
+              <div class="proj-placeholder-label">Gameskins</div>
+            </div>
+          </div>
           <div class="proj-body">
             <h3>Gameskins</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
@@ -620,6 +710,12 @@
         </article>
 
         <article class="project-article" style="order:-2;">
+          <div class="proj-img-wrap bg-sumbot preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">🤖</div>
+              <div class="proj-placeholder-label">summarize-me-bot</div>
+            </div>
+          </div>
           <div class="proj-body">
             <h3>summarize-me-bot</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
@@ -634,8 +730,11 @@
         </article>
 
         <article class="project-article" style="order:-3;">
+          <div class="proj-img-wrap bg-casa">
+            <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/v1778355513/mikasa_u95us8.png" alt="Mikasa project preview" style="width:100%;height:100%;object-fit:cover;" />
+          </div>
           <div class="proj-body">
-            <h3>CasaFinder</h3>
+            <h3>Mikasa</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
               <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
               <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
@@ -649,13 +748,19 @@
         </article>
 
         <article class="project-article" style="order:-1;">
+          <div class="proj-img-wrap bg-geo preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">🗺️</div>
+              <div class="proj-placeholder-label">Geocaching</div>
+            </div>
+          </div>
           <div class="proj-body">
-            <h3>Geocatchdis</h3>
+            <h3>Geocaching</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
               <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
               <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=1C1C1C" alt="Firebase" />
               <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-              <img src="https://img.shields.io/badge/Google_Maps-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps" />
+              <img src="https://img.shields.io/badge/Google_Maps_API-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps API" />
             </div>
             <p class="proj-desc">An Android app for exploring geocaches and logging finds. Features interactive Google Maps integration, user accounts, personalized reports, and customizable settings.</p>
             <p class="proj-private">🔒 Available as a private project upon request</p>
@@ -663,6 +768,12 @@
         </article>
 
         <article class="project-article project-hidden">
+          <div class="proj-img-wrap bg-rpc preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">✅</div>
+              <div class="proj-placeholder-label">RPC To-Do List</div>
+            </div>
+          </div>
           <div class="proj-body">
             <h3>RPC To-Do List</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
@@ -676,6 +787,12 @@
         </article>
 
         <article class="project-article project-hidden">
+          <div class="proj-img-wrap bg-ttt preview-hidden">
+            <div class="proj-placeholder">
+              <div class="proj-placeholder-icon">⭕</div>
+              <div class="proj-placeholder-label">Tic Tac Toe</div>
+            </div>
+          </div>
           <div class="proj-body">
             <h3>Tic Tac Toe</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
@@ -712,9 +829,19 @@
           <div class="skills-badges-wrap" style="margin-top:0.75rem;">
             <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
             <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
-            <img src="https://img.shields.io/badge/SQL-74151?style=for-the-badge&logo=postgresql&logoColor=white" alt="SQL" />
-            <img src="https://img.shields.io/badge/ETL-874151?style=for-the-badge&logoColor=white" alt="ETL" />
-            <img src="https://img.shields.io/badge/ERP-374151?style=for-the-badge&logoColor=white" alt="ERP" />
+            <img src="https://img.shields.io/badge/SQL-003B57?style=for-the-badge&logo=postgresql&logoColor=white" alt="SQL" />
+            <img src="https://img.shields.io/badge/ETL-F07857?style=for-the-badge&logoColor=white" alt="ETL" />
+            <img src="https://img.shields.io/badge/ERP-53BDA5?style=for-the-badge&logoColor=white" alt="ERP" />
+          </div>
+          <div class="achievement-imgs-placeholder preview-hidden">
+            <div class="img-placeholder">
+              <span style="font-size:2rem;">🏆</span>
+              <span>Leaderboard</span>
+            </div>
+            <div class="img-placeholder">
+              <span style="font-size:2rem;">📣</span>
+              <span>Winner announcement</span>
+            </div>
           </div>
         </li>
 
@@ -728,8 +855,18 @@
           </div>
           <div class="skills-badges-wrap" style="margin-top:0.75rem;">
             <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/Backend_API-74151?style=for-the-badge&logoColor=white" alt="Backend API" />
-            <img src="https://img.shields.io/badge/Fintech-874151?style=for-the-badge&logoColor=white" alt="Fintech" />
+            <img src="https://img.shields.io/badge/Backend_API-53BDA5?style=for-the-badge&logoColor=white" alt="Backend API" />
+            <img src="https://img.shields.io/badge/Fintech-F07857?style=for-the-badge&logoColor=white" alt="Fintech" />
+          </div>
+          <div class="achievement-imgs-placeholder preview-hidden">
+            <div class="img-placeholder">
+              <span style="font-size:2rem;">🏅</span>
+              <span>Results</span>
+            </div>
+            <div class="img-placeholder">
+              <span style="font-size:2rem;">💻</span>
+              <span>Challenge screenshot</span>
+            </div>
           </div>
         </li>
 
@@ -745,7 +882,17 @@
             <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
             <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
             <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=1C1C1C" alt="Firebase" />
-            <img src="https://img.shields.io/badge/Google_Maps-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps" />
+            <img src="https://img.shields.io/badge/Google_Maps_API-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps API" />
+          </div>
+          <div class="achievement-imgs-placeholder preview-hidden">
+            <div class="img-placeholder">
+              <span style="font-size:2rem;">📱</span>
+              <span>App screenshot</span>
+            </div>
+            <div class="img-placeholder">
+              <span style="font-size:2rem;">📜</span>
+              <span>Certificate</span>
+            </div>
           </div>
         </li>
 
