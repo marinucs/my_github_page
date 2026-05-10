@@ -280,10 +280,9 @@
     }
     .modal.active { display: flex; }
     .modal-content {
-      position: relative; max-width: 90vw; max-height: 90vh;
-      border-radius: 0.5rem; overflow: hidden;
+      position: relative; border-radius: 0.5rem; overflow: hidden; line-height: 0;
     }
-    .modal-content img { width: 100%; height: 100%; object-fit: contain; }
+    .modal-content img { display: block; max-width: 90vw; max-height: 90vh; width: auto; height: auto; }
     .modal-close {
       position: absolute; top: 1rem; right: 1rem;
       background: rgba(0,0,0,0.6); color: white;
@@ -399,7 +398,7 @@
           <p>I'm proficient in agile methodologies and PM tools, familiar with the ALM and the SDLC.</p>
           <p>Native in Spanish and Catalan, fluent in English (C1).</p>
         </div>
-        <div class="about-photo"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/v1778354671/profile_pic_obvmlh.png" alt="About Photo" width="250" height="300"></div>
+        <div class="about-photo"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png" alt="About Photo" width="250" height="300"></div>
       </article>
 
     </section>
@@ -709,14 +708,11 @@
           </div>
         </article>
 
-        <article class="project-article" style="order:-2;">
-          <div class="proj-img-wrap bg-sumbot preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">🤖</div>
-              <div class="proj-placeholder-label">summarize-me-bot</div>
-            </div>
+        <article class="project-article" style="order:-2;flex-direction:row;align-items:flex-start;gap:1.5rem;">
+          <div class="proj-img-wrap" style="flex:1;min-width:0;height:auto;aspect-ratio:16/10;" onclick="openModal(this.querySelector('img').src)">
+            <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png" alt="Summarize-Me-Bot project preview" style="width:100%;height:100%;object-fit:cover;" />
           </div>
-          <div class="proj-body">
+          <div class="proj-body" style="flex:1;min-width:0;">
             <h3>summarize-me-bot</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
               <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
@@ -729,11 +725,11 @@
           </div>
         </article>
 
-        <article class="project-article" style="order:-3;">
-          <div class="proj-img-wrap bg-casa">
+        <article class="project-article" style="order:-3;flex-direction:row;align-items:flex-start;gap:1.5rem;">
+          <div class="proj-img-wrap" style="flex:1;min-width:0;height:auto;aspect-ratio:16/10;" onclick="openModal(this.querySelector('img').src)">
             <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/v1778355513/mikasa_u95us8.png" alt="Mikasa project preview" style="width:100%;height:100%;object-fit:cover;" />
           </div>
-          <div class="proj-body">
+          <div class="proj-body" style="flex:1;min-width:0;">
             <h3>Mikasa</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
               <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
@@ -747,14 +743,11 @@
           </div>
         </article>
 
-        <article class="project-article" style="order:-1;">
-          <div class="proj-img-wrap bg-geo preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">🗺️</div>
-              <div class="proj-placeholder-label">Geocaching</div>
-            </div>
+        <article class="project-article" style="order:-1;flex-direction:row;align-items:flex-start;gap:1.5rem;">
+          <div class="proj-img-wrap" style="flex:1;min-width:0;height:auto;aspect-ratio:16/10;" onclick="openModal(this.querySelector('img').src)">
+            <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg" alt="Geocaching project preview" style="width:100%;height:100%;object-fit:cover;" />
           </div>
-          <div class="proj-body">
+          <div class="proj-body" style="flex:1;min-width:0;">
             <h3>Geocaching</h3>
             <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
               <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
@@ -926,6 +919,12 @@
   </div>
 </main>
 
+<div id="imageModal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <img id="modalImage" src="" alt="Full size image" />
+  </div>
+</div>
 <footer>
   <div class="footer-inner">
     <span>© 2026 <a href="https://github.com/marinucs">Marina.</a> Built with care from Barcelona.</span>
@@ -985,6 +984,24 @@
     btn.style.background = '#10b981';
     setTimeout(() => { btn.textContent = 'Send'; btn.style.background = ''; e.target.reset(); }, 3000);
   }
+
+  // Lightbox modal
+  function openModal(src) {
+    const modal = document.getElementById('imageModal');
+    const img = document.getElementById('modalImage');
+    img.src = src;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(event) {
+    if (event && event.target.id !== 'imageModal') return;
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
 </script>
 </body>
 </html>
