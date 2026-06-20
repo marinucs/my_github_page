@@ -6,1013 +6,741 @@
   <title>Marina — Software Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --dusty-pink: #c8a9a0;
+      --dusty-pink-deep: #b08f86;
+      --light-pink: #ead9d4;
+      --charcoal: #3a3330;
+      --charcoal-soft: #5b504b;
+      --window-bg: #f3e9e6;
+      --window-chrome: #d8c2bb;
+      --accent: #a8645b;
+      --accent-soft: #c98c83;
+      --shadow: rgba(58,51,48,0.35);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html, body { height: 100%; }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #030712;
-      color: #e5e7eb;
-      min-height: 100vh;
+      color: var(--charcoal);
+      overflow: hidden;
+      background: var(--dusty-pink);
     }
 
-    .bg-gradient {
-      position: fixed; inset: 0; z-index: -10;
-      min-height: 100vh; width: 100%;
-      background-color: #1b062c;
-      background-image: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(245,158,11,0.18), rgba(0,0,0,0));
+    /* ── DESKTOP BACKGROUND ── */
+    .desktop {
+      position: fixed; inset: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(200,169,160,0.55), rgba(176,143,134,0.75)),
+        url('https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png');
+      background-size: cover;
+      background-position: center 20%;
+    }
+    .desktop::after {
+      content: ""; position: absolute; inset: 0;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      background: rgba(200,169,160,0.25);
+      pointer-events: none;
     }
 
-    /* ── NAV ── */
-    header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-      display: flex; align-items: center; justify-content: center;
-      width: 100%; margin-top: 0.5rem;
+    /* ── TOP PILL NAV ── */
+    .topbar {
+      position: fixed; top: 0.9rem; left: 0; right: 0; z-index: 60;
+      display: flex; justify-content: center; pointer-events: none;
     }
-    nav:not(.hero-socials) {
-      display: flex; padding: 0.4rem 0.75rem;
-      font-size: 0.8rem; font-weight: 500;
-      border-radius: 9999px; color: #d1d5db;
-      justify-content: center; align-items: center;
-      background: rgba(15,15,20,0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(245,158,11,0.15);
-      gap: 0.1rem; flex-wrap: wrap;
-    }
-    nav a {
-      position: relative; display: block;
-      padding: 0.4rem 0.6rem;
-      transition: color 0.2s; text-decoration: none; color: inherit;
+    .pill-nav {
+      pointer-events: auto;
+      display: flex; gap: 0.35rem; align-items: center;
+      background: rgba(243,233,230,0.7);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(168,100,91,0.25);
       border-radius: 9999px;
+      padding: 0.3rem 0.45rem;
+      box-shadow: 0 6px 18px var(--shadow);
     }
-    nav a:hover, nav a.active { color: #f59e0b; }
-
-    /* ── LAYOUT ── */
-    main { padding: 0 1rem; }
-    .container {
-      scroll-margin-top: 5rem; width: 100%;
-      margin-left: auto; margin-right: auto;
+    .pill-nav button {
+      font: inherit; font-size: 0.78rem; font-weight: 500;
+      color: var(--charcoal-soft);
+      background: transparent; border: 1px solid transparent;
+      padding: 0.3rem 0.8rem; border-radius: 9999px; cursor: pointer;
+      transition: all 0.15s; text-decoration: underline; text-underline-offset: 2px;
+      text-decoration-color: rgba(91,80,75,0.4);
     }
-    @media (min-width: 768px)  { .container { max-width: 42rem; } }
-    @media (min-width: 1024px) { .container { max-width: 56rem; } }
+    .pill-nav button:hover { background: rgba(168,100,91,0.12); color: var(--accent); }
+    .pill-nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .pill-nav button.active { background: var(--accent); color: #fff; text-decoration-color: transparent; }
 
-    /* ── HERO ── */
-    #top { padding-top: 9rem; padding-bottom: 6rem; }
-    .hero-avatar {
-      width: 5rem; height: 5rem; border-radius: 9999px;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #f59e0b 0%, #92400e 100%);
+    /* ── DESKTOP ICONS ── */
+    .icon-layer { position: absolute; inset: 0; z-index: 10; }
+    .desktop-icon {
+      position: absolute;
+      display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+      width: 92px; padding: 0.4rem 0.25rem;
+      background: transparent; border: 1px solid transparent; border-radius: 0.5rem;
+      cursor: pointer; font: inherit; color: var(--charcoal);
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .desktop-icon:hover { background: rgba(243,233,230,0.35); }
+    .desktop-icon:focus-visible { outline: none; background: rgba(168,100,91,0.2); border-color: rgba(168,100,91,0.5); }
+    .desktop-icon .glyph {
+      width: 54px; height: 54px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; font-weight: 700; color: #030712;
-      box-shadow: 0 0 0 3px rgba(245,158,11,0.3); flex-shrink: 0;
+      font-size: 1.9rem; line-height: 1;
+      box-shadow: 0 4px 10px var(--shadow);
+      overflow: hidden;
     }
-    h1 {
-      color: white; font-size: 2.25rem; font-weight: 700;
-      display: flex; flex-direction: row; gap: 1rem;
-      padding-bottom: 1.5rem; line-height: 1.2;
+    .desktop-icon .glyph.photo { padding: 3px; background: #fff; }
+    .desktop-icon .glyph.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; display: block; }
+    .desktop-icon .label {
+      font-size: 0.72rem; font-weight: 500; text-align: center;
+      color: #fff; text-shadow: 0 1px 3px rgba(58,51,48,0.8);
+      background: rgba(58,51,48,0.18); padding: 0.05rem 0.35rem; border-radius: 4px;
+      max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    @media (min-width: 768px) { h1 { font-size: 3rem; } }
-    .hero-desc { font-size: 1rem; color: #d1d5db; line-height: 1.75; }
-    @media (min-width: 768px) { .hero-desc { font-size: 1.25rem; } }
-    .hero-desc strong { color: #fcd34d; font-weight: 600; }
-    .hero-socials {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-    .social-btn {
-      border-radius: 9999px; border: 1px solid rgba(255,255,255,0.4);
-      display: inline-flex; justify-content: center; align-items: center;
-      gap: 0.4rem; padding: 0.5rem 0.75rem; font-size: 0.75rem;
-      background: rgba(255,255,255,0.05); color: white; text-decoration: none;
-      transition: all 0.2s;
-    }
-    @media (min-width: 768px) { .social-btn { font-size: 1rem; padding: 0.5rem 1rem; } }
-    .social-btn:hover { transform: scale(1.1); background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.5); }
-    .social-btn svg { width: 1.25rem; height: 1.25rem; }
-    @media (min-width: 768px) { .social-btn svg { width: 1.5rem; height: 1.5rem; } }
+    .glyph-about   { background: linear-gradient(135deg,#e9c6bf,#c98c83); }
+    .glyph-contact { background: linear-gradient(135deg,#cf9d95,#a8645b); }
+    .glyph-folder  { background: linear-gradient(160deg,#7fb3e0,#4a82c4); color:#fff; }
+    .glyph-exp     { background: linear-gradient(135deg,#d8c2bb,#b08f86); }
+    .glyph-edu     { background: linear-gradient(135deg,#e6d2b8,#c9a76f); }
+    .glyph-trophy  { background: linear-gradient(135deg,#f0d9a0,#cba14a); }
+    .glyph-browser { background: linear-gradient(135deg,#cfe5f5,#7fb3e0); }
 
-    /* ── SECTION SPACING ── */
-    .sections-wrap { display: flex; flex-direction: column; gap: 9rem; }
-
-    /* ── SECTION TITLES ── */
-    .sec-title {
-      display: flex; align-items: center; margin-bottom: 1.5rem;
-      font-size: 1.875rem; font-weight: 600; gap: 0.75rem; color: white;
+    /* ── WINDOWS ── */
+    .window {
+      position: absolute; z-index: 100;
+      display: none; flex-direction: column;
+      width: min(680px, 92vw); max-height: 82vh;
+      background: var(--window-bg);
+      border: 1px solid rgba(58,51,48,0.25);
+      border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(58,51,48,0.45);
+      overflow: hidden;
     }
-    .sec-title svg { width: 1.75rem; height: 1.75rem; flex-shrink: 0; }
-    @media (min-width: 768px) { .sec-title svg { width: 2rem; height: 2rem; } }
-
-    /* ── ABOUT ── */
-    .about-article {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 2rem; color: #d1d5db;
+    .window.open { display: flex; }
+    .window-chrome {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 0.7rem;
+      background: linear-gradient(180deg, var(--window-chrome), #cbb3ac);
+      border-bottom: 1px solid rgba(58,51,48,0.2);
+      cursor: grab; user-select: none;
     }
-    @media (min-width: 768px) { .about-article { flex-direction: row; } }
-    .about-text { order: 2; }
-    @media (min-width: 768px) { .about-text { order: 1; } }
-    .about-text p { margin-bottom: 1rem; line-height: 1.75; }
-    .about-text strong { color: #fcd34d; font-weight: 600; }
-    .about-photo {
-      order: 1; width: 16rem; height: 16rem;
-      padding: 0.25rem; border-radius: 1rem;
-      background: rgba(245,158,11,0.05);
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.15);
-      transform: rotate(3deg);
+    .window-chrome.dragging { cursor: grabbing; }
+    .traffic { display: flex; gap: 0.4rem; }
+    .traffic span { width: 12px; height: 12px; border-radius: 50%; display: block; }
+    .traffic .r { background: #e0726b; }
+    .traffic .y { background: #e6b450; }
+    .traffic .g { background: #8bb87a; }
+    .window-title {
+      flex: 1; text-align: center; font-size: 0.82rem; font-weight: 600;
+      color: var(--charcoal); display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+    .window-close {
+      width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(58,51,48,0.3);
+      background: rgba(255,255,255,0.5); color: var(--charcoal);
+      font-size: 1rem; line-height: 1; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 5rem; flex-shrink: 0;
     }
-    .about-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 0.85rem;
-      display: block;
+    .window-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .window-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .window-body {
+      padding: 1.5rem; overflow-y: auto; color: var(--charcoal-soft);
+      line-height: 1.65; font-size: 0.92rem;
+    }
+    .window-body h2 {
+      font-family: 'DM Serif Display', serif; font-weight: 400;
+      color: var(--charcoal); font-size: 1.8rem; margin-bottom: 0.25rem;
+    }
+    .window-body h3 { color: var(--charcoal); font-size: 1.05rem; margin: 1.25rem 0 0.3rem; }
+    .window-body p { margin-bottom: 0.7rem; }
+    .window-body strong { color: var(--accent); font-weight: 600; }
+    .subtitle { color: var(--dusty-pink-deep); font-size: 0.82rem; margin-bottom: 1rem; font-style: italic; }
+
+    .about-grid { display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; }
+    .about-portrait {
+      width: 150px; height: 180px; border-radius: 10px; object-fit: cover;
+      box-shadow: 0 6px 16px var(--shadow); flex-shrink: 0;
+      border: 4px solid #fff; transform: rotate(-2deg);
+    }
+    .about-copy { flex: 1; min-width: 220px; }
+    .meta-row { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--dusty-pink-deep); font-size: 0.85rem; margin-bottom: 0.75rem; }
+
+    /* contact links */
+    .contact-links { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.5rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.7rem; text-decoration: none;
+      padding: 0.7rem 0.9rem; border-radius: 8px; color: var(--charcoal);
+      background: rgba(255,255,255,0.55); border: 1px solid rgba(58,51,48,0.12);
+      transition: all 0.15s; font-weight: 500;
+    }
+    .contact-link:hover { background: #fff; border-color: var(--accent); transform: translateX(3px); }
+    .contact-link svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .contact-link .sub { display: block; font-size: 0.75rem; font-weight: 400; color: var(--dusty-pink-deep); }
+
+    /* timeline inside windows */
+    .tl { position: relative; border-left: 2px solid var(--dusty-pink); margin-left: 0.5rem; padding-left: 1rem; }
+    .tl-item { margin-bottom: 1.4rem; position: relative; }
+    .tl-item::before {
+      content: ""; position: absolute; left: -1.4rem; top: 0.3rem;
+      width: 0.7rem; height: 0.7rem; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--window-bg);
+    }
+    .tl-date { font-size: 0.75rem; color: var(--dusty-pink-deep); font-weight: 600; }
+    .tl-title { color: var(--charcoal); font-size: 1rem; font-weight: 600; margin: 0.15rem 0; }
+    .tl-sub { font-size: 0.82rem; color: var(--charcoal-soft); margin-bottom: 0.4rem; }
+    .tl-body ul { padding-left: 1.1rem; margin-top: 0.3rem; }
+    .tl-body li { margin-bottom: 0.25rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+    .tag {
+      font-size: 0.68rem; font-family: monospace; padding: 0.12rem 0.5rem; border-radius: 9999px;
+      background: rgba(168,100,91,0.1); color: var(--accent); border: 1px solid rgba(168,100,91,0.25);
     }
 
-    .hero-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 9999px;
-      display: block;
+    /* projects */
+    .proj-grid { display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
+    @media (min-width: 540px) { .proj-grid { grid-template-columns: 1fr 1fr; } }
+    .proj-card {
+      background: rgba(255,255,255,0.6); border: 1px solid rgba(58,51,48,0.12);
+      border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;
     }
-    @media (min-width: 768px) { .about-photo { order: 2; } }
+    .proj-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: var(--dusty-pink); cursor: zoom-in; }
+    .proj-thumb.ph { display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+    .proj-info { padding: 0.8rem; }
+    .proj-info h3 { margin: 0 0 0.3rem; font-size: 1rem; }
+    .proj-info p { font-size: 0.8rem; margin-bottom: 0.4rem; line-height: 1.5; }
+    .proj-private { font-size: 0.72rem; color: var(--dusty-pink-deep); font-family: monospace; }
 
-    /* ── SKILLS ── 
-    .skills-badges-wrap { display: flex; flex-wrap: wrap; gap: 1rem; width: 100%; }
-    .skills-badges-wrap img { height: 30px; border-radius: 20px; }
-    */
-
-    /* ── SUB SECTION TITLES ── */
-    .sub-sec-title {
-      font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem;
-      display: flex; gap: 0.75rem; align-items: center; color: white;
+    /* lightbox */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(58,51,48,0.85); align-items: center; justify-content: center;
     }
-    .sub-sec-title svg { width: 1.5rem; height: 1.5rem; }
-
-    /* ── TIMELINE (experience, education, achievements) ── */
-    .timeline { position: relative; border-left: 1px solid #374151; margin-left: 0.75rem; }
-    .timeline-item { position: relative; margin-bottom: 2.5rem; padding-left: 1rem; }
-    .timeline-dot {
-      position: absolute; width: 0.75rem; height: 0.75rem;
-      border-radius: 9999px; top: 0.375rem; left: -1.375rem;
-      border: 1px solid #374151; background: #6b7280;
-    }
-    .timeline-date { font-size: 0.9rem; font-weight: 400; color: #bae6fd; line-height: 1; margin-bottom: 0.75rem; }
-    .timeline-title { font-size: 1.125rem; font-weight: 600; color: #f59e0b; margin-top: 0.75rem; margin-bottom: 0.35rem; }
-    .timeline-subtitle { font-size: 0.9rem; font-weight: 600; color: #e5e7eb; margin-bottom: 0.75rem; }
-    .timeline-body { color: #d1d5db; font-size: 0.9rem; line-height: 1.7; }
-    .timeline-body ul { padding-left: 1.25rem; margin-top: 0.5rem; }
-    .timeline-body ul li { margin-bottom: 0.35rem; }
-    .timeline-tag-wrap { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
-    .timeline-tag {
-      font-size: 0.72rem; font-family: monospace;
-      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25);
-      color: #fcd34d; padding: 0.15rem 0.55rem; border-radius: 9999px;
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; border: 5px solid #fff; }
+    .lightbox-close {
+      position: absolute; top: 1.2rem; right: 1.2rem; width: 2.4rem; height: 2.4rem;
+      border-radius: 50%; border: none; background: rgba(255,255,255,0.85); color: var(--charcoal);
+      font-size: 1.4rem; cursor: pointer;
     }
 
-    /* Achievement images */
-    .achievement-imgs { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem; }
-    .achievement-imgs img {
-      border-radius: 0.75rem; width: 20rem; max-width: 100%; height: auto;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-      border: 1px solid #374151;
+    /* taskbar / hint */
+    .hint {
+      position: fixed; bottom: 0.9rem; left: 0; right: 0; z-index: 60;
+      display: flex; justify-content: center; pointer-events: none;
     }
-    .achievement-label {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.75rem; font-family: monospace;
-      color: #9ca3af; margin-top: 0.5rem;
-    }
-    /* ── PROJECTS ── */
-    .projects-list { display: flex; flex-direction: column; gap: 4rem; }
-    .project-article { display: flex; flex-direction: column; gap: 2rem; }
-    @media (min-width: 768px) {
-      .project-article { flex-direction: column; align-items: flex-start; }
-      .project-article .proj-body { width: 100%; max-width: 56rem; }
+    .hint span {
+      background: rgba(58,51,48,0.55); color: var(--light-pink);
+      font-size: 0.72rem; padding: 0.3rem 0.85rem; border-radius: 9999px;
+      backdrop-filter: blur(6px);
     }
 
-    .proj-body h3 { font-size: 1.5rem; font-weight: 700; color: #f3f4f6; margin-bottom: 0.5rem; }
-    .proj-tags-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem; margin-bottom: 0.5rem;
-    }
-    .ptag {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0.25rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;
-      padding: 0.25rem 0.5rem; width: 100%; overflow: hidden;
-    }
-    .ptag span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .t-python    { color: #306998; background: #FFE873; }
-    .t-java      { color: #fff; background: #5382a1; }
-    .t-kotlin    { color: #fff; background: #7f52ff; }
-    .t-fastapi   { color: #004941; background: #009688; }
-    .t-flask     { color: #fff; background: #2a2a2a; }
-    .t-android   { color: #fff; background: #3ddc84; }
-    .t-tcp       { color: #fff; background: #0f4c81; }
-    .t-tmdb      { color: #fff; background: #01d277; }
-    .t-spring    { color: #fff; background: #6db33f; }
-    .t-hibernate { color: #fff; background: #59666c; }
-    .t-junit     { color: #fff; background: #dc524a; }
-    .t-sqlite    { color: #fff; background: #003b57; }
-    .t-firebase  { color: #1c1c1c; background: #ffca28; }
-    .t-maps      { color: #fff; background: #4285f4; }
-    .t-rabbit    { color: #fff; background: #ff6600; }
-    .t-telegram  { color: #fff; background: #229ed9; }
-    .t-openai    { color: #fff; background: #0f766e; }
-    .t-scraping  { color: #fff; background: #7c3aed; }
-    .t-playwright{ color: #fff; background: #2e7d32; }
-
-    .proj-desc { color: #d1d5db; font-size: 0.9rem; line-height: 1.75; margin-bottom: 0.5rem; }
-    .proj-private { font-size: 0.8rem; color: #6b7280; margin-bottom: 1rem; font-family: monospace; }
-
-    .wip-banner {
-      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25);
-      border-left: 3px solid #f59e0b; border-radius: 0.5rem;
-      padding: 0.75rem 1rem; font-family: monospace; font-size: 0.8rem;
-      color: #9ca3af; margin-bottom: 3rem;
-    }
-    .show-more-wrap { display: flex; justify-content: center; margin-top: 2rem; }
-    .show-more-btn {
-      background: rgba(245,158,11,0.7); color: white;
-      padding: 0.5rem 1rem; border-radius: 0.5rem; border: none;
-      cursor: pointer; font-size: 0.9rem; font-family: inherit; transition: background 0.2s;
-    }
-    .show-more-btn:hover { background: #f59e0b; }
-    .project-hidden, .exp-hidden, .edu-hidden { display: none; }
-    .preview-hidden { display: none !important; }
-
-    .proj-img-wrap {
-      position: relative; display: flex; flex-direction: column;
-      align-items: center; border-radius: 0.75rem; overflow: hidden;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
-      border: 1px solid #1f2937; transition: border-color 0.2s, background 0.2s;
-      width: 280px; height: 175px; cursor: pointer;
-    }
-    .proj-img-wrap:hover { border-color: #f59e0b; box-shadow: 0 20px 25px -5px rgba(245,158,11,0.3); }
-    .proj-placeholder {
-      width: 100%; height: 100%; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 0.5rem; padding: 2rem; min-height: 180px;
-    }
-    .proj-placeholder-icon { font-size: 3.5rem; opacity: 0.6; }
-    .proj-placeholder-label { font-size: 0.75rem; color: #6b7280; font-family: monospace; }
-    .bg-chat   { background: linear-gradient(135deg,#1a1a2e,#16213e); }
-    .bg-film   { background: linear-gradient(135deg,#1a0a0a,#2d1515); }
-    .bg-skins  { background: linear-gradient(135deg,#0a1a0a,#152d15); }
-    .bg-geo    { background: linear-gradient(135deg,#0a0a1a,#15152d); }
-    .bg-rpc    { background: linear-gradient(135deg,#1a1500,#2d2500); }
-    .bg-ttt    { background: linear-gradient(135deg,#1a0a15,#2d1525); }
-    .bg-casa   { background: linear-gradient(135deg,#1a0e00,#2d1e00); }
-    .bg-sumbot { background: linear-gradient(135deg,#001a1a,#002d2d); }
-    .achievement-imgs-placeholder {
-      display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem;
-      margin-top: 1.25rem;
-    }
-    .img-placeholder {
-      width: 20rem; max-width: 100%; height: 10rem;
-      border-radius: 0.75rem; border: 1px dashed #374151;
-      background: rgba(245,158,11,0.04);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.5rem; color: #4b5563; font-size: 0.8rem; font-family: monospace;
-    }
-
-    /* ── LIGHTBOX MODAL ── */
-    .modal {
-      display: none; position: fixed; inset: 0; z-index: 9999;
-      background: rgba(0,0,0,0.9); align-items: center; justify-content: center;
-      animation: fadeIn 0.2s ease;
-    }
-    .modal.active { display: flex; }
-    .modal-content {
-      position: relative; border-radius: 0.5rem; overflow: hidden; line-height: 0;
-    }
-    .modal-content img { display: block; max-width: 90vw; max-height: 90vh; width: auto; height: auto; }
-    .modal-close {
-      position: absolute; top: 1rem; right: 1rem;
-      background: rgba(0,0,0,0.6); color: white;
-      border: none; width: 2.5rem; height: 2.5rem;
-      border-radius: 9999px; cursor: pointer; font-size: 1.5rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s;
-    }
-    .modal-close:hover { background: rgba(0,0,0,0.8); }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* ── CONTACT ── */
-    .contact-intro { color: #d1d5db; margin-bottom: 0; }
-    .contact-form {
-      background: #1f2937; padding: 1.5rem; border-radius: 0.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); margin-top: 2rem;
-      display: flex; flex-direction: column; gap: 1rem;
-    }
-    .form-group { display: flex; flex-direction: column; gap: 0.25rem; }
-    .form-group label { color: #d1d5db; font-weight: 500; }
-    .form-group input, .form-group textarea {
-      width: 100%; margin-top: 0.25rem; padding: 0.5rem;
-      border: 1px solid #374151; border-radius: 0.5rem;
-      background: #111827; color: #d1d5db; font-family: inherit;
-      font-size: 0.95rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .form-group input:focus, .form-group textarea:focus {
-      border-color: #f59e0b; box-shadow: 0 0 0 2px rgba(245,158,11,0.2);
-    }
-    .form-group textarea { resize: none; min-height: 8rem; }
-    .form-submit {
-      width: 100%; background: rgba(245,158,11,0.75); color: white;
-      padding: 0.5rem; border-radius: 0.5rem; border: none;
-      cursor: pointer; font-family: inherit; font-size: 1rem; font-weight: 500;
-      transition: background 0.2s;
-    }
-    .form-submit:hover { background: #f59e0b; }
-
-    /* ── FOOTER ── */
-    footer { width: 100%; max-width: 80rem; margin: 2rem auto 0; padding: 1rem; display: flex; align-items: center; justify-content: center; }
-    .footer-inner { width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: center; }
-    .footer-inner span { font-size: 0.875rem; color: rgba(255,255,255,0.4); text-align: center; }
-    .footer-inner a:hover { text-decoration: underline; }
-    .footer-inner a { color: inherit; }
-
-    /* ── UTILS ── */
-    .mt-20 { margin-top: 5rem; }
-    .space-y-24 > * + * { margin-top: 6rem; }
-
-    @media (max-width: 640px) {
-      .proj-tags-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 560px) {
+      .desktop-icon { width: 80px; }
+      .window-body { padding: 1.1rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="bg-gradient"></div>
+<div class="desktop" id="desktop"></div>
 
-<!-- NAV -->
-<header>
-  <nav>
-    <!--<a href="#top" aria-label="top">Home</a>-->
-    <a href="#about"      aria-label="about">About</a>
-    <!--<a href="#experience" aria-label="experience">Experience</a>-->
-    <!--<a href="#education"  aria-label="education">Education</a>-->
-    <!--<a href="#skills"     aria-label="skills">Skills</a>-->
-    <a href="#projects"   aria-label="projects">Projects</a>
-    <!--<a href="#achievements" aria-label="achievements">Achievements</a>-->
-    <!--<a href="#contact"    aria-label="contact">Contact</a>-->
+<!-- TOP PILL NAV -->
+<div class="topbar">
+  <nav class="pill-nav" aria-label="Primary">
+    <button type="button" data-open="reset" class="active">home</button>
+    <button type="button" data-open="about">about</button>
+    <button type="button" data-open="contact">contact</button>
+    <button type="button" data-open="projects">projects</button>
   </nav>
-</header>
+</div>
 
-<main>
-  <!-- ═══════════════ HERO ═══════════════ -->
-  <section id="top" class="container" style="padding-top:9rem; padding-bottom:6rem;">
-    <div class="hero-avatar">
-      <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778696079/about_hero_akzzvc.png" alt="About Photo" width="100" height="100">
-    </div>
-    <h1>Hey, I'm Marina</h1>
-    <p style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.9rem;color:#9ca3af;margin-bottom:1.25rem;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+<!-- DESKTOP ICONS -->
+<div class="icon-layer" id="iconLayer">
+
+  <button class="desktop-icon" type="button" data-open="about" style="top:22%;left:8%;" aria-label="Open About window">
+    <span class="glyph glyph-about" aria-hidden="true">🪪</span>
+    <span class="label">About.txt</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="contact" style="top:48%;left:7%;" aria-label="Open Contact window">
+    <span class="glyph glyph-contact" aria-hidden="true">✉️</span>
+    <span class="label">Contact</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="experience" style="top:24%;left:24%;" aria-label="Open Experience window">
+    <span class="glyph glyph-exp" aria-hidden="true">💼</span>
+    <span class="label">Experience</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="education" style="top:50%;left:25%;" aria-label="Open Education window">
+    <span class="glyph glyph-edu" aria-hidden="true">🎓</span>
+    <span class="label">Education</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="achievements" style="top:70%;left:12%;" aria-label="Open Achievements window">
+    <span class="glyph glyph-trophy" aria-hidden="true">🏆</span>
+    <span class="label">Achievements</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="about" style="top:68%;left:30%;" aria-label="Open portrait in About">
+    <span class="glyph photo" aria-hidden="true"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778695477/mikasa_rzdsuy.png" alt=""></span>
+    <span class="label">Culture.jpg</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="projects" style="top:74%;left:70%;" aria-label="Open Projects folder">
+    <span class="glyph glyph-folder" aria-hidden="true">📁</span>
+    <span class="label">Projects</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="projects" style="top:26%;left:78%;" aria-label="Open Projects folder">
+    <span class="glyph photo" aria-hidden="true"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png" alt=""></span>
+    <span class="label">Culture.jpg</span>
+  </button>
+
+  <button class="desktop-icon" type="button" data-open="projects" style="top:48%;left:82%;" aria-label="Open Projects folder">
+    <span class="glyph photo" aria-hidden="true"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg" alt=""></span>
+    <span class="label">Culture.jpg</span>
+  </button>
+
+  <a class="desktop-icon" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer" style="top:24%;left:60%;text-decoration:none;" aria-label="Open GitHub profile in a new tab">
+    <span class="glyph glyph-browser" aria-hidden="true">🌐</span>
+    <span class="label">Explore</span>
+  </a>
+
+</div>
+
+<!-- ════════ WINDOWS ════════ -->
+
+<!-- ABOUT -->
+<section class="window" id="win-about" role="dialog" aria-modal="false" aria-labelledby="win-about-title" tabindex="-1" style="top:14%;left:50%;transform:translateX(-50%);">
+  <header class="window-chrome">
+    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="window-title" id="win-about-title">🪪 About.txt</span>
+    <button class="window-close" type="button" aria-label="Close About window">&times;</button>
+  </header>
+  <div class="window-body">
+    <h2>Hey, I'm Marina</h2>
+    <span class="meta-row">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
       Barcelona
-    </p>
-    <p class="hero-desc">
-      <strong>Solution-driven software engineer</strong> — curious mindset, always eager to learn.<br />
-    </p>
-    <nav class="hero-socials">
-      <a class="social-btn" href="https://www.linkedin.com/in/marinucs" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 256 256" fill="white" preserveAspectRatio="xMidYMid"><path d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"/></svg>
-        LinkedIn
-      </a>
-      <a class="social-btn" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 256 250" fill="white" preserveAspectRatio="xMidYMid"><path d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0z"/></svg>
-        GitHub
-      </a>
-      <a class="social-btn" href="mailto:ismiatesting@gmail.com">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg>
-        Gmail
-      </a>
-    </nav>
-  </section>
+    </span>
+    <div class="about-grid">
+      <img class="about-portrait" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png" alt="Portrait of Marina" />
+      <div class="about-copy">
+        <p><strong>Solution-driven software engineer</strong> — curious mindset, always eager to learn.</p>
+        <p>I deeply care about product quality — through best coding practices, design patterns, and SOLID principles.</p>
+        <p>I have a strong attention to detail and enjoy working across the stack, from data pipelines to backend APIs.</p>
+        <p>I'm proficient in agile methodologies and PM tools, familiar with the ALM and the SDLC.</p>
+        <p>Native in Spanish and Catalan, fluent in English (C1).</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <div class="sections-wrap">
+<!-- CONTACT -->
+<section class="window" id="win-contact" role="dialog" aria-modal="false" aria-labelledby="win-contact-title" tabindex="-1" style="top:20%;left:50%;transform:translateX(-50%);width:min(440px,92vw);">
+  <header class="window-chrome">
+    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="window-title" id="win-contact-title">✉️ Contact</span>
+    <button class="window-close" type="button" aria-label="Close Contact window">&times;</button>
+  </header>
+  <div class="window-body">
+    <h2>Get in touch</h2>
+    <p class="subtitle">Did you like what you saw? I'd love to hear from you.</p>
+    <div class="contact-links">
+      <a class="contact-link" href="https://www.linkedin.com/in/marinucs" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 256 256" fill="#a8645b" aria-hidden="true"><path d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"/></svg>
+        <span>LinkedIn<span class="sub">/in/marinucs</span></span>
+      </a>
+      <a class="contact-link" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 256 250" fill="#a8645b" aria-hidden="true"><path d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0z"/></svg>
+        <span>GitHub<span class="sub">@marinucs</span></span>
+      </a>
+      <a class="contact-link" href="mailto:ismiatesting@gmail.com">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#a8645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg>
+        <span>Email<span class="sub">ismiatesting@gmail.com</span></span>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <!-- ═══════════════ ABOUT ═══════════════ -->
-    <section id="about" class="container">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
-        About Me
-      </h2>
-      <article class="about-article">
-        <div class="about-text">
-          <p>I deeply care about product quality — through best coding practices, design patterns, and SOLID principles.</p>
-          <p>I have a strong attention to detail and enjoy working across the stack, from data pipelines to backend APIs.</p>
-          <p>I'm proficient in agile methodologies and PM tools, familiar with the ALM and the SDLC.</p>
-          <p>Native in Spanish and Catalan, fluent in English (C1).</p>
+<!-- PROJECTS -->
+<section class="window" id="win-projects" role="dialog" aria-modal="false" aria-labelledby="win-projects-title" tabindex="-1" style="top:12%;left:50%;transform:translateX(-50%);">
+  <header class="window-chrome">
+    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="window-title" id="win-projects-title">📁 Projects</span>
+    <button class="window-close" type="button" aria-label="Close Projects window">&times;</button>
+  </header>
+  <div class="window-body">
+    <h2>Projects</h2>
+    <p class="subtitle">A selection of personal and academic work.</p>
+    <div class="proj-grid">
+
+      <article class="proj-card">
+        <img class="proj-thumb" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778695477/mikasa_rzdsuy.png" alt="Mikasa project preview" data-lightbox />
+        <div class="proj-info">
+          <h3>Mikasa</h3>
+          <p>A personal real-estate aggregator for Barcelona province that consolidates agency sites into one app, normalizes data, and adds filters, map pins, and listing lifecycle tracking.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Playwright</span><span class="tag">SQLite</span></div>
+          <p class="proj-private">🔒 Private — available on request</p>
         </div>
-        <div class="about-photo"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png" alt="About Photo" width="250" height="300"></div>
       </article>
 
-    </section>
-
-    <!-- ═══════════════ EXPERIENCE ═══════════════ -->
-    <section id="experience" class="container">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-        Experience
-      </h2>
-      <ol class="timeline">
-
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">Jan 2026 – Present · 3 mos</time>
-          <h3 class="timeline-title">Data Engineer · Full-time</h3>
-          <p class="timeline-subtitle">Sanofi · Barcelona, Spain · Hybrid</p>
-          <div class="timeline-body">
-            <ul>
-              <li>Build and maintain data engineering solutions and pipelines based on requirements and designs</li>
-              <li>Optimize ETL/data pipelines for performance, cost, and operational needs</li>
-              <li>Collaborate with business/product stakeholders in an Agile team to turn requirements into technical implementations</li>
-              <li>Develop automated tests to support CI/CD pipelines</li>
-              <li>Create design/development documentation for knowledge sharing and long-term maintenance</li>
-              <li>Support and troubleshoot production Data Objects as needed</li>
-            </ul>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/ETL-374151?style=for-the-badge&logoColor=white" alt="ETL" />
-            <img src="https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white" alt="Snowflake" />
-            <img src="https://img.shields.io/badge/CI%2FCD-374151?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI/CD" />
-            <img src="https://img.shields.io/badge/Agile-974151?style=for-the-badge&logoColor=white" alt="Agile" />
-            <img src="https://img.shields.io/badge/Power_Bi-F2C811?style=flat-square&logo=codeforces&logoColor=black" alt="Power BI" />
-            <img src="https://img.shields.io/badge/Data-Modeling-ED8B00?style=for-the-badge&logoColor=white" alt="Data Modeling" />
-          </div>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">Jan 2025 – Dec 2025 · 1 yr</time>
-          <h3 class="timeline-title">ITS Architect – ERP Technical Integration Graduate · Apprenticeship</h3>
-          <p class="timeline-subtitle">Sanofi · Barcelona, Spain · Hybrid</p>
-          <div class="timeline-body">
-            <ul>
-              <li>Assessed and tested technical solutions, supporting scoping, integration, and QA during implementation</li>
-              <li>Scripting and process automation with Python and Power Automate</li>
-              <li>Monitored tools, processes, and governance meetings to ensure integration standards</li>
-              <li>Maintained documentation and updated the knowledge base for transparency and alignment</li>
-              <li>Prepared reports on project status, risks, and action plans for leadership</li>
-            </ul>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/Confluence-172B4D?style=for-the-badge&logo=confluence&logoColor=white" alt="Confluence" />
-            <img src="https://img.shields.io/badge/Power_Automate-0066FF?style=for-the-badge&logo=power-automate&logoColor=white" alt="Power Automate" />
-            <img src="https://img.shields.io/badge/SAP-0FAAFF?style=for-the-badge&logo=sap&logoColor=white" alt="SAP" />
-            <img src="https://img.shields.io/badge/Agile-974151?style=for-the-badge&logoColor=white" alt="Agile"/>
-          </div>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2024 · Less than a year</time>
-          <h3 class="timeline-title">B2B Backend Developer Intern</h3>
-          <p class="timeline-subtitle">bookline.ai · Barcelona, Spain · Hybrid</p>
-          <div class="timeline-body">
-            <p>Developed conversational AI bots across voice and WhatsApp, contributing to handling over <strong style="color:#fef3c7;font-weight:500;">3 million calls annually</strong> across 350+ client locations.</p>
-            <ul style="margin-top:0.5rem;">
-              <li>Wrote, tested, and reviewed code for various projects; contributed to design ideas</li>
-              <li>Led code migrations and integration projects, including backend APIs</li>
-              <li>Collaborated with technical leads and sales managers to ensure product delivery</li>
-              <li>Contributed to the development of the platform and infrastructure</li>
-            </ul>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-            <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
-            <img src="https://img.shields.io/badge/Conversational_AI-374151?style=for-the-badge&logoColor=white" alt="Conversational AI" />
-          </div>
-        </li>
-
-        <li class="timeline-item exp-hidden">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2017 – 2024 · 7 yrs</time>
-          <h3 class="timeline-title">Transport Booking Unit Customer Advisor</h3>
-          <p class="timeline-subtitle">Booking.com · Greater Barcelona Metropolitan Area · Remote</p>
-          <div class="timeline-body">
-            <ul>
-              <li>Provided customer support via phone, chat, and email</li>
-              <li>Troubleshot App/Website issues and supplier problem solving</li>
-              <li>Handled car rental reservations</li>
-            </ul>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Problem_Solving-374151?style=for-the-badge&logoColor=white" alt="Problem Solving" />
-            <img src="https://img.shields.io/badge/Customer_Support-374151?style=for-the-badge&logoColor=white" alt="Customer Support" />
-            <img src="https://img.shields.io/badge/Attention_to_Detail-374151?style=for-the-badge&logoColor=white" alt="Attention to Detail" />
-          </div>
-        </li>
-
-        <li class="timeline-item exp-hidden">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2016 – 2017 · 1 yr</time>
-          <h3 class="timeline-title">Google Android Tech Support</h3>
-          <p class="timeline-subtitle">SELLBYTEL Group · Barcelona, Spain · On-site</p>
-          <div class="timeline-body">
-            <ul>
-              <li>Provided technical advice via phone, email, and chat for Android devices and Google Play Store</li>
-              <li>Empathy and connecting with customers was the key to delivering great customer service</li>
-            </ul>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-            <img src="https://img.shields.io/badge/Technical_Support-374151?style=for-the-badge&logoColor=white" alt="Technical Support" />
-            <img src="https://img.shields.io/badge/Problem_Solving-374151?style=for-the-badge&logoColor=white" alt="Problem Solving" />
-          </div>
-        </li>
-
-      </ol>
-      <div class="show-more-wrap">
-        <button id="showMoreExperienceBtn" class="show-more-btn" onclick="toggleExperience()">Show more</button>
-      </div>
-    </section>
-
-    <!-- ═══════════════ SKILLS ═══════════════
-    <section id="skills" class="container">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 19l18 0"/><path d="M5 6m0 1a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-12a1 1 0 0 1-1-1z"/></svg>
-        Skills
-      </h2>
-      <div class="skills-badges-wrap">
-        <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
-        <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
-        <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-        <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-        <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
-        <img src="https://img.shields.io/badge/Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white" alt="Snowflake" />
-        <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=1C1C1C" alt="Firebase" />
-        <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux" />
-        <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
-        <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-        <img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes" />
-        <img src="https://img.shields.io/badge/SAP-0FAAFF?style=for-the-badge&logo=sap&logoColor=white" alt="SAP" />
-        <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot" />
-        <img src="https://img.shields.io/badge/RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white" alt="RabbitMQ" />
-        <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow" />
-        <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-        <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-        <img src="https://img.shields.io/badge/Power_Automate-0066FF?style=for-the-badge&logo=power-automate&logoColor=white" alt="Power Automate" />
-      </div>
-    </section>-->
-
-    <!-- ═══════════════ EDUCATION ═══════════════ -->
-    <section id="education" class="container">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4v16h-12a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2h12z"/><path d="M19 16h-12a2 2 0 0 0-2 2"/><path d="M9 8h6"/></svg>
-        Education
-      </h2>
-      <ol class="timeline">
-
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2025 · Grade: 10/10</time>
-          <h3 class="timeline-title">SAP ABAP Programming Certificate</h3>
-          <p class="timeline-subtitle">ESNECA Business School · Vendor/Product Certification</p>
-          <div class="timeline-body">
-            <p>300-hour specialized training in ABAP programming, covering installation, database management, and custom program development to enhance and optimize SAP systems for businesses.</p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/SAP_ABAP-0FAAFF?style=for-the-badge&logo=sap&logoColor=white" alt="SAP ABAP" />
-            <img src="https://img.shields.io/badge/GxP-374151?style=for-the-badge&logoColor=white" alt="GxP" />
-          </div>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2024</time>
-          <h3 class="timeline-title">Higher Technician Certificate in Multi-platform Application Development</h3>
-          <p class="timeline-subtitle">Institut TIC de Barcelona</p>
-          <div class="timeline-body">
-            <p>Developing, installing, documenting, and maintaining multi-platform applications, ensuring secure data access and compliance with usability and quality standards.</p>
-            <p style="margin-top:0.5rem;">🤖 Mobile development project recognition for Geocaching app.</p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-            <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
-            <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot" />
-            <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-            <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=1C1C1C" alt="Firebase" />
-            <img src="https://img.shields.io/badge/RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white" alt="RabbitMQ" />
-            <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" />
-            <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-            <img src="https://img.shields.io/badge/JUnit-DC524A?style=for-the-badge&logo=junit5&logoColor=white" alt="JUnit" />
-          </div>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2023 · Grade: 9.7/10</time>
-          <h3 class="timeline-title">College Extension Certificate in Artificial Intelligence</h3>
-          <p class="timeline-subtitle">Universidad de Málaga · SAMSUNG Innovation Campus</p>
-          <div class="timeline-body">
-            <p>358 hours covering Python, Statistics, Machine Learning I–III, Deep Learning I–II, and a final AI project.</p>
-            <p style="margin-top:0.5rem;">🧠 Final project: <em>Deep Learning Approach for Screening Autism Spectrum Disorder in Children with Facial Images.</em></p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow" />
-            <img src="https://img.shields.io/badge/Keras-D00000?style=for-the-badge&logo=keras&logoColor=white" alt="Keras" />
-            <img src="https://img.shields.io/badge/Scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="Scikit-learn" />
-            <img src="https://img.shields.io/badge/Deep_Learning-374151?style=for-the-badge&logoColor=white" alt="Deep Learning" />
-            <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" alt="OpenCV" />
-            <img src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy" />
-            <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas" />
-          </div>
-        </li>
-
-        <li class="timeline-item edu-hidden">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">2019</time>
-          <h3 class="timeline-title">Back-End Development Bootcamp</h3>
-          <p class="timeline-subtitle">IT Academy de Barcelona Activa</p>
-          <div class="timeline-body">
-            <p>300-hour mentoring model covering Java, Spring, MySQL, and version control through online self-learning platforms and real-project simulation teams.</p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-            <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot" />
-            <img src="https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white" alt="Hibernate" />
-            <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
-            <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=1C1C1C" alt="React" />
-          </div>
-        </li>
-
-      </ol>
-      <div class="show-more-wrap">
-        <button id="showMoreEducationBtn" class="show-more-btn" onclick="toggleEducation()">Show more</button>
-      </div>
-    </section>
-
-    <!-- ═══════════════ PROJECTS ═══════════════ -->
-    <section id="projects" class="container">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/><path d="M14 4l-4 16"/></svg>
-        Projects
-      </h2>
-   
-      <div class="projects-list">
-
-        <article class="project-article project-hidden">
-          <div class="proj-img-wrap bg-chat preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">💬</div>
-              <div class="proj-placeholder-label">Android Chat</div>
-            </div>
-          </div>
-          <div class="proj-body">
-            <h3>Android Chat</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-              <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-              <img src="https://img.shields.io/badge/TCP_Sockets-0F4C81?style=for-the-badge&logoColor=white" alt="TCP Sockets" />
-            </div>
-            <p class="proj-desc">A client-server Android chat application using TCP sockets for bidirectional communication. Features asynchronous task handling and multithreading for network operations.</p>
-          </div>
-        </article>
-
-        <article class="project-article project-hidden">
-          <div class="proj-img-wrap bg-film preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">🎬</div>
-              <div class="proj-placeholder-label">FilmApp</div>
-            </div>
-          </div>
-          <div class="proj-body">
-            <h3>FilmApp</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
-              <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-              <img src="https://img.shields.io/badge/TMDB_API-BE398D?style=for-the-badge&logo=themoviedatabase&logoColor=white" alt="TMDB API" />
-            </div>
-            <p class="proj-desc">An Android app for tracking movies and TV shows — mark them as seen or pending. Integrates with The Internet Movie Database (TMDB) API.</p>
-            <p class="proj-private">🔒 Available as a private project upon request</p>
-          </div>
-        </article>
-
-        <article class="project-article project-hidden">
-          <div class="proj-img-wrap bg-skins preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">🎮</div>
-              <div class="proj-placeholder-label">Gameskins</div>
-            </div>
-          </div>
-          <div class="proj-body">
-            <h3>Gameskins</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-              <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white" alt="Spring Boot" />
-              <img src="https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white" alt="Hibernate" />
-              <img src="https://img.shields.io/badge/JUnit-DC524A?style=for-the-badge&logo=junit5&logoColor=white" alt="JUnit" />
-              <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
-            </div>
-            <p class="proj-desc">A RESTful API for querying, acquiring, modifying, and deleting video game skins. Uses JSON for loading skins and SQLite for storing user data. Includes OpenAPI/Swagger documentation.</p>
-            <p class="proj-private">🔒 Available as a private project upon request</p>
-          </div>
-        </article>
-
-        <article class="project-article" style="order:-2;flex-direction:row;align-items:flex-start;gap:1.5rem;">
-          <div class="proj-img-wrap" style="flex:1;min-width:0;height:auto;aspect-ratio:16/10;" onclick="openModal(this.querySelector('img').src)">
-            <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png" alt="Summarize-Me-Bot project preview" style="width:100%;height:100%;object-fit:cover;" />
-          </div>
-          <div class="proj-body" style="flex:1;min-width:0;">
-            <h3>summarize-me-bot</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-              <img src="https://img.shields.io/badge/Telegram_Bot_API-229ED9?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram Bot API" />
-              <img src="https://img.shields.io/badge/OpenAI_API-0F766E?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI API" />
-              <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
-            </div>
-            <p class="proj-desc">A Telegram bot that stores group messages and generates smart summaries with `/resumen` and `/resumedesde`, including date-range limits, chat access control, and anti-spam rate limiting to protect token usage.</p>
-            <p class="proj-private">🔒 Available as a private project upon request</p>
-          </div>
-        </article>
-
-        <article class="project-article" style="order:-3;flex-direction:row;align-items:flex-start;gap:1.5rem;">
-          <div class="proj-img-wrap" style="flex:1;min-width:0;height:auto;aspect-ratio:16/10;" onclick="openModal(this.querySelector('img').src)">
-            <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778695477/mikasa_rzdsuy.png" alt="Mikasa project preview" style="width:100%;height:100%;object-fit:cover;" />
-          </div>
-          <div class="proj-body" style="flex:1;min-width:0;">
-            <h3>Mikasa</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-              <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
-              <img src="https://img.shields.io/badge/Web_Scraping-7C3AED?style=for-the-badge&logoColor=white" alt="Web Scraping" />
-              <img src="https://img.shields.io/badge/Playwright-2E7D32?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright" />
-              <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
-            </div>
-            <p class="proj-desc">A personal real-estate aggregator for Barcelona province that consolidates many agency sites into one app, normalizes location/property data, and adds filters, map pins, and listing lifecycle tracking.</p>
-            <p class="proj-private">🔒 Available as a private project upon request</p>
-          </div>
-        </article>
-
-        <article class="project-article" style="order:-1;flex-direction:row;align-items:flex-start;gap:1.5rem;">
-          <div class="proj-img-wrap" style="flex:1;min-width:0;height:auto;aspect-ratio:16/10;" onclick="openModal(this.querySelector('img').src)">
-            <img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg" alt="Geocaching project preview" style="width:100%;height:100%;object-fit:cover;" />
-          </div>
-          <div class="proj-body" style="flex:1;min-width:0;">
-            <h3>Geocaching</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
-              <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=1C1C1C" alt="Firebase" />
-              <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-              <img src="https://img.shields.io/badge/Google_Maps_API-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps API" />
-            </div>
-            <p class="proj-desc">An Android app for exploring geocaches and logging finds. Features interactive Google Maps integration, user accounts, personalized reports, and customizable settings.</p>
-            <p class="proj-private">🔒 Available as a private project upon request</p>
-          </div>
-        </article>
-
-        <article class="project-article project-hidden">
-          <div class="proj-img-wrap bg-rpc preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">✅</div>
-              <div class="proj-placeholder-label">RPC To-Do List</div>
-            </div>
-          </div>
-          <div class="proj-body">
-            <h3>RPC To-Do List</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-              <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
-              <img src="https://img.shields.io/badge/RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white" alt="RabbitMQ" />
-              <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
-            </div>
-            <p class="proj-desc">A modular Python application with a component-based architecture and RESTful API. Uses SQLite for persistence and RabbitMQ for asynchronous messaging and RPC communication.</p>
-          </div>
-        </article>
-
-        <article class="project-article project-hidden">
-          <div class="proj-img-wrap bg-ttt preview-hidden">
-            <div class="proj-placeholder">
-              <div class="proj-placeholder-icon">⭕</div>
-              <div class="proj-placeholder-label">Tic Tac Toe</div>
-            </div>
-          </div>
-          <div class="proj-body">
-            <h3>Tic Tac Toe</h3>
-            <div class="skills-badges-wrap" style="margin-bottom:0.5rem;">
-              <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
-              <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-              <img src="https://img.shields.io/badge/TCP_Sockets-0F4C81?style=for-the-badge&logoColor=white" alt="TCP Sockets" />
-            </div>
-            <p class="proj-desc">A multiplayer game with an Android client and Java backend server. Implements turn-based logic, board management, winner validation, and multithreading for concurrent players.</p>
-          </div>
-        </article>
-
-      </div>
-      <div class="show-more-wrap">
-        <button id="showMoreProjectsBtn" class="show-more-btn" onclick="toggleProjects()">Show more</button>
-      </div>
-    </section>
-
-    <!-- ═══════════════ ACHIEVEMENTS ═══════════════ -->
-    <section id="achievements" class="container">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21l8 0"/><path d="M12 17l0 4"/><path d="M7 4l10 0"/><path d="M17 4v8a5 5 0 0 1-10 0v-8"/><path d="M5 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/><path d="M19 9m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/></svg>
-        Achievements
-      </h2>
-      <ol class="timeline">
-
-        <!-- Schneider Electric Hackathon -->
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">Apr 2025 · Issued by Schneider Electric</time>
-          <h3 class="timeline-title">🥇 1st place — IT Challenge · Schneider Electric Hackathon 2025</h3>
-          <div class="timeline-body">
-            <p>Modernized an ERP system using Python. Built a data pipeline, developed a Flask API for legacy systems integration, solved algorithmic challenges, crafted SQL queries for data insights, and optimized business operations.</p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
-            <img src="https://img.shields.io/badge/SQL-003B57?style=for-the-badge&logo=postgresql&logoColor=white" alt="SQL" />
-            <img src="https://img.shields.io/badge/ETL-F07857?style=for-the-badge&logoColor=white" alt="ETL" />
-            <img src="https://img.shields.io/badge/ERP-53BDA5?style=for-the-badge&logoColor=white" alt="ERP" />
-          </div>
-          <div class="achievement-imgs-placeholder preview-hidden">
-            <div class="img-placeholder">
-              <span style="font-size:2rem;">🏆</span>
-              <span>Leaderboard</span>
-            </div>
-            <div class="img-placeholder">
-              <span style="font-size:2rem;">📣</span>
-              <span>Winner announcement</span>
-            </div>
-          </div>
-        </li>
-
-        <!-- CaixaBank Tech -->
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">Dec 2024 · Issued by CaixaBank Tech</time>
-          <h3 class="timeline-title">🏅 4th place — Python Backend · Coding Challenges Round 1</h3>
-          <div class="timeline-body">
-            <p>Developed a Python backend API for a financial app, focusing on account management, transaction security, and personalized financial tools.</p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=FFE873" alt="Python" />
-            <img src="https://img.shields.io/badge/Backend_API-53BDA5?style=for-the-badge&logoColor=white" alt="Backend API" />
-            <img src="https://img.shields.io/badge/Fintech-F07857?style=for-the-badge&logoColor=white" alt="Fintech" />
-          </div>
-          <div class="achievement-imgs-placeholder preview-hidden">
-            <div class="img-placeholder">
-              <span style="font-size:2rem;">🏅</span>
-              <span>Results</span>
-            </div>
-            <div class="img-placeholder">
-              <span style="font-size:2rem;">💻</span>
-              <span>Challenge screenshot</span>
-            </div>
-          </div>
-        </li>
-
-        <!-- ITIC Geocaching -->
-        <li class="timeline-item">
-          <div class="timeline-dot"></div>
-          <time class="timeline-date">Jun 2023 · Issued by Institut TIC de Barcelona</time>
-          <h3 class="timeline-title">📱 Mobile Programming Recognition — Android App «Geocaching»</h3>
-          <div class="timeline-body">
-            <p>Mobile Programming Certification for the Android app 'Geocaching', developed in Kotlin, issued by ITIC Barcelona (formerly Institut Joan d'Austria).</p>
-          </div>
-          <div class="skills-badges-wrap" style="margin-top:0.75rem;">
-            <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin" />
-            <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
-            <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=1C1C1C" alt="Firebase" />
-            <img src="https://img.shields.io/badge/Google_Maps_API-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps API" />
-          </div>
-          <div class="achievement-imgs-placeholder preview-hidden">
-            <div class="img-placeholder">
-              <span style="font-size:2rem;">📱</span>
-              <span>App screenshot</span>
-            </div>
-            <div class="img-placeholder">
-              <span style="font-size:2rem;">📜</span>
-              <span>Certificate</span>
-            </div>
-          </div>
-        </li>
-
-      </ol>
-    </section>
-
-    <!-- ═══════════════ CONTACT ═══════════════
-    <section id="contact" class="container" style="padding-bottom:6rem;">
-      <h2 class="sec-title">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg>
-        Contact
-      </h2>
-      <p class="contact-intro">Did you like what you saw? Don't hesitate to reach out — I'd love to hear from you!</p>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required />
+      <article class="proj-card">
+        <img class="proj-thumb" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png" alt="summarize-me-bot project preview" data-lightbox />
+        <div class="proj-info">
+          <h3>summarize-me-bot</h3>
+          <p>A Telegram bot that stores group messages and generates smart summaries, with date-range limits, chat access control, and anti-spam rate limiting.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Telegram API</span><span class="tag">OpenAI</span><span class="tag">SQLite</span></div>
+          <p class="proj-private">🔒 Private — available on request</p>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required />
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Your message..." required></textarea>
-        </div>
-        <button type="submit" class="form-submit">Send</button>
-      </form>
-    </section>-->
+      </article>
 
+      <article class="proj-card">
+        <img class="proj-thumb" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg" alt="Geocaching project preview" data-lightbox />
+        <div class="proj-info">
+          <h3>Geocaching</h3>
+          <p>An Android app for exploring geocaches and logging finds, with interactive Google Maps, user accounts, and personalized reports.</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Firebase</span><span class="tag">Android</span><span class="tag">Maps API</span></div>
+          <p class="proj-private">🔒 Private — available on request</p>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb ph" aria-hidden="true">🎮</div>
+        <div class="proj-info">
+          <h3>Gameskins</h3>
+          <p>A RESTful API for querying, acquiring, modifying, and deleting video game skins, using JSON loading and SQLite storage with OpenAPI docs.</p>
+          <div class="tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Hibernate</span><span class="tag">SQLite</span></div>
+          <p class="proj-private">🔒 Private — available on request</p>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb ph" aria-hidden="true">🎬</div>
+        <div class="proj-info">
+          <h3>FilmApp</h3>
+          <p>An Android app for tracking movies and TV shows — mark them as seen or pending. Integrates with the TMDB API.</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Android</span><span class="tag">TMDB API</span></div>
+          <p class="proj-private">🔒 Private — available on request</p>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb ph" aria-hidden="true">💬</div>
+        <div class="proj-info">
+          <h3>Android Chat</h3>
+          <p>A client-server Android chat using TCP sockets for bidirectional communication, with asynchronous task handling and multithreading.</p>
+          <div class="tags"><span class="tag">Java</span><span class="tag">Android</span><span class="tag">TCP Sockets</span></div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb ph" aria-hidden="true">✅</div>
+        <div class="proj-info">
+          <h3>RPC To-Do List</h3>
+          <p>A modular Python application with a component-based architecture and RESTful API, using SQLite and RabbitMQ for async messaging and RPC.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">RabbitMQ</span><span class="tag">SQLite</span></div>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <div class="proj-thumb ph" aria-hidden="true">⭕</div>
+        <div class="proj-info">
+          <h3>Tic Tac Toe</h3>
+          <p>A multiplayer game with an Android client and Java backend server. Turn-based logic, board management, winner validation, and multithreading.</p>
+          <div class="tags"><span class="tag">Java</span><span class="tag">Android</span><span class="tag">TCP Sockets</span></div>
+        </div>
+      </article>
+
+    </div>
   </div>
-</main>
+</section>
 
-<div id="imageModal" class="modal" onclick="closeModal(event)">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">&times;</button>
-    <img id="modalImage" src="" alt="Full size image" />
+<!-- EXPERIENCE -->
+<section class="window" id="win-experience" role="dialog" aria-modal="false" aria-labelledby="win-experience-title" tabindex="-1" style="top:12%;left:50%;transform:translateX(-50%);">
+  <header class="window-chrome">
+    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="window-title" id="win-experience-title">💼 Experience</span>
+    <button class="window-close" type="button" aria-label="Close Experience window">&times;</button>
+  </header>
+  <div class="window-body">
+    <h2>Experience</h2>
+    <ol class="tl" style="margin-top:1rem;list-style:none;">
+      <li class="tl-item">
+        <div class="tl-date">Jan 2026 – Present</div>
+        <div class="tl-title">Data Engineer · Full-time</div>
+        <div class="tl-sub">Sanofi · Barcelona, Spain · Hybrid</div>
+        <div class="tl-body"><ul>
+          <li>Build and maintain data engineering solutions and pipelines based on requirements and designs</li>
+          <li>Optimize ETL/data pipelines for performance, cost, and operational needs</li>
+          <li>Collaborate with business stakeholders in an Agile team to turn requirements into implementations</li>
+          <li>Develop automated tests to support CI/CD pipelines and create design documentation</li>
+        </ul></div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">ETL</span><span class="tag">Snowflake</span><span class="tag">CI/CD</span><span class="tag">Agile</span><span class="tag">Power BI</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">Jan 2025 – Dec 2025 · 1 yr</div>
+        <div class="tl-title">ITS Architect – ERP Technical Integration Graduate</div>
+        <div class="tl-sub">Sanofi · Barcelona, Spain · Hybrid</div>
+        <div class="tl-body"><ul>
+          <li>Assessed and tested technical solutions, supporting scoping, integration, and QA</li>
+          <li>Scripting and process automation with Python and Power Automate</li>
+          <li>Maintained documentation and prepared reports on project status, risks, and action plans</li>
+        </ul></div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Confluence</span><span class="tag">Power Automate</span><span class="tag">SAP</span><span class="tag">Agile</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">2024</div>
+        <div class="tl-title">B2B Backend Developer Intern</div>
+        <div class="tl-sub">bookline.ai · Barcelona, Spain · Hybrid</div>
+        <div class="tl-body">
+          <p>Developed conversational AI bots across voice and WhatsApp, contributing to handling over <strong>3 million calls annually</strong> across 350+ client locations.</p>
+          <ul>
+            <li>Wrote, tested, and reviewed code; led code migrations and integration projects including backend APIs</li>
+            <li>Collaborated with technical leads and sales managers to ensure product delivery</li>
+          </ul>
+        </div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">FastAPI</span><span class="tag">Conversational AI</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">2017 – 2024 · 7 yrs</div>
+        <div class="tl-title">Transport Booking Unit Customer Advisor</div>
+        <div class="tl-sub">Booking.com · Greater Barcelona · Remote</div>
+        <div class="tl-body"><ul>
+          <li>Provided customer support via phone, chat, and email; troubleshot App/Website issues</li>
+          <li>Handled car rental reservations and supplier problem solving</li>
+        </ul></div>
+        <div class="tags"><span class="tag">Problem Solving</span><span class="tag">Customer Support</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">2016 – 2017 · 1 yr</div>
+        <div class="tl-title">Google Android Tech Support</div>
+        <div class="tl-sub">SELLBYTEL Group · Barcelona, Spain · On-site</div>
+        <div class="tl-body"><ul>
+          <li>Provided technical advice via phone, email, and chat for Android devices and Google Play Store</li>
+        </ul></div>
+        <div class="tags"><span class="tag">Android</span><span class="tag">Technical Support</span></div>
+      </li>
+    </ol>
   </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="window" id="win-education" role="dialog" aria-modal="false" aria-labelledby="win-education-title" tabindex="-1" style="top:12%;left:50%;transform:translateX(-50%);">
+  <header class="window-chrome">
+    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="window-title" id="win-education-title">🎓 Education</span>
+    <button class="window-close" type="button" aria-label="Close Education window">&times;</button>
+  </header>
+  <div class="window-body">
+    <h2>Education</h2>
+    <ol class="tl" style="margin-top:1rem;list-style:none;">
+      <li class="tl-item">
+        <div class="tl-date">2025 · Grade 10/10</div>
+        <div class="tl-title">SAP ABAP Programming Certificate</div>
+        <div class="tl-sub">ESNECA Business School</div>
+        <div class="tl-body"><p>300-hour specialized training in ABAP programming — installation, database management, and custom program development to optimize SAP systems.</p></div>
+        <div class="tags"><span class="tag">SAP ABAP</span><span class="tag">GxP</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">2024</div>
+        <div class="tl-title">Higher Technician — Multi-platform Application Development</div>
+        <div class="tl-sub">Institut TIC de Barcelona</div>
+        <div class="tl-body"><p>Developing, installing, documenting, and maintaining multi-platform applications. 🤖 Mobile development project recognition for Geocaching app.</p></div>
+        <div class="tags"><span class="tag">Java</span><span class="tag">Kotlin</span><span class="tag">Spring Boot</span><span class="tag">Docker</span><span class="tag">Firebase</span><span class="tag">Android</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">2023 · Grade 9.7/10</div>
+        <div class="tl-title">College Extension Certificate in Artificial Intelligence</div>
+        <div class="tl-sub">Universidad de Málaga · SAMSUNG Innovation Campus</div>
+        <div class="tl-body"><p>358 hours covering Python, Statistics, Machine Learning I–III, and Deep Learning. 🧠 Final project: Deep Learning Approach for Screening Autism Spectrum Disorder in Children with Facial Images.</p></div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Keras</span><span class="tag">OpenCV</span><span class="tag">NumPy</span><span class="tag">Pandas</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">2019</div>
+        <div class="tl-title">Back-End Development Bootcamp</div>
+        <div class="tl-sub">IT Academy de Barcelona Activa</div>
+        <div class="tl-body"><p>300-hour mentoring model covering Java, Spring, MySQL, and version control through real-project simulation teams.</p></div>
+        <div class="tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Hibernate</span><span class="tag">MySQL</span><span class="tag">React</span></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="window" id="win-achievements" role="dialog" aria-modal="false" aria-labelledby="win-achievements-title" tabindex="-1" style="top:14%;left:50%;transform:translateX(-50%);">
+  <header class="window-chrome">
+    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="window-title" id="win-achievements-title">🏆 Achievements</span>
+    <button class="window-close" type="button" aria-label="Close Achievements window">&times;</button>
+  </header>
+  <div class="window-body">
+    <h2>Achievements</h2>
+    <ol class="tl" style="margin-top:1rem;list-style:none;">
+      <li class="tl-item">
+        <div class="tl-date">Apr 2025 · Schneider Electric</div>
+        <div class="tl-title">🥇 1st place — IT Challenge · Schneider Electric Hackathon 2025</div>
+        <div class="tl-body"><p>Modernized an ERP system using Python. Built a data pipeline, developed a Flask API for legacy integration, solved algorithmic challenges, and crafted SQL queries for insights.</p></div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">SQL</span><span class="tag">ETL</span><span class="tag">ERP</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">Dec 2024 · CaixaBank Tech</div>
+        <div class="tl-title">🏅 4th place — Python Backend · Coding Challenges Round 1</div>
+        <div class="tl-body"><p>Developed a Python backend API for a financial app, focusing on account management, transaction security, and personalized financial tools.</p></div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Backend API</span><span class="tag">Fintech</span></div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-date">Jun 2023 · Institut TIC de Barcelona</div>
+        <div class="tl-title">📱 Mobile Programming Recognition — Android App «Geocaching»</div>
+        <div class="tl-body"><p>Mobile Programming Certification for the Android app 'Geocaching', developed in Kotlin, issued by ITIC Barcelona.</p></div>
+        <div class="tags"><span class="tag">Kotlin</span><span class="tag">Android</span><span class="tag">Firebase</span><span class="tag">Maps API</span></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" type="button" aria-label="Close image">&times;</button>
+  <img id="lightboxImg" src="" alt="Project preview enlarged" />
 </div>
-<footer>
-  <div class="footer-inner">
-    <span>© 2026 <a href="https://github.com/marinucs">Marina.</a> Built with care from Barcelona.</span>
-  </div>
-</footer>
+
+<div class="hint"><span>Click an icon or use the nav · Esc closes windows</span></div>
 
 <script>
-  // Show more / less projects
-  let projectsVisible = false;
-  let educationVisible = false;
-  let experienceVisible = false;
-  function toggleProjects() {
-    projectsVisible = !projectsVisible;
-    document.querySelectorAll('.project-hidden').forEach(el => {
-      el.style.display = projectsVisible ? 'flex' : 'none';
-    });
-    document.getElementById('showMoreProjectsBtn').textContent = projectsVisible ? 'Show less' : 'Show more';
+(function () {
+  let zCounter = 100;
+  const openWindows = [];
+
+  function getWindow(name) { return document.getElementById('win-' + name); }
+
+  function focusWindow(win) {
+    zCounter += 1;
+    win.style.zIndex = zCounter;
   }
 
-  function toggleEducation() {
-    educationVisible = !educationVisible;
-    document.querySelectorAll('.edu-hidden').forEach(el => {
-      el.style.display = educationVisible ? 'list-item' : 'none';
-    });
-    document.getElementById('showMoreEducationBtn').textContent = educationVisible ? 'Show less' : 'Show more';
+  function openWindow(name) {
+    const win = getWindow(name);
+    if (!win) return;
+    if (!win.classList.contains('open')) {
+      win.classList.add('open');
+      openWindows.push(win);
+    }
+    focusWindow(win);
+    win.focus();
+    setActiveNav(name);
   }
 
-  function toggleExperience() {
-    experienceVisible = !experienceVisible;
-    document.querySelectorAll('.exp-hidden').forEach(el => {
-      el.style.display = experienceVisible ? 'list-item' : 'none';
-    });
-    document.getElementById('showMoreExperienceBtn').textContent = experienceVisible ? 'Show less' : 'Show more';
+  function closeWindow(win) {
+    win.classList.remove('open');
+    const i = openWindows.indexOf(win);
+    if (i > -1) openWindows.splice(i, 1);
+    if (openWindows.length === 0) setActiveNav('reset');
   }
 
-  // Active nav highlight on scroll
-  document.addEventListener('DOMContentLoaded', () => {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('header nav a');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(link => {
-            link.classList.toggle('active', link.getAttribute('aria-label') === entry.target.id);
-          });
-        }
-      });
-    }, { root: null, rootMargin: '0px', threshold: 0.25 });
-    sections.forEach(s => observer.observe(s));
+  function closeTopWindow() {
+    if (openWindows.length) closeWindow(openWindows[openWindows.length - 1]);
+  }
+
+  function closeAll() {
+    openWindows.slice().forEach(closeWindow);
+    setActiveNav('reset');
+  }
+
+  function setActiveNav(name) {
+    document.querySelectorAll('.pill-nav button').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.open === name || (name === 'reset' && b.dataset.open === 'reset'));
+    });
+  }
+
+  // Open triggers (icons + nav). Anchors (Explore) keep default behavior.
+  document.querySelectorAll('[data-open]').forEach(function (el) {
+    if (el.tagName === 'A') return;
+    const target = el.dataset.open;
+    el.addEventListener('click', function () {
+      if (target === 'reset') { closeAll(); } else { openWindow(target); }
+    });
   });
 
-  // Contact form
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
-    btn.textContent = '✓ Sent!';
-    btn.style.background = '#10b981';
-    setTimeout(() => { btn.textContent = 'Send'; btn.style.background = ''; e.target.reset(); }, 3000);
-  }
-
-  // Lightbox modal
-  function openModal(src) {
-    const modal = document.getElementById('imageModal');
-    const img = document.getElementById('modalImage');
-    img.src = src;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(event) {
-    if (event && event.target.id !== 'imageModal') return;
-    const modal = document.getElementById('imageModal');
-    modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-  }
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+  // Close buttons
+  document.querySelectorAll('.window-close').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      closeWindow(btn.closest('.window'));
+    });
   });
+
+  // Bring window to front on interaction
+  document.querySelectorAll('.window').forEach(function (win) {
+    win.addEventListener('mousedown', function () { focusWindow(win); });
+  });
+
+  // ESC closes the top-most window
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      if (document.getElementById('lightbox').classList.contains('open')) { closeLightbox(); return; }
+      closeTopWindow();
+    }
+  });
+
+  // ── Dragging by chrome ──
+  document.querySelectorAll('.window-chrome').forEach(function (chrome) {
+    let startX, startY, baseLeft, baseTop;
+    const win = chrome.closest('.window');
+
+    function onDown(e) {
+      if (e.target.closest('.window-close')) return;
+      focusWindow(win);
+      const evt = e.touches ? e.touches[0] : e;
+      const rect = win.getBoundingClientRect();
+      // Switch from translateX centering to absolute left/top once dragged.
+      win.style.left = rect.left + 'px';
+      win.style.top = rect.top + 'px';
+      win.style.transform = 'none';
+      baseLeft = rect.left; baseTop = rect.top;
+      startX = evt.clientX; startY = evt.clientY;
+      chrome.classList.add('dragging');
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onUp);
+    }
+    function onMove(e) {
+      const evt = e.touches ? e.touches[0] : e;
+      if (e.cancelable && e.touches) e.preventDefault();
+      const nx = baseLeft + (evt.clientX - startX);
+      const ny = baseTop + (evt.clientY - startY);
+      const maxX = window.innerWidth - 60;
+      const maxY = window.innerHeight - 40;
+      win.style.left = Math.min(Math.max(nx, -win.offsetWidth + 80), maxX) + 'px';
+      win.style.top = Math.min(Math.max(ny, 8), maxY) + 'px';
+    }
+    function onUp() {
+      chrome.classList.remove('dragging');
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onUp);
+    }
+    chrome.addEventListener('mousedown', onDown);
+    chrome.addEventListener('touchstart', onDown, { passive: true });
+  });
+
+  // ── Lightbox ──
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  function openLightbox(src) { lightboxImg.src = src; lightbox.classList.add('open'); }
+  function closeLightbox() { lightbox.classList.remove('open'); lightboxImg.src = ''; }
+  document.querySelectorAll('[data-lightbox]').forEach(function (img) {
+    img.addEventListener('click', function () { openLightbox(img.src); });
+  });
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox || e.target.closest('.lightbox-close')) closeLightbox();
+  });
+})();
 </script>
 </body>
 </html>
