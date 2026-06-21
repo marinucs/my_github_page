@@ -268,6 +268,30 @@
     .explorer-aside h3 { font-family: 'DM Serif Display', serif; font-weight: 400; color: var(--charcoal); font-size: 1.3rem; margin-bottom: 0.3rem; }
     .explorer-aside p { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.55rem; color: var(--charcoal-soft); }
     .preview-hint { font-size: 0.7rem; color: var(--dusty-pink-deep); font-style: italic; margin-top: 0.4rem; }
+
+    /* logo rows in folder preview (work / education / achievements) */
+    .logo-rows { list-style: none; margin: 0.5rem 0 0.2rem; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .logo-row { display: flex; align-items: center; gap: 0.6rem;
+      background: rgba(255,255,255,0.6); border: 1px solid rgba(58,51,48,0.12);
+      border-radius: 9px; padding: 0.45rem 0.55rem; }
+    .logo-badge {
+      flex: 0 0 auto; width: 38px; height: 38px; border-radius: 9px; overflow: hidden;
+      background: #fff; border: 1px solid rgba(58,51,48,0.12);
+      box-shadow: 0 2px 6px var(--shadow);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-badge .logo-img { width: 100%; height: 100%; object-fit: contain; padding: 4px; display: block; }
+    .logo-fallback {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+      color: #fff; background: linear-gradient(135deg, var(--accent-soft), var(--accent));
+    }
+    .logo-meta { min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+    .logo-title { font-size: 0.78rem; font-weight: 600; color: var(--charcoal);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .logo-org { font-size: 0.72rem; color: var(--charcoal-soft);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .logo-date { font-size: 0.68rem; font-weight: 600; color: var(--dusty-pink-deep); }
     @media (max-width: 620px) {
       .explorer { flex-direction: column; }
       .explorer-main { border-right: none; border-bottom: 1px solid rgba(58,51,48,0.15); }
@@ -498,10 +522,37 @@
 
   const tags = (arr) => '<div class="tags">' + arr.map((t) => '<span class="tag">' + t + '</span>').join('') + '</div>';
 
+  /* Stable, public logo endpoint: Google's favicon service resolves an icon for
+     any domain without auth. If it ever fails, the row falls back to initials. */
+  const logo = (domain) => 'https://www.google.com/s2/favicons?sz=64&domain=' + domain;
+
+  /* Build a preview list of org/logo rows. Each row: {logo?, initials, title, org, date}.
+     Logos come from a stable public source with graceful fallback to coloured
+     initials if the image fails to load — no broken images. */
+  function logoRows(rows) {
+    return '<ul class="logo-rows">' + rows.map(function (r) {
+      var fallback = '<span class="logo-fallback" aria-hidden="true">' + r.initials + '</span>';
+      var media = r.logo
+        ? '<img class="logo-img" src="' + r.logo + '" alt="" loading="lazy" ' +
+          'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';" />' +
+          '<span class="logo-fallback" aria-hidden="true" style="display:none;">' + r.initials + '</span>'
+        : fallback;
+      return '<li class="logo-row">' +
+        '<span class="logo-badge">' + media + '</span>' +
+        '<span class="logo-meta">' +
+          '<span class="logo-title">' + r.title + '</span>' +
+          '<span class="logo-org">' + r.org + '</span>' +
+          (r.date ? '<span class="logo-date">' + r.date + '</span>' : '') +
+        '</span>' +
+      '</li>';
+    }).join('') + '</ul>';
+  }
+
   const ABOUT = [
     {
       id: 'about_me', label: 'about_me', glyph: '🪪', glyphClass: 'glyph-about',
       title: 'About me',
+      previewImg: IMG.portrait,
       preview: '<p><strong>Solution-driven software engineer</strong> based in Barcelona — curious mindset, always eager to learn.</p>',
       content:
         '<h2>Hey, I\'m Marina</h2>' +
@@ -520,7 +571,12 @@
     {
       id: 'work_experience', label: 'work_experience', glyph: '💼', glyphClass: 'glyph-exp',
       title: 'Work experience',
-      preview: '<p>Data Engineer at <strong>Sanofi</strong>, with prior roles at bookline.ai, Booking.com and SELLBYTEL.</p>',
+      preview: '<p>Data Engineer at <strong>Sanofi</strong>, with prior roles at bookline, Booking.com and SELLBYTEL.</p>',
+      previewRows: logoRows([
+        { logo: logo('sanofi.com'),   initials: 'SA', title: 'Data Engineer',                        org: 'Sanofi',     date: 'Jan 2026 – Present' },
+        { logo: logo('sanofi.com'),   initials: 'SA', title: 'ITS Architect – ERP Integration Grad.', org: 'Sanofi',     date: 'Jan 2025 – Dec 2025' },
+        { logo: logo('bookline.io'),  initials: 'BK', title: 'B2B Backend Developer Intern',          org: 'bookline',   date: '2024' }
+      ]),
       content:
         '<h2>Experience</h2>' +
         '<ol class="tl" style="margin-top:1rem;list-style:none;">' +
@@ -535,6 +591,12 @@
       id: 'education', label: 'education', glyph: '🎓', glyphClass: 'glyph-edu',
       title: 'Education',
       preview: '<p>SAP ABAP certificate, Higher Technician in Multi-platform Development, AI certificate, and a back-end bootcamp.</p>',
+      previewRows: logoRows([
+        { logo: logo('esneca.com'),         initials: 'ES',  title: 'SAP ABAP Programming Certificate',        org: 'ESNECA Business School',        date: '2025' },
+        { logo: logo('iticbcn.cat'),        initials: 'TIC', title: 'Higher Technician — Multi-platform Dev',   org: 'Institut TIC de Barcelona',     date: '2024' },
+        { logo: logo('uma.es'),             initials: 'UMA', title: 'Certificate in Artificial Intelligence',  org: 'Univ. de Málaga · Samsung IC',  date: '2023' },
+        { logo: logo('barcelonactiva.cat'), initials: 'BA',  title: 'Back-End Development Bootcamp',            org: 'IT Academy · Barcelona Activa', date: '2019' }
+      ]),
       content:
         '<h2>Education</h2>' +
         '<ol class="tl" style="margin-top:1rem;list-style:none;">' +
@@ -548,6 +610,11 @@
       id: 'achievements', label: 'achievements', glyph: '🏆', glyphClass: 'glyph-trophy',
       title: 'Achievements',
       preview: '<p>1st place at the Schneider Electric Hackathon 2025, a CaixaBank Tech podium, and a mobile-programming recognition.</p>',
+      previewRows: logoRows([
+        { logo: logo('se.com'),        initials: 'SE',  title: '🥇 1st place — IT Challenge Hackathon', org: 'Schneider Electric',        date: 'Apr 2025' },
+        { logo: logo('caixabank.com'), initials: 'CB',  title: '🏅 4th place — Python Backend',         org: 'CaixaBank Tech',            date: 'Dec 2024' },
+        { logo: logo('iticbcn.cat'),   initials: 'TIC', title: '📱 Mobile Programming Recognition',     org: 'Institut TIC de Barcelona', date: 'Jun 2023' }
+      ]),
       content:
         '<h2>Achievements</h2>' +
         '<ol class="tl" style="margin-top:1rem;list-style:none;">' +
@@ -772,11 +839,13 @@
   function renderPreview(key, id) {
     const item = findItem(key, id);
     const aside = document.querySelector('.explorer-aside[data-preview="' + key + '"]');
-    let media;
-    if (item.img) media = '<img class="preview-thumb" src="' + item.img + '" alt="' + item.title + ' preview" data-lightbox-src="' + item.img + '" />';
-    else media = '<div class="preview-thumb ph" aria-hidden="true">' + (item.glyph || item.emoji || '📄') + '</div>';
+    const photo = item.img || item.previewImg;
+    let media = '';
+    if (photo) media = '<img class="preview-thumb" src="' + photo + '" alt="' + item.title + ' preview" data-lightbox-src="' + photo + '" />';
+    else if (!item.previewRows) media = '<div class="preview-thumb ph" aria-hidden="true">' + (item.glyph || item.emoji || '📄') + '</div>';
     let body = '<h3>' + item.title + '</h3>';
     body += item.preview ? item.preview : '<p>' + item.desc + '</p>';
+    if (item.previewRows) body += item.previewRows;
     if (item.stack) body += tags(item.stack);
     if (item.private) body += '<p class="proj-private">🔒 Private — available on request</p>';
     body += '<p class="preview-hint">Double-click to open in a window.</p>';
