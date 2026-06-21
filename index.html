@@ -49,36 +49,34 @@
 
     /* ── UBUNTU TOP PANEL ── */
     .topbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
-      display: flex; justify-content: center; pointer-events: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 600;
+      height: 36px; display: flex; justify-content: center; pointer-events: none;
     }
-    .pill-nav {
-      pointer-events: auto;
-      width: 100%; min-height: 36px;
-      display: flex; gap: 0.2rem; align-items: center; justify-content: center;
-      background: rgba(30,27,32,0.94);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: none; border-bottom: 1px solid rgba(255,255,255,0.08);
-      border-radius: 0; padding: 0.2rem 0.45rem;
+    .topbar::before {
+      content: ""; position: absolute; inset: 0; min-height: 36px;
+      background: rgba(30,27,32,0.94); border-bottom: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     }
-    .pill-nav button {
-      font: inherit; font-size: 0.78rem; font-weight: 500;
-      color: #f2f2f2;
-      background: transparent; border: 1px solid transparent;
-      padding: 0.28rem 0.85rem; border-radius: 6px; cursor: pointer;
-      transition: all 0.15s; text-decoration: none;
+    .panel-clock {
+      position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%);
+      color: #f5f5f5; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.01em;
+      font-variant-numeric: tabular-nums; pointer-events: none;
     }
-    .pill-nav button:hover { background: rgba(255,255,255,0.12); color: #fff; }
-    .pill-nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .pill-nav button.active { background: var(--accent); color: #fff; }
 
-    /* ── DESKTOP ICONS ── */
-    .icon-layer { position: absolute; inset: 0; z-index: 10; }
+    /* ── UBUNTU DOCK ── */
+    .icon-layer {
+      position: fixed; left: 0.65rem; top: 50%; transform: translateY(-50%); z-index: 500;
+      display: flex; flex-direction: column; gap: 0.35rem;
+      width: 78px; padding: 0.52rem 0.38rem;
+      background: rgba(31,27,33,0.84); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px; box-shadow: 0 8px 24px rgba(20,5,15,0.38);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
     .desktop-icon {
-      position: absolute;
+      position: relative !important; top: auto !important; left: auto !important; right: auto !important;
       display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-      width: 104px; padding: 0.4rem 0.25rem;
+      width: 66px; min-height: 68px; padding: 0.2rem;
       background: transparent; border: 1px solid transparent; border-radius: 7px;
       cursor: pointer; font: inherit; color: var(--charcoal);
       transition: background 0.12s, border-color 0.12s;
@@ -86,7 +84,7 @@
     .desktop-icon:hover { background: rgba(255,255,255,0.13); }
     .desktop-icon:focus-visible { outline: none; background: rgba(233,84,32,0.22); border-color: rgba(255,255,255,0.45); }
     .desktop-icon .glyph {
-      width: 54px; height: 54px; border-radius: 12px;
+      width: 48px; height: 48px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.9rem; line-height: 1;
       box-shadow: 0 5px 12px rgba(24,7,18,0.42);
@@ -95,18 +93,14 @@
     .desktop-icon .glyph.photo { padding: 3px; background: #fff; }
     .desktop-icon .glyph.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; display: block; }
     .desktop-icon .label {
-      font-size: 0.72rem; font-weight: 500; text-align: center; line-height: 1.25;
-      color: #fff; text-shadow: 0 1px 3px rgba(58,51,48,0.8);
-      background: rgba(30,15,25,0.34); padding: 0.12rem 0.42rem; border-radius: 4px;
-      max-width: 100%; overflow-wrap: break-word; word-break: break-word;
-      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+      position: static; width: 100%; max-width: 100%; padding: 0; transform: none;
+      color: #fff; background: transparent; border: none; box-shadow: none; text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+      font-size: 0.64rem; font-weight: 500; line-height: 1.15; text-align: center; white-space: normal;
+      opacity: 1; visibility: visible; pointer-events: none;
     }
-    .icon-layer > .desktop-icon { left: auto !important; right: 1.25rem; }
-    .icon-layer > .desktop-icon:nth-child(1) { top: 10% !important; }
-    .icon-layer > .desktop-icon:nth-child(2) { top: 27% !important; }
-    .icon-layer > .desktop-icon:nth-child(3) { top: 44% !important; }
-    .icon-layer > .desktop-icon:nth-child(4) { top: 61% !important; }
     .glyph-about   { background: linear-gradient(145deg,#9b5780,#5e2750); }
+    .glyph-home    { background: linear-gradient(145deg,#f08763,#e95420); color: #fff; }
+    .glyph-home svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.8; }
     .glyph-contact { background: linear-gradient(145deg,#f08763,#e95420); }
     .glyph-exp     { background: linear-gradient(145deg,#8f6d86,#5e2750); }
     .glyph-edu     { background: linear-gradient(145deg,#f6aa75,#d94b1a); }
@@ -372,7 +366,8 @@
     * { scrollbar-color: #aea9b1 #eee; scrollbar-width: thin; }
 
     @media (max-width: 560px) {
-      .desktop-icon { width: 92px; }
+      .icon-layer { left: 0.4rem; width: 70px; padding-inline: 0.25rem; }
+      .desktop-icon { width: 60px; }
       .window-body { padding: 1.1rem; }
     }
   </style>
@@ -383,15 +378,16 @@
 
 <!-- TOP PILL NAV -->
 <div class="topbar">
-  <nav class="pill-nav" aria-label="Primary">
-    <button type="button" data-open="reset" class="active">home</button>
-    <button type="button" data-open="about">about</button>
-    <button type="button" data-open="contact">contact</button>
-  </nav>
+  <time class="panel-clock" id="panelClock" aria-label="Current time"></time>
 </div>
 
 <!-- DESKTOP ICONS -->
 <div class="icon-layer" id="iconLayer">
+
+  <button class="desktop-icon" type="button" data-open="reset" aria-label="Go home" data-testid="icon-home">
+    <span class="glyph glyph-home" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 10.5 12 3l8.5 7.5v9a1.5 1.5 0 0 1-1.5 1.5h-4.5v-6h-5v6H5a1.5 1.5 0 0 1-1.5-1.5z"/></svg></span>
+    <span class="label">Home</span>
+  </button>
 
   <button class="desktop-icon" type="button" data-open="about" style="top:22%;left:8%;" aria-label="Open About folder" data-testid="icon-about">
     <span class="glyph glyph-folder" aria-hidden="true">📁</span>
@@ -523,11 +519,23 @@
 <!-- TASKBAR (minimized windows reopen here) -->
 <div class="taskbar" id="taskbar" aria-label="Minimized windows" data-testid="taskbar"></div>
 
-<div class="hint"><span>Double-click folder items to open · Esc closes · ⊟ minimize · ＋ maximize</span></div>
+<div class="hint"><span>Double-click folder items to open or press Esc to close</span></div>
 
 <script>
 (function () {
   'use strict';
+
+  const panelClock = document.getElementById('panelClock');
+  const clockFormat = new Intl.DateTimeFormat(undefined, {
+    weekday: 'short', hour: '2-digit', minute: '2-digit'
+  });
+  function updatePanelClock() {
+    const now = new Date();
+    panelClock.textContent = clockFormat.format(now);
+    panelClock.dateTime = now.toISOString();
+  }
+  updatePanelClock();
+  setInterval(updatePanelClock, 30000);
 
   /* ─────────── FOLDER DATA (reused content, no invented claims) ─────────── */
   const IMG = {
