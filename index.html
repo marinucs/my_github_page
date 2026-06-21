@@ -130,23 +130,34 @@
       cursor: grab; user-select: none;
     }
     .window-chrome.dragging { cursor: grabbing; }
-    .traffic { display: flex; gap: 0.4rem; }
-    .traffic span { width: 12px; height: 12px; border-radius: 50%; display: block; }
-    .traffic .r { background: #e0726b; }
-    .traffic .y { background: #e6b450; }
-    .traffic .g { background: #8bb87a; }
+    /* traffic-light controls (close / minimize / maximize) */
+    .traffic { display: flex; gap: 0.5rem; }
+    .traffic button {
+      width: 14px; height: 14px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; padding: 0; cursor: pointer;
+      border: 1px solid rgba(58,51,48,0.22); line-height: 1;
+      font-size: 0.6rem; color: transparent; transition: color 0.12s, filter 0.12s;
+    }
+    .traffic .tl-close { background: #e0726b; }
+    .traffic .tl-min   { background: #e6b450; }
+    .traffic .tl-max   { background: #8bb87a; }
+    .traffic button:hover { filter: brightness(0.92); color: rgba(58,51,48,0.75); }
+    .traffic button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; color: rgba(58,51,48,0.75); }
     .window-title {
       flex: 1; text-align: center; font-size: 0.82rem; font-weight: 600;
       color: var(--charcoal); display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
     }
-    .window-close {
-      width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(58,51,48,0.3);
-      background: rgba(255,255,255,0.5); color: var(--charcoal);
-      font-size: 1rem; line-height: 1; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+    /* spacer keeps the title visually centered opposite the traffic lights */
+    .chrome-spacer { width: 52px; flex-shrink: 0; }
+
+    /* maximized window fills the workspace */
+    .window.maximized {
+      top: 1rem !important; left: 1rem !important; right: 1rem;
+      width: auto !important; max-width: none;
+      height: calc(100vh - 6rem); max-height: none;
+      transform: none !important;
     }
-    .window-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .window-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .window-body {
       padding: 1.5rem; overflow-y: auto; color: var(--charcoal-soft);
       line-height: 1.65; font-size: 0.92rem;
@@ -214,6 +225,71 @@
     .proj-info p { font-size: 0.8rem; margin-bottom: 0.4rem; line-height: 1.5; }
     .proj-private { font-size: 0.72rem; color: var(--dusty-pink-deep); font-family: monospace; }
 
+    /* ── FOLDER EXPLORER (Finder-style: icon grid + right preview) ── */
+    .window.is-folder .window-body { padding: 0; }
+    .explorer { display: flex; min-height: 320px; }
+    .explorer-main {
+      flex: 1 1 auto; min-width: 0;
+      padding: 1rem; display: grid; align-content: start; gap: 0.6rem;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      background: rgba(255,255,255,0.35);
+      border-right: 1px solid rgba(58,51,48,0.15);
+    }
+    .fitem {
+      display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+      padding: 0.55rem 0.3rem; border-radius: 8px; cursor: pointer;
+      background: transparent; border: 1px solid transparent; font: inherit;
+      color: var(--charcoal); text-align: center; transition: background 0.12s, border-color 0.12s;
+    }
+    .fitem:hover { background: rgba(168,100,91,0.1); }
+    .fitem:focus-visible { outline: none; background: rgba(168,100,91,0.18); border-color: rgba(168,100,91,0.5); }
+    .fitem[aria-selected="true"] { background: rgba(168,100,91,0.2); border-color: rgba(168,100,91,0.45); }
+    .fitem .fglyph {
+      width: 48px; height: 48px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; line-height: 1; box-shadow: 0 3px 8px var(--shadow); overflow: hidden;
+    }
+    .fitem .fglyph.photo { padding: 3px; background: #fff; }
+    .fitem .fglyph.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; display: block; }
+    .fitem .flabel {
+      font-size: 0.72rem; font-weight: 500; line-height: 1.2;
+      overflow-wrap: anywhere; word-break: break-word;
+    }
+    .explorer-aside {
+      flex: 0 0 248px; width: 248px; padding: 1.1rem;
+      overflow-y: auto; background: rgba(243,233,230,0.6);
+    }
+    .preview-thumb {
+      width: 100%; aspect-ratio: 16/11; object-fit: cover; border-radius: 9px;
+      background: var(--dusty-pink); display: block; margin-bottom: 0.7rem;
+      border: 3px solid #fff; box-shadow: 0 4px 12px var(--shadow);
+    }
+    .preview-thumb.ph { display: flex; align-items: center; justify-content: center; font-size: 2.6rem; }
+    .explorer-aside h3 { font-family: 'DM Serif Display', serif; font-weight: 400; color: var(--charcoal); font-size: 1.3rem; margin-bottom: 0.3rem; }
+    .explorer-aside p { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.55rem; color: var(--charcoal-soft); }
+    .preview-hint { font-size: 0.7rem; color: var(--dusty-pink-deep); font-style: italic; margin-top: 0.4rem; }
+    @media (max-width: 620px) {
+      .explorer { flex-direction: column; }
+      .explorer-main { border-right: none; border-bottom: 1px solid rgba(58,51,48,0.15); }
+      .explorer-aside { flex-basis: auto; width: 100%; }
+    }
+
+    /* ── TASKBAR for minimized windows ── */
+    .taskbar {
+      position: fixed; bottom: 0.9rem; left: 0; right: 0; z-index: 65;
+      display: flex; justify-content: center; gap: 0.4rem; pointer-events: none; flex-wrap: wrap;
+    }
+    .taskbar .task-btn {
+      pointer-events: auto; font: inherit; font-size: 0.74rem; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: rgba(243,233,230,0.85); color: var(--charcoal);
+      border: 1px solid rgba(168,100,91,0.3); border-radius: 9999px;
+      padding: 0.3rem 0.8rem; cursor: pointer; box-shadow: 0 4px 12px var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .taskbar .task-btn:hover { background: #fff; border-color: var(--accent); }
+    .taskbar .task-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
     /* lightbox */
     .lightbox {
       display: none; position: fixed; inset: 0; z-index: 999;
@@ -246,7 +322,7 @@
 </head>
 <body>
 
-<div class="desktop" id="desktop"></div>
+<div class="desktop" id="desktop" tabindex="-1"></div>
 
 <!-- TOP PILL NAV -->
 <div class="topbar">
@@ -261,52 +337,37 @@
 <!-- DESKTOP ICONS -->
 <div class="icon-layer" id="iconLayer">
 
-  <button class="desktop-icon" type="button" data-open="about" style="top:22%;left:8%;" aria-label="Open About window">
-    <span class="glyph glyph-about" aria-hidden="true">🪪</span>
-    <span class="label">About.txt</span>
+  <button class="desktop-icon" type="button" data-open="about" style="top:22%;left:8%;" aria-label="Open About folder" data-testid="icon-about">
+    <span class="glyph glyph-folder" aria-hidden="true">📁</span>
+    <span class="label">About</span>
   </button>
 
-  <button class="desktop-icon" type="button" data-open="contact" style="top:48%;left:7%;" aria-label="Open Contact window">
+  <button class="desktop-icon" type="button" data-open="contact" style="top:48%;left:7%;" aria-label="Open Contact window" data-testid="icon-contact">
     <span class="glyph glyph-contact" aria-hidden="true">✉️</span>
     <span class="label">Contact</span>
   </button>
 
-  <button class="desktop-icon" type="button" data-open="experience" style="top:24%;left:24%;" aria-label="Open Experience window">
-    <span class="glyph glyph-exp" aria-hidden="true">💼</span>
-    <span class="label">Experience</span>
-  </button>
-
-  <button class="desktop-icon" type="button" data-open="education" style="top:50%;left:25%;" aria-label="Open Education window">
-    <span class="glyph glyph-edu" aria-hidden="true">🎓</span>
-    <span class="label">Education</span>
-  </button>
-
-  <button class="desktop-icon" type="button" data-open="achievements" style="top:70%;left:12%;" aria-label="Open Achievements window">
-    <span class="glyph glyph-trophy" aria-hidden="true">🏆</span>
-    <span class="label">Achievements</span>
-  </button>
-
-  <button class="desktop-icon" type="button" data-open="projects" style="top:68%;left:30%;" aria-label="Open Mikasa project in Projects">
+  <button class="desktop-icon" type="button" data-open="projects" data-select="mikasa" style="top:68%;left:30%;" aria-label="Open Mikasa project in Projects folder" data-testid="icon-mikasa">
     <span class="glyph photo" aria-hidden="true"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778695477/mikasa_rzdsuy.png" alt=""></span>
     <span class="label">Mikasa.jpg</span>
   </button>
 
-  <button class="desktop-icon" type="button" data-open="projects" style="top:74%;left:70%;" aria-label="Open Projects folder">
+  <button class="desktop-icon" type="button" data-open="projects" style="top:74%;left:70%;" aria-label="Open Projects folder" data-testid="icon-projects">
     <span class="glyph glyph-folder" aria-hidden="true">📁</span>
     <span class="label">Projects</span>
   </button>
 
-  <button class="desktop-icon" type="button" data-open="projects" style="top:26%;left:78%;" aria-label="Open summarize-me-bot project in Projects">
+  <button class="desktop-icon" type="button" data-open="projects" data-select="summarize" style="top:26%;left:78%;" aria-label="Open summarize-me-bot project in Projects folder" data-testid="icon-summarize">
     <span class="glyph photo" aria-hidden="true"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png" alt=""></span>
     <span class="label">summarize-bot.jpg</span>
   </button>
 
-  <button class="desktop-icon" type="button" data-open="projects" style="top:48%;left:82%;" aria-label="Open Geocaching project in Projects">
+  <button class="desktop-icon" type="button" data-open="projects" data-select="geocaching" style="top:48%;left:82%;" aria-label="Open Geocaching project in Projects folder" data-testid="icon-geocaching">
     <span class="glyph photo" aria-hidden="true"><img src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg" alt=""></span>
     <span class="label">Geocaching.jpg</span>
   </button>
 
-  <a class="desktop-icon" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer" style="top:24%;left:60%;text-decoration:none;" aria-label="Open GitHub profile in a new tab">
+  <a class="desktop-icon" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer" style="top:24%;left:60%;text-decoration:none;" aria-label="Open GitHub profile in a new tab" data-testid="icon-explore">
     <span class="glyph glyph-browser" aria-hidden="true">🌐</span>
     <span class="label">Explore</span>
   </a>
@@ -315,38 +376,49 @@
 
 <!-- ════════ WINDOWS ════════ -->
 
-<!-- ABOUT -->
-<section class="window" id="win-about" role="dialog" aria-modal="false" aria-labelledby="win-about-title" tabindex="-1" style="top:14%;left:50%;transform:translateX(-50%);">
+<!-- ABOUT FOLDER -->
+<section class="window is-folder" id="win-about" role="dialog" aria-modal="false" aria-labelledby="win-about-title" tabindex="-1" data-testid="window-about" style="top:14%;left:50%;transform:translateX(-50%);width:min(640px,94vw);">
   <header class="window-chrome">
-    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
-    <span class="window-title" id="win-about-title">🪪 About.txt</span>
-    <button class="window-close" type="button" aria-label="Close About window">&times;</button>
+    <span class="traffic">
+      <button type="button" class="tl-close" data-ctl="close" aria-label="Close About folder" data-testid="about-ctl-close">&times;</button>
+      <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize About folder" data-testid="about-ctl-min">&minus;</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize About folder" data-testid="about-ctl-max">+</button>
+    </span>
+    <span class="window-title" id="win-about-title">📁 About</span>
+    <span class="chrome-spacer" aria-hidden="true"></span>
   </header>
   <div class="window-body">
-    <h2>Hey, I'm Marina</h2>
-    <span class="meta-row">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      Barcelona
-    </span>
-    <div class="about-grid">
-      <img class="about-portrait" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png" alt="Portrait of Marina" />
-      <div class="about-copy">
-        <p><strong>Solution-driven software engineer</strong> — curious mindset, always eager to learn.</p>
-        <p>I deeply care about product quality — through best coding practices, design patterns, and SOLID principles.</p>
-        <p>I have a strong attention to detail and enjoy working across the stack, from data pipelines to backend APIs.</p>
-        <p>I'm proficient in agile methodologies and PM tools, familiar with the ALM and the SDLC.</p>
-        <p>Native in Spanish and Catalan, fluent in English (C1).</p>
-      </div>
+    <div class="explorer">
+      <div class="explorer-main" role="listbox" aria-label="About folder contents" data-folder="about" data-testid="about-grid"></div>
+      <aside class="explorer-aside" data-preview="about" aria-live="polite" data-testid="about-preview"></aside>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section class="window" id="win-contact" role="dialog" aria-modal="false" aria-labelledby="win-contact-title" tabindex="-1" style="top:20%;left:50%;transform:translateX(-50%);width:min(440px,92vw);">
+<!-- ABOUT CONTENT POPUP (shared, replaced on open) -->
+<section class="window" id="win-about-content" role="dialog" aria-modal="false" aria-labelledby="win-about-content-title" tabindex="-1" data-testid="window-about-content" style="top:20%;left:auto;right:4%;">
   <header class="window-chrome">
-    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="traffic">
+      <button type="button" class="tl-close" data-ctl="close" aria-label="Close window" data-testid="aboutcontent-ctl-close">&times;</button>
+      <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize window" data-testid="aboutcontent-ctl-min">&minus;</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize window" data-testid="aboutcontent-ctl-max">+</button>
+    </span>
+    <span class="window-title" id="win-about-content-title">About</span>
+    <span class="chrome-spacer" aria-hidden="true"></span>
+  </header>
+  <div class="window-body" data-testid="about-content-body"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="window" id="win-contact" role="dialog" aria-modal="false" aria-labelledby="win-contact-title" tabindex="-1" data-testid="window-contact" style="top:20%;left:50%;transform:translateX(-50%);width:min(440px,92vw);">
+  <header class="window-chrome">
+    <span class="traffic">
+      <button type="button" class="tl-close" data-ctl="close" aria-label="Close Contact window" data-testid="contact-ctl-close">&times;</button>
+      <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize Contact window" data-testid="contact-ctl-min">&minus;</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize Contact window" data-testid="contact-ctl-max">+</button>
+    </span>
     <span class="window-title" id="win-contact-title">✉️ Contact</span>
-    <button class="window-close" type="button" aria-label="Close Contact window">&times;</button>
+    <span class="chrome-spacer" aria-hidden="true"></span>
   </header>
   <div class="window-body">
     <h2>Get in touch</h2>
@@ -368,240 +440,37 @@
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section class="window" id="win-projects" role="dialog" aria-modal="false" aria-labelledby="win-projects-title" tabindex="-1" style="top:12%;left:50%;transform:translateX(-50%);">
+<!-- PROJECTS FOLDER -->
+<section class="window is-folder" id="win-projects" role="dialog" aria-modal="false" aria-labelledby="win-projects-title" tabindex="-1" data-testid="window-projects" style="top:12%;left:50%;transform:translateX(-50%);width:min(680px,94vw);">
   <header class="window-chrome">
-    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
+    <span class="traffic">
+      <button type="button" class="tl-close" data-ctl="close" aria-label="Close Projects folder" data-testid="projects-ctl-close">&times;</button>
+      <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize Projects folder" data-testid="projects-ctl-min">&minus;</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize Projects folder" data-testid="projects-ctl-max">+</button>
+    </span>
     <span class="window-title" id="win-projects-title">📁 Projects</span>
-    <button class="window-close" type="button" aria-label="Close Projects window">&times;</button>
+    <span class="chrome-spacer" aria-hidden="true"></span>
   </header>
   <div class="window-body">
-    <h2>Projects</h2>
-    <p class="subtitle">A selection of personal and academic work.</p>
-    <div class="proj-grid">
-
-      <article class="proj-card">
-        <img class="proj-thumb" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778695477/mikasa_rzdsuy.png" alt="Mikasa project preview" data-lightbox />
-        <div class="proj-info">
-          <h3>Mikasa</h3>
-          <p>A personal real-estate aggregator for Barcelona province that consolidates agency sites into one app, normalizes data, and adds filters, map pins, and listing lifecycle tracking.</p>
-          <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Playwright</span><span class="tag">SQLite</span></div>
-          <p class="proj-private">🔒 Private — available on request</p>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <img class="proj-thumb" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png" alt="summarize-me-bot project preview" data-lightbox />
-        <div class="proj-info">
-          <h3>summarize-me-bot</h3>
-          <p>A Telegram bot that stores group messages and generates smart summaries, with date-range limits, chat access control, and anti-spam rate limiting.</p>
-          <div class="tags"><span class="tag">Python</span><span class="tag">Telegram API</span><span class="tag">OpenAI</span><span class="tag">SQLite</span></div>
-          <p class="proj-private">🔒 Private — available on request</p>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <img class="proj-thumb" src="https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg" alt="Geocaching project preview" data-lightbox />
-        <div class="proj-info">
-          <h3>Geocaching</h3>
-          <p>An Android app for exploring geocaches and logging finds, with interactive Google Maps, user accounts, and personalized reports.</p>
-          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Firebase</span><span class="tag">Android</span><span class="tag">Maps API</span></div>
-          <p class="proj-private">🔒 Private — available on request</p>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <div class="proj-thumb ph" aria-hidden="true">🎮</div>
-        <div class="proj-info">
-          <h3>Gameskins</h3>
-          <p>A RESTful API for querying, acquiring, modifying, and deleting video game skins, using JSON loading and SQLite storage with OpenAPI docs.</p>
-          <div class="tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Hibernate</span><span class="tag">SQLite</span></div>
-          <p class="proj-private">🔒 Private — available on request</p>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <div class="proj-thumb ph" aria-hidden="true">🎬</div>
-        <div class="proj-info">
-          <h3>FilmApp</h3>
-          <p>An Android app for tracking movies and TV shows — mark them as seen or pending. Integrates with the TMDB API.</p>
-          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Android</span><span class="tag">TMDB API</span></div>
-          <p class="proj-private">🔒 Private — available on request</p>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <div class="proj-thumb ph" aria-hidden="true">💬</div>
-        <div class="proj-info">
-          <h3>Android Chat</h3>
-          <p>A client-server Android chat using TCP sockets for bidirectional communication, with asynchronous task handling and multithreading.</p>
-          <div class="tags"><span class="tag">Java</span><span class="tag">Android</span><span class="tag">TCP Sockets</span></div>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <div class="proj-thumb ph" aria-hidden="true">✅</div>
-        <div class="proj-info">
-          <h3>RPC To-Do List</h3>
-          <p>A modular Python application with a component-based architecture and RESTful API, using SQLite and RabbitMQ for async messaging and RPC.</p>
-          <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">RabbitMQ</span><span class="tag">SQLite</span></div>
-        </div>
-      </article>
-
-      <article class="proj-card">
-        <div class="proj-thumb ph" aria-hidden="true">⭕</div>
-        <div class="proj-info">
-          <h3>Tic Tac Toe</h3>
-          <p>A multiplayer game with an Android client and Java backend server. Turn-based logic, board management, winner validation, and multithreading.</p>
-          <div class="tags"><span class="tag">Java</span><span class="tag">Android</span><span class="tag">TCP Sockets</span></div>
-        </div>
-      </article>
-
+    <div class="explorer">
+      <div class="explorer-main" role="listbox" aria-label="Projects folder contents" data-folder="projects" data-testid="projects-grid"></div>
+      <aside class="explorer-aside" data-preview="projects" aria-live="polite" data-testid="projects-preview"></aside>
     </div>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section class="window" id="win-experience" role="dialog" aria-modal="false" aria-labelledby="win-experience-title" tabindex="-1" style="top:12%;left:50%;transform:translateX(-50%);">
+<!-- PROJECT CONTENT POPUP (shared, replaced on open) -->
+<section class="window" id="win-projects-content" role="dialog" aria-modal="false" aria-labelledby="win-projects-content-title" tabindex="-1" data-testid="window-projects-content" style="top:18%;left:auto;right:4%;width:min(540px,90vw);">
   <header class="window-chrome">
-    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
-    <span class="window-title" id="win-experience-title">💼 Experience</span>
-    <button class="window-close" type="button" aria-label="Close Experience window">&times;</button>
+    <span class="traffic">
+      <button type="button" class="tl-close" data-ctl="close" aria-label="Close window" data-testid="projcontent-ctl-close">&times;</button>
+      <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize window" data-testid="projcontent-ctl-min">&minus;</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize window" data-testid="projcontent-ctl-max">+</button>
+    </span>
+    <span class="window-title" id="win-projects-content-title">Project</span>
+    <span class="chrome-spacer" aria-hidden="true"></span>
   </header>
-  <div class="window-body">
-    <h2>Experience</h2>
-    <ol class="tl" style="margin-top:1rem;list-style:none;">
-      <li class="tl-item">
-        <div class="tl-date">Jan 2026 – Present</div>
-        <div class="tl-title">Data Engineer · Full-time</div>
-        <div class="tl-sub">Sanofi · Barcelona, Spain · Hybrid</div>
-        <div class="tl-body"><ul>
-          <li>Build and maintain data engineering solutions and pipelines based on requirements and designs</li>
-          <li>Optimize ETL/data pipelines for performance, cost, and operational needs</li>
-          <li>Collaborate with business stakeholders in an Agile team to turn requirements into implementations</li>
-          <li>Develop automated tests to support CI/CD pipelines and create design documentation</li>
-        </ul></div>
-        <div class="tags"><span class="tag">Python</span><span class="tag">ETL</span><span class="tag">Snowflake</span><span class="tag">CI/CD</span><span class="tag">Agile</span><span class="tag">Power BI</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">Jan 2025 – Dec 2025 · 1 yr</div>
-        <div class="tl-title">ITS Architect – ERP Technical Integration Graduate</div>
-        <div class="tl-sub">Sanofi · Barcelona, Spain · Hybrid</div>
-        <div class="tl-body"><ul>
-          <li>Assessed and tested technical solutions, supporting scoping, integration, and QA</li>
-          <li>Scripting and process automation with Python and Power Automate</li>
-          <li>Maintained documentation and prepared reports on project status, risks, and action plans</li>
-        </ul></div>
-        <div class="tags"><span class="tag">Python</span><span class="tag">Confluence</span><span class="tag">Power Automate</span><span class="tag">SAP</span><span class="tag">Agile</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">2024</div>
-        <div class="tl-title">B2B Backend Developer Intern</div>
-        <div class="tl-sub">bookline.ai · Barcelona, Spain · Hybrid</div>
-        <div class="tl-body">
-          <p>Developed conversational AI bots across voice and WhatsApp, contributing to handling over <strong>3 million calls annually</strong> across 350+ client locations.</p>
-          <ul>
-            <li>Wrote, tested, and reviewed code; led code migrations and integration projects including backend APIs</li>
-            <li>Collaborated with technical leads and sales managers to ensure product delivery</li>
-          </ul>
-        </div>
-        <div class="tags"><span class="tag">Python</span><span class="tag">Docker</span><span class="tag">FastAPI</span><span class="tag">Conversational AI</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">2017 – 2024 · 7 yrs</div>
-        <div class="tl-title">Transport Booking Unit Customer Advisor</div>
-        <div class="tl-sub">Booking.com · Greater Barcelona · Remote</div>
-        <div class="tl-body"><ul>
-          <li>Provided customer support via phone, chat, and email; troubleshot App/Website issues</li>
-          <li>Handled car rental reservations and supplier problem solving</li>
-        </ul></div>
-        <div class="tags"><span class="tag">Problem Solving</span><span class="tag">Customer Support</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">2016 – 2017 · 1 yr</div>
-        <div class="tl-title">Google Android Tech Support</div>
-        <div class="tl-sub">SELLBYTEL Group · Barcelona, Spain · On-site</div>
-        <div class="tl-body"><ul>
-          <li>Provided technical advice via phone, email, and chat for Android devices and Google Play Store</li>
-        </ul></div>
-        <div class="tags"><span class="tag">Android</span><span class="tag">Technical Support</span></div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section class="window" id="win-education" role="dialog" aria-modal="false" aria-labelledby="win-education-title" tabindex="-1" style="top:12%;left:50%;transform:translateX(-50%);">
-  <header class="window-chrome">
-    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
-    <span class="window-title" id="win-education-title">🎓 Education</span>
-    <button class="window-close" type="button" aria-label="Close Education window">&times;</button>
-  </header>
-  <div class="window-body">
-    <h2>Education</h2>
-    <ol class="tl" style="margin-top:1rem;list-style:none;">
-      <li class="tl-item">
-        <div class="tl-date">2025 · Grade 10/10</div>
-        <div class="tl-title">SAP ABAP Programming Certificate</div>
-        <div class="tl-sub">ESNECA Business School</div>
-        <div class="tl-body"><p>300-hour specialized training in ABAP programming — installation, database management, and custom program development to optimize SAP systems.</p></div>
-        <div class="tags"><span class="tag">SAP ABAP</span><span class="tag">GxP</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">2024</div>
-        <div class="tl-title">Higher Technician — Multi-platform Application Development</div>
-        <div class="tl-sub">Institut TIC de Barcelona</div>
-        <div class="tl-body"><p>Developing, installing, documenting, and maintaining multi-platform applications. 🤖 Mobile development project recognition for Geocaching app.</p></div>
-        <div class="tags"><span class="tag">Java</span><span class="tag">Kotlin</span><span class="tag">Spring Boot</span><span class="tag">Docker</span><span class="tag">Firebase</span><span class="tag">Android</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">2023 · Grade 9.7/10</div>
-        <div class="tl-title">College Extension Certificate in Artificial Intelligence</div>
-        <div class="tl-sub">Universidad de Málaga · SAMSUNG Innovation Campus</div>
-        <div class="tl-body"><p>358 hours covering Python, Statistics, Machine Learning I–III, and Deep Learning. 🧠 Final project: Deep Learning Approach for Screening Autism Spectrum Disorder in Children with Facial Images.</p></div>
-        <div class="tags"><span class="tag">Python</span><span class="tag">TensorFlow</span><span class="tag">Keras</span><span class="tag">OpenCV</span><span class="tag">NumPy</span><span class="tag">Pandas</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">2019</div>
-        <div class="tl-title">Back-End Development Bootcamp</div>
-        <div class="tl-sub">IT Academy de Barcelona Activa</div>
-        <div class="tl-body"><p>300-hour mentoring model covering Java, Spring, MySQL, and version control through real-project simulation teams.</p></div>
-        <div class="tags"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Hibernate</span><span class="tag">MySQL</span><span class="tag">React</span></div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ACHIEVEMENTS -->
-<section class="window" id="win-achievements" role="dialog" aria-modal="false" aria-labelledby="win-achievements-title" tabindex="-1" style="top:14%;left:50%;transform:translateX(-50%);">
-  <header class="window-chrome">
-    <span class="traffic" aria-hidden="true"><span class="r"></span><span class="y"></span><span class="g"></span></span>
-    <span class="window-title" id="win-achievements-title">🏆 Achievements</span>
-    <button class="window-close" type="button" aria-label="Close Achievements window">&times;</button>
-  </header>
-  <div class="window-body">
-    <h2>Achievements</h2>
-    <ol class="tl" style="margin-top:1rem;list-style:none;">
-      <li class="tl-item">
-        <div class="tl-date">Apr 2025 · Schneider Electric</div>
-        <div class="tl-title">🥇 1st place — IT Challenge · Schneider Electric Hackathon 2025</div>
-        <div class="tl-body"><p>Modernized an ERP system using Python. Built a data pipeline, developed a Flask API for legacy integration, solved algorithmic challenges, and crafted SQL queries for insights.</p></div>
-        <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">SQL</span><span class="tag">ETL</span><span class="tag">ERP</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">Dec 2024 · CaixaBank Tech</div>
-        <div class="tl-title">🏅 4th place — Python Backend · Coding Challenges Round 1</div>
-        <div class="tl-body"><p>Developed a Python backend API for a financial app, focusing on account management, transaction security, and personalized financial tools.</p></div>
-        <div class="tags"><span class="tag">Python</span><span class="tag">Backend API</span><span class="tag">Fintech</span></div>
-      </li>
-      <li class="tl-item">
-        <div class="tl-date">Jun 2023 · Institut TIC de Barcelona</div>
-        <div class="tl-title">📱 Mobile Programming Recognition — Android App «Geocaching»</div>
-        <div class="tl-body"><p>Mobile Programming Certification for the Android app 'Geocaching', developed in Kotlin, issued by ITIC Barcelona.</p></div>
-        <div class="tags"><span class="tag">Kotlin</span><span class="tag">Android</span><span class="tag">Firebase</span><span class="tag">Maps API</span></div>
-      </li>
-    </ol>
-  </div>
+  <div class="window-body" data-testid="projects-content-body"></div>
 </section>
 
 <!-- LIGHTBOX -->
@@ -610,38 +479,184 @@
   <img id="lightboxImg" src="" alt="Project preview enlarged" />
 </div>
 
-<div class="hint"><span>Click an icon or use the nav · Esc closes windows</span></div>
+<!-- TASKBAR (minimized windows reopen here) -->
+<div class="taskbar" id="taskbar" aria-label="Minimized windows" data-testid="taskbar"></div>
+
+<div class="hint"><span>Double-click folder items to open · Esc closes · ⊟ minimize · ＋ maximize</span></div>
 
 <script>
 (function () {
+  'use strict';
+
+  /* ─────────── FOLDER DATA (reused content, no invented claims) ─────────── */
+  const IMG = {
+    portrait: 'https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png',
+    mikasa: 'https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778695477/mikasa_rzdsuy.png',
+    summarize: 'https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778360563/summarize-me-bot_guok9w.png',
+    geocaching: 'https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778373317/geocaching_app_qhuyq3.jpg'
+  };
+
+  const tags = (arr) => '<div class="tags">' + arr.map((t) => '<span class="tag">' + t + '</span>').join('') + '</div>';
+
+  const ABOUT = [
+    {
+      id: 'about_me', label: 'about_me', glyph: '🪪', glyphClass: 'glyph-about',
+      title: 'About me',
+      preview: '<p><strong>Solution-driven software engineer</strong> based in Barcelona — curious mindset, always eager to learn.</p>',
+      content:
+        '<h2>Hey, I\'m Marina</h2>' +
+        '<span class="meta-row"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg> Barcelona</span>' +
+        '<div class="about-grid">' +
+          '<img class="about-portrait" src="' + IMG.portrait + '" alt="Portrait of Marina" />' +
+          '<div class="about-copy">' +
+            '<p><strong>Solution-driven software engineer</strong> — curious mindset, always eager to learn.</p>' +
+            '<p>I deeply care about product quality — through best coding practices, design patterns, and SOLID principles.</p>' +
+            '<p>I have a strong attention to detail and enjoy working across the stack, from data pipelines to backend APIs.</p>' +
+            '<p>I\'m proficient in agile methodologies and PM tools, familiar with the ALM and the SDLC.</p>' +
+            '<p>Native in Spanish and Catalan, fluent in English (C1).</p>' +
+          '</div>' +
+        '</div>'
+    },
+    {
+      id: 'work_experience', label: 'work_experience', glyph: '💼', glyphClass: 'glyph-exp',
+      title: 'Work experience',
+      preview: '<p>Data Engineer at <strong>Sanofi</strong>, with prior roles at bookline.ai, Booking.com and SELLBYTEL.</p>',
+      content:
+        '<h2>Experience</h2>' +
+        '<ol class="tl" style="margin-top:1rem;list-style:none;">' +
+          '<li class="tl-item"><div class="tl-date">Jan 2026 – Present</div><div class="tl-title">Data Engineer · Full-time</div><div class="tl-sub">Sanofi · Barcelona, Spain · Hybrid</div><div class="tl-body"><ul><li>Build and maintain data engineering solutions and pipelines based on requirements and designs</li><li>Optimize ETL/data pipelines for performance, cost, and operational needs</li><li>Collaborate with business stakeholders in an Agile team to turn requirements into implementations</li><li>Develop automated tests to support CI/CD pipelines and create design documentation</li></ul></div>' + tags(['Python','ETL','Snowflake','CI/CD','Agile','Power BI']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">Jan 2025 – Dec 2025 · 1 yr</div><div class="tl-title">ITS Architect – ERP Technical Integration Graduate</div><div class="tl-sub">Sanofi · Barcelona, Spain · Hybrid</div><div class="tl-body"><ul><li>Assessed and tested technical solutions, supporting scoping, integration, and QA</li><li>Scripting and process automation with Python and Power Automate</li><li>Maintained documentation and prepared reports on project status, risks, and action plans</li></ul></div>' + tags(['Python','Confluence','Power Automate','SAP','Agile']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">2024</div><div class="tl-title">B2B Backend Developer Intern</div><div class="tl-sub">bookline.ai · Barcelona, Spain · Hybrid</div><div class="tl-body"><p>Developed conversational AI bots across voice and WhatsApp, contributing to handling over <strong>3 million calls annually</strong> across 350+ client locations.</p><ul><li>Wrote, tested, and reviewed code; led code migrations and integration projects including backend APIs</li><li>Collaborated with technical leads and sales managers to ensure product delivery</li></ul></div>' + tags(['Python','Docker','FastAPI','Conversational AI']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">2017 – 2024 · 7 yrs</div><div class="tl-title">Transport Booking Unit Customer Advisor</div><div class="tl-sub">Booking.com · Greater Barcelona · Remote</div><div class="tl-body"><ul><li>Provided customer support via phone, chat, and email; troubleshot App/Website issues</li><li>Handled car rental reservations and supplier problem solving</li></ul></div>' + tags(['Problem Solving','Customer Support']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">2016 – 2017 · 1 yr</div><div class="tl-title">Google Android Tech Support</div><div class="tl-sub">SELLBYTEL Group · Barcelona, Spain · On-site</div><div class="tl-body"><ul><li>Provided technical advice via phone, email, and chat for Android devices and Google Play Store</li></ul></div>' + tags(['Android','Technical Support']) + '</li>' +
+        '</ol>'
+    },
+    {
+      id: 'education', label: 'education', glyph: '🎓', glyphClass: 'glyph-edu',
+      title: 'Education',
+      preview: '<p>SAP ABAP certificate, Higher Technician in Multi-platform Development, AI certificate, and a back-end bootcamp.</p>',
+      content:
+        '<h2>Education</h2>' +
+        '<ol class="tl" style="margin-top:1rem;list-style:none;">' +
+          '<li class="tl-item"><div class="tl-date">2025 · Grade 10/10</div><div class="tl-title">SAP ABAP Programming Certificate</div><div class="tl-sub">ESNECA Business School</div><div class="tl-body"><p>300-hour specialized training in ABAP programming — installation, database management, and custom program development to optimize SAP systems.</p></div>' + tags(['SAP ABAP','GxP']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">2024</div><div class="tl-title">Higher Technician — Multi-platform Application Development</div><div class="tl-sub">Institut TIC de Barcelona</div><div class="tl-body"><p>Developing, installing, documenting, and maintaining multi-platform applications. 🤖 Mobile development project recognition for Geocaching app.</p></div>' + tags(['Java','Kotlin','Spring Boot','Docker','Firebase','Android']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">2023 · Grade 9.7/10</div><div class="tl-title">College Extension Certificate in Artificial Intelligence</div><div class="tl-sub">Universidad de Málaga · SAMSUNG Innovation Campus</div><div class="tl-body"><p>358 hours covering Python, Statistics, Machine Learning I–III, and Deep Learning. 🧠 Final project: Deep Learning Approach for Screening Autism Spectrum Disorder in Children with Facial Images.</p></div>' + tags(['Python','TensorFlow','Keras','OpenCV','NumPy','Pandas']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">2019</div><div class="tl-title">Back-End Development Bootcamp</div><div class="tl-sub">IT Academy de Barcelona Activa</div><div class="tl-body"><p>300-hour mentoring model covering Java, Spring, MySQL, and version control through real-project simulation teams.</p></div>' + tags(['Java','Spring Boot','Hibernate','MySQL','React']) + '</li>' +
+        '</ol>'
+    },
+    {
+      id: 'achievements', label: 'achievements', glyph: '🏆', glyphClass: 'glyph-trophy',
+      title: 'Achievements',
+      preview: '<p>1st place at the Schneider Electric Hackathon 2025, a CaixaBank Tech podium, and a mobile-programming recognition.</p>',
+      content:
+        '<h2>Achievements</h2>' +
+        '<ol class="tl" style="margin-top:1rem;list-style:none;">' +
+          '<li class="tl-item"><div class="tl-date">Apr 2025 · Schneider Electric</div><div class="tl-title">🥇 1st place — IT Challenge · Schneider Electric Hackathon 2025</div><div class="tl-body"><p>Modernized an ERP system using Python. Built a data pipeline, developed a Flask API for legacy integration, solved algorithmic challenges, and crafted SQL queries for insights.</p></div>' + tags(['Python','Flask','SQL','ETL','ERP']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">Dec 2024 · CaixaBank Tech</div><div class="tl-title">🏅 4th place — Python Backend · Coding Challenges Round 1</div><div class="tl-body"><p>Developed a Python backend API for a financial app, focusing on account management, transaction security, and personalized financial tools.</p></div>' + tags(['Python','Backend API','Fintech']) + '</li>' +
+          '<li class="tl-item"><div class="tl-date">Jun 2023 · Institut TIC de Barcelona</div><div class="tl-title">📱 Mobile Programming Recognition — Android App «Geocaching»</div><div class="tl-body"><p>Mobile Programming Certification for the Android app \'Geocaching\', developed in Kotlin, issued by ITIC Barcelona.</p></div>' + tags(['Kotlin','Android','Firebase','Maps API']) + '</li>' +
+        '</ol>'
+    }
+  ];
+
+  const PROJECTS = [
+    { id: 'mikasa', label: 'Mikasa', img: IMG.mikasa, title: 'Mikasa',
+      desc: 'A personal real-estate aggregator for Barcelona province that consolidates agency sites into one app, normalizes data, and adds filters, map pins, and listing lifecycle tracking.',
+      stack: ['Python','Flask','Playwright','SQLite'], private: true },
+    { id: 'summarize', label: 'summarize-me-bot', img: IMG.summarize, title: 'summarize-me-bot',
+      desc: 'A Telegram bot that stores group messages and generates smart summaries, with date-range limits, chat access control, and anti-spam rate limiting.',
+      stack: ['Python','Telegram API','OpenAI','SQLite'], private: true },
+    { id: 'geocaching', label: 'Geocaching', img: IMG.geocaching, title: 'Geocaching',
+      desc: 'An Android app for exploring geocaches and logging finds, with interactive Google Maps, user accounts, and personalized reports.',
+      stack: ['Kotlin','Firebase','Android','Maps API'], private: true },
+    { id: 'gameskins', label: 'Gameskins', emoji: '🎮', title: 'Gameskins',
+      desc: 'A RESTful API for querying, acquiring, modifying, and deleting video game skins, using JSON loading and SQLite storage with OpenAPI docs.',
+      stack: ['Java','Spring Boot','Hibernate','SQLite'], private: true },
+    { id: 'filmapp', label: 'FilmApp', emoji: '🎬', title: 'FilmApp',
+      desc: 'An Android app for tracking movies and TV shows — mark them as seen or pending. Integrates with the TMDB API.',
+      stack: ['Kotlin','Android','TMDB API'], private: true },
+    { id: 'androidchat', label: 'Android Chat', emoji: '💬', title: 'Android Chat',
+      desc: 'A client-server Android chat using TCP sockets for bidirectional communication, with asynchronous task handling and multithreading.',
+      stack: ['Java','Android','TCP Sockets'], private: false },
+    { id: 'rpctodo', label: 'RPC To-Do List', emoji: '✅', title: 'RPC To-Do List',
+      desc: 'A modular Python application with a component-based architecture and RESTful API, using SQLite and RabbitMQ for async messaging and RPC.',
+      stack: ['Python','Flask','RabbitMQ','SQLite'], private: false },
+    { id: 'tictactoe', label: 'Tic Tac Toe', emoji: '⭕', title: 'Tic Tac Toe',
+      desc: 'A multiplayer game with an Android client and Java backend server. Turn-based logic, board management, winner validation, and multithreading.',
+      stack: ['Java','Android','TCP Sockets'], private: false }
+  ];
+
+  /* folder config: where to render, default selection, content popup target */
+  const FOLDERS = {
+    about:    { items: ABOUT,    defaultId: 'about_me', contentWin: 'win-about-content',    titleEl: 'win-about-content-title' },
+    projects: { items: PROJECTS, defaultId: 'mikasa',   contentWin: 'win-projects-content', titleEl: 'win-projects-content-title' }
+  };
+
+  /* ─────────── WINDOW MANAGER ─────────── */
   let zCounter = 100;
-  const openWindows = [];
+  const openWindows = []; // visible (non-minimized) windows, front-most last
+  const minimized = [];   // minimized windows
 
-  function getWindow(name) { return document.getElementById('win-' + name); }
+  const $ = (sel, root) => (root || document).querySelector(sel);
+  const taskbar = document.getElementById('taskbar');
+  const lightbox = document.getElementById('lightbox');
 
-  function focusWindow(win) {
-    zCounter += 1;
-    win.style.zIndex = zCounter;
+  function focusWindow(win) { zCounter += 1; win.style.zIndex = zCounter; }
+
+  function windowTitle(win) {
+    const t = $('.window-title', win);
+    return t ? t.textContent.trim() : 'Window';
   }
 
-  function openWindow(name) {
-    const win = getWindow(name);
+  function openWindow(win) {
     if (!win) return;
+    if (win.dataset.minimized === 'true') { restoreWindow(win); return; }
     if (!win.classList.contains('open')) {
       win.classList.add('open');
       openWindows.push(win);
     }
     focusWindow(win);
     win.focus();
-    setActiveNav(name);
+    syncNav();
   }
 
   function closeWindow(win) {
-    win.classList.remove('open');
-    const i = openWindows.indexOf(win);
-    if (i > -1) openWindows.splice(i, 1);
-    if (openWindows.length === 0) setActiveNav('reset');
+    if (!win) return;
+    win.classList.remove('open', 'maximized');
+    win.dataset.minimized = 'false';
+    delById(openWindows, win);
+    delById(minimized, win);
+    renderTaskbar();
+    syncNav();
+    focusDesktopOrTop();
   }
+
+  function minimizeWindow(win) {
+    if (!win || !win.classList.contains('open')) return;
+    win.classList.remove('open');
+    win.dataset.minimized = 'true';
+    delById(openWindows, win);
+    if (minimized.indexOf(win) === -1) minimized.push(win);
+    renderTaskbar();
+    syncNav();
+    focusDesktopOrTop();
+  }
+
+  function restoreWindow(win) {
+    win.dataset.minimized = 'false';
+    delById(minimized, win);
+    if (!win.classList.contains('open')) { win.classList.add('open'); openWindows.push(win); }
+    focusWindow(win);
+    win.focus();
+    renderTaskbar();
+    syncNav();
+  }
+
+  function toggleMaximize(win) {
+    win.classList.toggle('maximized');
+    focusWindow(win);
+  }
+
+  function delById(arr, win) { const i = arr.indexOf(win); if (i > -1) arr.splice(i, 1); }
 
   function closeTopWindow() {
     if (openWindows.length) closeWindow(openWindows[openWindows.length - 1]);
@@ -649,55 +664,181 @@
 
   function closeAll() {
     openWindows.slice().forEach(closeWindow);
-    setActiveNav('reset');
+    minimized.slice().forEach(closeWindow);
+    syncNav();
   }
 
-  function setActiveNav(name) {
-    document.querySelectorAll('.pill-nav button').forEach(function (b) {
-      b.classList.toggle('active', b.dataset.open === name || (name === 'reset' && b.dataset.open === 'reset'));
+  function focusDesktopOrTop() {
+    if (openWindows.length) { const top = openWindows[openWindows.length - 1]; focusWindow(top); top.focus(); }
+    else { document.getElementById('desktop').focus && document.getElementById('desktop').focus(); }
+  }
+
+  function renderTaskbar() {
+    taskbar.innerHTML = '';
+    minimized.forEach(function (win) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'task-btn';
+      btn.textContent = windowTitle(win);
+      btn.setAttribute('aria-label', 'Restore ' + windowTitle(win));
+      btn.setAttribute('data-testid', 'task-' + win.id);
+      btn.addEventListener('click', function () { restoreWindow(win); });
+      taskbar.appendChild(btn);
     });
   }
 
-  // Open triggers (icons + nav). Anchors (Explore) keep default behavior.
+  function syncNav() {
+    let activeName = 'reset';
+    if (openWindows.length) {
+      const top = openWindows[openWindows.length - 1];
+      if (top.id === 'win-about' || top.id === 'win-about-content') activeName = 'about';
+      else if (top.id === 'win-contact') activeName = 'contact';
+      else if (top.id === 'win-projects' || top.id === 'win-projects-content') activeName = 'projects';
+    }
+    document.querySelectorAll('.pill-nav button').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.open === activeName);
+    });
+  }
+
+  /* window control buttons (close / minimize / maximize) */
+  document.querySelectorAll('.traffic [data-ctl]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      const win = btn.closest('.window');
+      if (btn.dataset.ctl === 'close') closeWindow(win);
+      else if (btn.dataset.ctl === 'min') minimizeWindow(win);
+      else if (btn.dataset.ctl === 'max') toggleMaximize(win);
+    });
+  });
+
+  /* desktop icons + nav */
   document.querySelectorAll('[data-open]').forEach(function (el) {
     if (el.tagName === 'A') return;
     const target = el.dataset.open;
     el.addEventListener('click', function () {
-      if (target === 'reset') { closeAll(); } else { openWindow(target); }
+      if (target === 'reset') { closeAll(); return; }
+      const win = document.getElementById('win-' + target);
+      openWindow(win);
+      if (FOLDERS[target]) {
+        const id = el.dataset.select || selected[target] || FOLDERS[target].defaultId;
+        selectFolderItem(target, id);
+      }
     });
   });
 
-  // Close buttons
-  document.querySelectorAll('.window-close').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      closeWindow(btn.closest('.window'));
-    });
-  });
-
-  // Bring window to front on interaction
   document.querySelectorAll('.window').forEach(function (win) {
-    win.addEventListener('mousedown', function () { focusWindow(win); });
+    win.addEventListener('mousedown', function () { if (win.classList.contains('open')) focusWindow(win); });
   });
 
-  // ESC closes the top-most window
+  /* ─────────── FOLDER EXPLORER RENDERING ─────────── */
+  const selected = {};       // folderKey -> selected item id
+  const contentItem = {};    // folderKey -> id currently shown in its content popup
+
+  function renderFolderGrid(key) {
+    const cfg = FOLDERS[key];
+    const grid = document.querySelector('.explorer-main[data-folder="' + key + '"]');
+    grid.innerHTML = '';
+    cfg.items.forEach(function (item) {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'fitem';
+      el.setAttribute('role', 'option');
+      el.dataset.id = item.id;
+      el.setAttribute('data-testid', key + '-item-' + item.id);
+      const glyph = item.img
+        ? '<span class="fglyph photo"><img src="' + item.img + '" alt=""></span>'
+        : '<span class="fglyph ' + (item.glyphClass || 'glyph-folder') + '">' + (item.glyph || item.emoji || '📄') + '</span>';
+      el.innerHTML = glyph + '<span class="flabel">' + item.label + '</span>';
+      el.addEventListener('click', function () { selectFolderItem(key, item.id); });
+      el.addEventListener('dblclick', function () { openFolderContent(key, item.id); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFolderContent(key, item.id); }
+      });
+      grid.appendChild(el);
+    });
+  }
+
+  function findItem(key, id) { return FOLDERS[key].items.find(function (i) { return i.id === id; }); }
+
+  function selectFolderItem(key, id) {
+    selected[key] = id;
+    const grid = document.querySelector('.explorer-main[data-folder="' + key + '"]');
+    grid.querySelectorAll('.fitem').forEach(function (el) {
+      el.setAttribute('aria-selected', el.dataset.id === id ? 'true' : 'false');
+    });
+    renderPreview(key, id);
+  }
+
+  function renderPreview(key, id) {
+    const item = findItem(key, id);
+    const aside = document.querySelector('.explorer-aside[data-preview="' + key + '"]');
+    let media;
+    if (item.img) media = '<img class="preview-thumb" src="' + item.img + '" alt="' + item.title + ' preview" data-lightbox-src="' + item.img + '" />';
+    else media = '<div class="preview-thumb ph" aria-hidden="true">' + (item.glyph || item.emoji || '📄') + '</div>';
+    let body = '<h3>' + item.title + '</h3>';
+    body += item.preview ? item.preview : '<p>' + item.desc + '</p>';
+    if (item.stack) body += tags(item.stack);
+    if (item.private) body += '<p class="proj-private">🔒 Private — available on request</p>';
+    body += '<p class="preview-hint">Double-click to open in a window.</p>';
+    aside.innerHTML = media + body;
+    const thumb = aside.querySelector('[data-lightbox-src]');
+    if (thumb) { thumb.style.cursor = 'zoom-in'; thumb.addEventListener('click', function () { openLightbox(thumb.getAttribute('data-lightbox-src')); }); }
+  }
+
+  function openFolderContent(key, id) {
+    const cfg = FOLDERS[key];
+    const item = findItem(key, id);
+    const win = document.getElementById(cfg.contentWin);
+    const titleEl = document.getElementById(cfg.titleEl);
+    const body = $('.window-body', win);
+
+    let html;
+    if (key === 'projects') {
+      let media = item.img
+        ? '<img class="proj-thumb" style="border-radius:10px;margin-bottom:1rem;" src="' + item.img + '" alt="' + item.title + ' preview" data-lightbox-src="' + item.img + '" />'
+        : '<div class="proj-thumb ph" style="border-radius:10px;margin-bottom:1rem;aspect-ratio:16/9;" aria-hidden="true">' + item.emoji + '</div>';
+      html = '<h2>' + item.title + '</h2>' + media + '<p>' + item.desc + '</p>' + tags(item.stack) +
+        (item.private ? '<p class="proj-private">🔒 Private — available on request</p>' : '');
+    } else {
+      html = item.content;
+    }
+    body.innerHTML = html;
+    titleEl.textContent = (key === 'projects' ? '📁 ' : '🪪 ') + item.title;
+    contentItem[key] = id;
+
+    // wire lightbox on any thumb just injected
+    body.querySelectorAll('[data-lightbox-src]').forEach(function (img) {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', function () { openLightbox(img.getAttribute('data-lightbox-src')); });
+    });
+
+    openWindow(win); // single shared popup — reused, never duplicated
+  }
+
+  /* init folders */
+  Object.keys(FOLDERS).forEach(function (key) {
+    renderFolderGrid(key);
+    selectFolderItem(key, FOLDERS[key].defaultId);
+  });
+
+  /* ─────────── KEYBOARD ─────────── */
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      if (document.getElementById('lightbox').classList.contains('open')) { closeLightbox(); return; }
+      if (lightbox.classList.contains('open')) { closeLightbox(); return; }
       closeTopWindow();
     }
   });
 
-  // ── Dragging by chrome ──
+  /* ─────────── DRAGGING ─────────── */
   document.querySelectorAll('.window-chrome').forEach(function (chrome) {
     let startX, startY, baseLeft, baseTop;
     const win = chrome.closest('.window');
-
     function onDown(e) {
-      if (e.target.closest('.window-close')) return;
+      if (e.target.closest('[data-ctl]')) return;
+      if (win.classList.contains('maximized')) return;
       focusWindow(win);
       const evt = e.touches ? e.touches[0] : e;
       const rect = win.getBoundingClientRect();
-      // Switch from translateX centering to absolute left/top once dragged.
       win.style.left = rect.left + 'px';
       win.style.top = rect.top + 'px';
       win.style.transform = 'none';
@@ -730,14 +871,10 @@
     chrome.addEventListener('touchstart', onDown, { passive: true });
   });
 
-  // ── Lightbox ──
-  const lightbox = document.getElementById('lightbox');
+  /* ─────────── LIGHTBOX ─────────── */
   const lightboxImg = document.getElementById('lightboxImg');
   function openLightbox(src) { lightboxImg.src = src; lightbox.classList.add('open'); }
   function closeLightbox() { lightbox.classList.remove('open'); lightboxImg.src = ''; }
-  document.querySelectorAll('[data-lightbox]').forEach(function (img) {
-    img.addEventListener('click', function () { openLightbox(img.src); });
-  });
   lightbox.addEventListener('click', function (e) {
     if (e.target === lightbox || e.target.closest('.lightbox-close')) closeLightbox();
   });
