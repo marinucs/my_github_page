@@ -6,28 +6,28 @@
   <title>Marina — Software Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --dusty-pink: #c8a9a0;
-      --dusty-pink-deep: #b08f86;
-      --light-pink: #ead9d4;
-      --charcoal: #3a3330;
-      --charcoal-soft: #5b504b;
-      --window-bg: #f3e9e6;
-      --window-chrome: #d8c2bb;
-      --accent: #a8645b;
-      --accent-soft: #c98c83;
-      --shadow: rgba(58,51,48,0.35);
+      --dusty-pink: #d6b7cc;
+      --dusty-pink-deep: #772953;
+      --light-pink: #f7f3f6;
+      --charcoal: #2d2d2d;
+      --charcoal-soft: #5e5c64;
+      --window-bg: #f7f7f7;
+      --window-chrome: #3d3846;
+      --accent: #e95420;
+      --accent-soft: #f08763;
+      --shadow: rgba(26, 8, 20, 0.42);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Ubuntu', sans-serif;
       color: var(--charcoal);
       overflow: hidden;
-      background: var(--dusty-pink);
+      background: #2c001e;
     }
 
     /* ── DESKTOP BACKGROUND ── */
@@ -35,44 +35,43 @@
       position: fixed; inset: 0;
       overflow: hidden;
       background:
-        linear-gradient(180deg, rgba(200,169,160,0.55), rgba(176,143,134,0.75)),
-        url('https://res.cloudinary.com/dp8nskt0z/image/upload/q_auto/f_auto/v1778367378/about_pic_zhsunp.png');
+        radial-gradient(circle at 78% 36%, transparent 0 11%, rgba(246,132,82,0.96) 11.4% 16%, transparent 16.4%),
+        radial-gradient(circle at 78% 36%, transparent 0 23%, rgba(119,41,83,0.9) 23.5% 34%, transparent 34.5%),
+        radial-gradient(ellipse at 15% 90%, rgba(233,84,32,0.72), transparent 42%),
+        linear-gradient(135deg, #2c001e 0%, #5e2750 48%, #a33b46 72%, #e95420 130%);
       background-size: cover;
-      background-position: center 20%;
     }
     .desktop::after {
       content: ""; position: absolute; inset: 0;
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      background: rgba(200,169,160,0.25);
+      background: linear-gradient(120deg, rgba(255,255,255,0.03), rgba(44,0,30,0.18));
       pointer-events: none;
     }
 
-    /* ── TOP PILL NAV ── */
+    /* ── UBUNTU TOP PANEL ── */
     .topbar {
-      position: fixed; top: 0.9rem; left: 0; right: 0; z-index: 60;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 60;
       display: flex; justify-content: center; pointer-events: none;
     }
     .pill-nav {
       pointer-events: auto;
-      display: flex; gap: 0.35rem; align-items: center;
-      background: rgba(243,233,230,0.7);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(168,100,91,0.25);
-      border-radius: 9999px;
-      padding: 0.3rem 0.45rem;
-      box-shadow: 0 6px 18px var(--shadow);
+      width: 100%; min-height: 36px;
+      display: flex; gap: 0.2rem; align-items: center; justify-content: center;
+      background: rgba(30,27,32,0.94);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: none; border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0; padding: 0.2rem 0.45rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.28);
     }
     .pill-nav button {
       font: inherit; font-size: 0.78rem; font-weight: 500;
-      color: var(--charcoal-soft);
+      color: #f2f2f2;
       background: transparent; border: 1px solid transparent;
-      padding: 0.3rem 0.8rem; border-radius: 9999px; cursor: pointer;
-      transition: all 0.15s; text-decoration: underline; text-underline-offset: 2px;
-      text-decoration-color: rgba(91,80,75,0.4);
+      padding: 0.28rem 0.85rem; border-radius: 6px; cursor: pointer;
+      transition: all 0.15s; text-decoration: none;
     }
-    .pill-nav button:hover { background: rgba(168,100,91,0.12); color: var(--accent); }
+    .pill-nav button:hover { background: rgba(255,255,255,0.12); color: #fff; }
     .pill-nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .pill-nav button.active { background: var(--accent); color: #fff; text-decoration-color: transparent; }
+    .pill-nav button.active { background: var(--accent); color: #fff; }
 
     /* ── DESKTOP ICONS ── */
     .icon-layer { position: absolute; inset: 0; z-index: 10; }
@@ -80,17 +79,17 @@
       position: absolute;
       display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
       width: 104px; padding: 0.4rem 0.25rem;
-      background: transparent; border: 1px solid transparent; border-radius: 0.5rem;
+      background: transparent; border: 1px solid transparent; border-radius: 7px;
       cursor: pointer; font: inherit; color: var(--charcoal);
       transition: background 0.12s, border-color 0.12s;
     }
-    .desktop-icon:hover { background: rgba(243,233,230,0.35); }
-    .desktop-icon:focus-visible { outline: none; background: rgba(168,100,91,0.2); border-color: rgba(168,100,91,0.5); }
+    .desktop-icon:hover { background: rgba(255,255,255,0.13); }
+    .desktop-icon:focus-visible { outline: none; background: rgba(233,84,32,0.22); border-color: rgba(255,255,255,0.45); }
     .desktop-icon .glyph {
       width: 54px; height: 54px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.9rem; line-height: 1;
-      box-shadow: 0 4px 10px var(--shadow);
+      box-shadow: 0 5px 12px rgba(24,7,18,0.42);
       overflow: hidden;
     }
     .desktop-icon .glyph.photo { padding: 3px; background: #fff; }
@@ -98,17 +97,34 @@
     .desktop-icon .label {
       font-size: 0.72rem; font-weight: 500; text-align: center; line-height: 1.25;
       color: #fff; text-shadow: 0 1px 3px rgba(58,51,48,0.8);
-      background: rgba(58,51,48,0.18); padding: 0.1rem 0.4rem; border-radius: 4px;
+      background: rgba(30,15,25,0.34); padding: 0.12rem 0.42rem; border-radius: 4px;
       max-width: 100%; overflow-wrap: break-word; word-break: break-word;
       display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
     }
-    .glyph-about   { background: linear-gradient(135deg,#e9c6bf,#c98c83); }
-    .glyph-contact { background: linear-gradient(135deg,#cf9d95,#a8645b); }
-    .glyph-folder  { background: linear-gradient(160deg,#7fb3e0,#4a82c4); color:#fff; }
-    .glyph-exp     { background: linear-gradient(135deg,#d8c2bb,#b08f86); }
-    .glyph-edu     { background: linear-gradient(135deg,#e6d2b8,#c9a76f); }
-    .glyph-trophy  { background: linear-gradient(135deg,#f0d9a0,#cba14a); }
-    .glyph-browser { background: linear-gradient(135deg,#cfe5f5,#7fb3e0); }
+    .icon-layer > .desktop-icon { left: auto !important; right: 1.25rem; }
+    .icon-layer > .desktop-icon:nth-child(1) { top: 10% !important; }
+    .icon-layer > .desktop-icon:nth-child(2) { top: 27% !important; }
+    .icon-layer > .desktop-icon:nth-child(3) { top: 44% !important; }
+    .icon-layer > .desktop-icon:nth-child(4) { top: 61% !important; }
+    .glyph-about   { background: linear-gradient(145deg,#9b5780,#5e2750); }
+    .glyph-contact { background: linear-gradient(145deg,#f08763,#e95420); }
+    .glyph-exp     { background: linear-gradient(145deg,#8f6d86,#5e2750); }
+    .glyph-edu     { background: linear-gradient(145deg,#f6aa75,#d94b1a); }
+    .glyph-trophy  { background: linear-gradient(145deg,#ffd36a,#e59b20); }
+    .glyph-browser { background: linear-gradient(145deg,#6c3b73,#e95420); }
+    .glyph-folder {
+      position: relative; overflow: visible !important; color: transparent !important;
+      background: transparent; box-shadow: none !important;
+    }
+    .glyph-folder::before {
+      content: ""; position: absolute; left: 3px; right: 3px; top: 14px; bottom: 4px;
+      border-radius: 5px; background: linear-gradient(160deg,#f5a16f,#e95420);
+      box-shadow: 0 5px 10px rgba(44,0,30,0.35);
+    }
+    .glyph-folder::after {
+      content: ""; position: absolute; left: 6px; top: 8px; width: 23px; height: 13px;
+      border-radius: 5px 5px 1px 1px; background: #f6b18b;
+    }
 
     /* ── WINDOWS ── */
     .window {
@@ -116,44 +132,43 @@
       display: none; flex-direction: column;
       width: min(680px, 92vw); max-height: 82vh;
       background: var(--window-bg);
-      border: 1px solid rgba(58,51,48,0.25);
-      border-radius: 10px;
-      box-shadow: 0 24px 60px rgba(58,51,48,0.45);
+      border: 1px solid rgba(20,18,20,0.55);
+      border-radius: 12px;
+      box-shadow: 0 24px 60px rgba(20,5,15,0.5), 0 3px 10px rgba(0,0,0,0.3);
       overflow: hidden;
     }
     .window.open { display: flex; }
     .window-chrome {
       display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.5rem 0.7rem;
-      background: linear-gradient(180deg, var(--window-chrome), #cbb3ac);
-      border-bottom: 1px solid rgba(58,51,48,0.2);
+      padding: 0.52rem 0.7rem;
+      background: linear-gradient(180deg, #45404d, var(--window-chrome));
+      border-bottom: 1px solid #29262d;
       cursor: grab; user-select: none;
     }
     .window-chrome.dragging { cursor: grabbing; }
     /* traffic-light controls (close / minimize / maximize) */
-    .traffic { display: flex; gap: 0.5rem; }
+    .traffic { display: flex; gap: 0.42rem; order: 3; }
     .traffic button {
-      width: 14px; height: 14px; border-radius: 50%; display: flex;
+      width: 18px; height: 18px; border-radius: 50%; display: flex;
       align-items: center; justify-content: center; padding: 0; cursor: pointer;
-      border: 1px solid rgba(58,51,48,0.22); line-height: 1;
-      font-size: 0.6rem; color: transparent; transition: color 0.12s, filter 0.12s;
+      border: 1px solid rgba(255,255,255,0.13); line-height: 1;
+      font-size: 0.72rem; color: #f3f3f3; transition: background 0.12s, filter 0.12s;
     }
-    .traffic .tl-close { background: #e0726b; }
-    .traffic .tl-min   { background: #e6b450; }
-    .traffic .tl-max   { background: #8bb87a; }
-    .traffic button:hover { filter: brightness(0.92); color: rgba(58,51,48,0.75); }
-    .traffic button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; color: rgba(58,51,48,0.75); }
+    .traffic .tl-close { background: #e95420; }
+    .traffic .tl-min, .traffic .tl-max { background: #66616b; }
+    .traffic button:hover { filter: brightness(1.18); }
+    .traffic button:focus-visible { outline: 2px solid #f08763; outline-offset: 2px; }
     .window-title {
-      flex: 1; text-align: center; font-size: 0.82rem; font-weight: 600;
-      color: var(--charcoal); display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      order: 2; flex: 1; text-align: center; font-size: 0.82rem; font-weight: 500;
+      color: #f7f7f7; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
       overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
     }
     /* spacer keeps the title visually centered opposite the traffic lights */
-    .chrome-spacer { width: 52px; flex-shrink: 0; }
+    .chrome-spacer { order: 1; width: 60px; flex-shrink: 0; }
 
     /* maximized window fills the workspace */
     .window.maximized {
-      top: 4rem !important; left: 1rem !important; right: 1rem; bottom: 4rem;
+      top: 3rem !important; left: 1rem !important; right: 1rem; bottom: 3.5rem;
       width: auto !important; max-width: none;
       height: auto; max-height: none;
       transform: none !important;
@@ -171,7 +186,7 @@
       line-height: 1.65; font-size: 0.92rem;
     }
     .window-body h2 {
-      font-family: 'DM Serif Display', serif; font-weight: 400;
+      font-family: 'Ubuntu', sans-serif; font-weight: 500;
       color: var(--charcoal); font-size: 1.8rem; margin-bottom: 0.25rem;
     }
     .window-body h3 { color: var(--charcoal); font-size: 1.05rem; margin: 1.25rem 0 0.3rem; }
@@ -243,8 +258,8 @@
       flex: 1 1 auto; min-width: 0;
       padding: 1rem; display: grid; align-content: start; gap: 0.6rem;
       grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
-      background: rgba(255,255,255,0.35);
-      border-right: 1px solid rgba(58,51,48,0.15);
+      background: #fafafa;
+      border-right: 1px solid #d8d5da;
     }
     .fitem {
       display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
@@ -252,14 +267,16 @@
       background: transparent; border: 1px solid transparent; font: inherit;
       color: var(--charcoal); text-align: center; transition: background 0.12s, border-color 0.12s;
     }
-    .fitem:hover { background: rgba(168,100,91,0.1); }
-    .fitem:focus-visible { outline: none; background: rgba(168,100,91,0.18); border-color: rgba(168,100,91,0.5); }
-    .fitem[aria-selected="true"] { background: rgba(168,100,91,0.2); border-color: rgba(168,100,91,0.45); }
+    .fitem:hover { background: rgba(233,84,32,0.09); }
+    .fitem:focus-visible { outline: none; background: rgba(233,84,32,0.14); border-color: rgba(233,84,32,0.5); }
+    .fitem[aria-selected="true"] { background: rgba(233,84,32,0.16); border-color: rgba(233,84,32,0.52); }
     .fitem .fglyph {
       width: 48px; height: 48px; border-radius: 11px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.7rem; line-height: 1; box-shadow: 0 3px 8px var(--shadow); overflow: hidden;
     }
+    .fitem .glyph-folder::before { top: 13px; bottom: 3px; }
+    .fitem .glyph-folder::after { top: 7px; width: 20px; height: 12px; }
     .fitem .fglyph.photo { padding: 3px; background: #fff; }
     .fitem .fglyph.photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; display: block; }
     .fitem .flabel {
@@ -268,7 +285,7 @@
     }
     .explorer-aside {
       flex: 0 0 248px; width: 248px; padding: 1.1rem;
-      overflow-y: auto; background: rgba(243,233,230,0.6);
+      overflow-y: auto; background: #f0eef1;
     }
     .preview-thumb {
       width: 100%; aspect-ratio: 16/11; object-fit: cover; border-radius: 9px;
@@ -279,7 +296,7 @@
       height: auto; aspect-ratio: auto; object-fit: contain;
     }
     .preview-thumb.ph { display: flex; align-items: center; justify-content: center; font-size: 2.6rem; }
-    .explorer-aside h3 { font-family: 'DM Serif Display', serif; font-weight: 400; color: var(--charcoal); font-size: 1.3rem; margin-bottom: 0.3rem; }
+    .explorer-aside h3 { font-family: 'Ubuntu', sans-serif; font-weight: 500; color: var(--charcoal); font-size: 1.3rem; margin-bottom: 0.3rem; }
     .explorer-aside p { font-size: 0.82rem; line-height: 1.55; margin-bottom: 0.55rem; color: var(--charcoal-soft); }
     .preview-hint { font-size: 0.7rem; color: var(--dusty-pink-deep); font-style: italic; margin-top: 0.4rem; }
 
@@ -320,12 +337,12 @@
     .taskbar .task-btn {
       pointer-events: auto; font: inherit; font-size: 0.74rem; font-weight: 500;
       display: inline-flex; align-items: center; gap: 0.35rem;
-      background: rgba(243,233,230,0.85); color: var(--charcoal);
-      border: 1px solid rgba(168,100,91,0.3); border-radius: 9999px;
+      background: rgba(38,34,41,0.92); color: #fff;
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
       padding: 0.3rem 0.8rem; cursor: pointer; box-shadow: 0 4px 12px var(--shadow);
       backdrop-filter: blur(8px);
     }
-    .taskbar .task-btn:hover { background: #fff; border-color: var(--accent); }
+    .taskbar .task-btn:hover { background: #4a454e; border-color: var(--accent); }
     .taskbar .task-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* lightbox */
@@ -347,10 +364,12 @@
       display: flex; justify-content: center; pointer-events: none;
     }
     .hint span {
-      background: rgba(58,51,48,0.55); color: var(--light-pink);
-      font-size: 0.72rem; padding: 0.3rem 0.85rem; border-radius: 9999px;
+      background: rgba(35,31,38,0.82); color: #f5f5f5;
+      font-size: 0.72rem; padding: 0.34rem 0.85rem; border-radius: 8px;
       backdrop-filter: blur(6px);
     }
+
+    * { scrollbar-color: #aea9b1 #eee; scrollbar-width: thin; }
 
     @media (max-width: 560px) {
       .desktop-icon { width: 92px; }
