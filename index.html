@@ -420,6 +420,8 @@
     }
     .menu-left { left: 0.85rem; }
     .menu-right { right: 0.85rem; gap: 0.62rem; }
+    .menu-left { opacity: 0; visibility: hidden; transition: opacity 0.16s ease; }
+    body.finder-active .menu-left { opacity: 1; visibility: visible; }
     .apple-mark { font-size: 1rem; line-height: 1; transform: translateY(-1px); }
     .menu-app { font-weight: 700; }
     .menu-status-icon { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; }
@@ -515,7 +517,7 @@
     .contact-link:nth-child(3) svg, .meta-row svg { stroke: #007aff; }
     .tag { background: rgba(0,122,255,0.08); color: #006bd6; border-color: rgba(0,122,255,0.2); }
     .tl-item::before { background: #007aff; }
-    .taskbar { bottom: 108px; }
+    .taskbar { display: none; }
     .taskbar .task-btn, .hint span {
       background: rgba(244,249,255,0.52); color: #263348; border: 1px solid rgba(255,255,255,0.66);
       border-radius: 12px; box-shadow: 0 8px 22px rgba(15,40,79,0.2);
@@ -527,6 +529,40 @@
     .lightbox-close { background: rgba(255,255,255,0.68); backdrop-filter: blur(18px); }
     * { scrollbar-color: rgba(78,116,158,0.46) transparent; }
 
+    /* Integrated GitHub profile window (GitHub itself blocks iframe embedding). */
+    #win-github .window-body { padding: 0; min-height: 430px; }
+    .github-addressbar {
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem;
+      background: rgba(255,255,255,0.24); border-bottom: 1px solid rgba(74,102,139,0.14);
+      font-size: 0.73rem; color: #4d596a;
+    }
+    .github-address {
+      flex: 1; min-width: 0; padding: 0.34rem 0.7rem; border-radius: 9px;
+      background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.72);
+      text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      box-shadow: inset 0 1px 2px rgba(37,66,105,0.08);
+    }
+    .github-external { color: #006bd6; text-decoration: none; font-weight: 600; padding: 0.25rem 0.4rem; border-radius: 7px; }
+    .github-external:hover { background: rgba(0,122,255,0.1); }
+    .github-view { padding: 1.2rem; color: #24292f; }
+    .github-loading, .github-error { min-height: 320px; display: grid; place-items: center; text-align: center; color: #57606a; }
+    .github-profile-head { display: grid; grid-template-columns: 92px minmax(0,1fr) auto; gap: 1rem; align-items: center; }
+    .github-avatar { width: 92px; height: 92px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.82); box-shadow: 0 5px 16px rgba(24,62,109,0.2); }
+    .github-profile-copy { min-width: 0; }
+    .github-profile-copy h2 { margin: 0; font-size: 1.35rem; color: #1f2328; }
+    .github-login { color: #656d76; font-size: 0.9rem; margin-bottom: 0.35rem; }
+    .github-bio { margin: 0; color: #424a53; font-size: 0.84rem; line-height: 1.45; }
+    .github-stats { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.55rem; color: #57606a; font-size: 0.76rem; }
+    .github-stats strong { color: #24292f; }
+    .github-open-profile { align-self: start; padding: 0.45rem 0.7rem; border-radius: 9px; background: rgba(255,255,255,0.62); border: 1px solid rgba(74,102,139,0.18); color: #0969da; text-decoration: none; font-size: 0.76rem; font-weight: 600; }
+    .github-repos-title { margin: 1.3rem 0 0.65rem; font-size: 0.9rem; color: #24292f; }
+    .github-repos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0.65rem; }
+    .github-repo { display: flex; flex-direction: column; min-width: 0; min-height: 112px; padding: 0.75rem; border-radius: 12px; background: rgba(255,255,255,0.52); border: 1px solid rgba(74,102,139,0.16); color: inherit; text-decoration: none; }
+    .github-repo:hover { background: rgba(255,255,255,0.78); border-color: rgba(0,122,255,0.34); }
+    .github-repo-name { color: #0969da; font-size: 0.82rem; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .github-repo-desc { flex: 1; margin: 0.35rem 0; color: #57606a; font-size: 0.72rem; line-height: 1.35; }
+    .github-repo-meta { display: flex; gap: 0.75rem; color: #656d76; font-size: 0.68rem; }
+
     @media (max-width: 620px) {
       .menu-left .menu-item { display: none; }
       .menu-left { gap: 0.5rem; }
@@ -537,6 +573,10 @@
       .desktop-icon .label { font-size: 0.56rem; }
       .window.maximized { left: 6px !important; right: 6px; bottom: 98px; }
       .hint { display: none; }
+      .github-profile-head { grid-template-columns: 70px minmax(0,1fr); }
+      .github-avatar { width: 70px; height: 70px; }
+      .github-open-profile { grid-column: 1 / -1; justify-self: start; }
+      .github-repos { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -584,10 +624,10 @@
     <span class="label">Projects</span>
   </button>
 
-  <a class="desktop-icon" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer" style="top:24%;left:60%;text-decoration:none;" aria-label="Open GitHub profile in a new tab" data-testid="icon-explore">
+  <button class="desktop-icon" type="button" data-open="github" aria-label="Open integrated GitHub profile" data-testid="icon-explore">
     <span class="glyph glyph-browser" aria-hidden="true">🌐</span>
     <span class="label">Explore</span>
-  </a>
+  </button>
 
 </div>
 
@@ -653,6 +693,29 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#a8645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg>
         <span>Email<span class="sub">ismiatesting@gmail.com</span></span>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATED GITHUB PROFILE -->
+<section class="window" id="win-github" role="dialog" aria-modal="false" aria-labelledby="win-github-title" tabindex="-1" data-testid="window-github" style="top:10%;left:50%;transform:translateX(-50%);width:min(860px,94vw);">
+  <header class="window-chrome">
+    <span class="traffic">
+      <button type="button" class="tl-close" data-ctl="close" aria-label="Close GitHub window">&times;</button>
+      <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize GitHub window">&minus;</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize GitHub window">+</button>
+    </span>
+    <span class="window-title" id="win-github-title">GitHub — marinucs</span>
+    <span class="chrome-spacer" aria-hidden="true"></span>
+  </header>
+  <div class="window-body">
+    <div class="github-addressbar">
+      <span aria-hidden="true">🔒</span>
+      <span class="github-address">github.com/marinucs</span>
+      <a class="github-external" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub profile in a new tab">↗</a>
+    </div>
+    <div class="github-view" id="githubProfile" aria-live="polite">
+      <div class="github-loading">Loading GitHub profile…</div>
     </div>
   </div>
 </section>
@@ -915,6 +978,52 @@
     projects: { items: PROJECTS, defaultId: 'mikasa',   contentWin: 'win-projects-content', titleEl: 'win-projects-content-title' }
   };
 
+  let githubLoaded = false;
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char];
+    });
+  }
+
+  function renderGitHubProfile(user, repos) {
+    const profile = document.getElementById('githubProfile');
+    const repoCards = repos.filter(function (repo) { return !repo.fork; }).slice(0, 6).map(function (repo) {
+      return '<a class="github-repo" href="' + escapeHtml(repo.html_url) + '" target="_blank" rel="noopener noreferrer">' +
+        '<span class="github-repo-name">' + escapeHtml(repo.name) + '</span>' +
+        '<span class="github-repo-desc">' + escapeHtml(repo.description || 'Public repository') + '</span>' +
+        '<span class="github-repo-meta"><span>' + escapeHtml(repo.language || 'Code') + '</span><span>★ ' + escapeHtml(repo.stargazers_count) + '</span></span>' +
+      '</a>';
+    }).join('');
+    profile.innerHTML =
+      '<div class="github-profile-head">' +
+        '<img class="github-avatar" src="' + escapeHtml(user.avatar_url) + '" alt="' + escapeHtml(user.login) + ' GitHub avatar" />' +
+        '<div class="github-profile-copy"><h2>' + escapeHtml(user.name || user.login) + '</h2>' +
+          '<div class="github-login">@' + escapeHtml(user.login) + '</div>' +
+          '<p class="github-bio">' + escapeHtml(user.bio || 'Software engineer · Barcelona') + '</p>' +
+          '<div class="github-stats"><span><strong>' + escapeHtml(user.public_repos) + '</strong> repositories</span>' +
+          '<span><strong>' + escapeHtml(user.followers) + '</strong> followers</span><span><strong>' + escapeHtml(user.following) + '</strong> following</span></div>' +
+        '</div>' +
+        '<a class="github-open-profile" href="' + escapeHtml(user.html_url) + '" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>' +
+      '</div><h3 class="github-repos-title">Recently updated repositories</h3><div class="github-repos">' + repoCards + '</div>';
+  }
+
+  function loadGitHubProfile() {
+    if (githubLoaded) return;
+    githubLoaded = true;
+    Promise.all([
+      fetch('https://api.github.com/users/marinucs', { headers: { Accept: 'application/vnd.github+json' } }),
+      fetch('https://api.github.com/users/marinucs/repos?sort=updated&per_page=12', { headers: { Accept: 'application/vnd.github+json' } })
+    ]).then(function (responses) {
+      if (!responses[0].ok || !responses[1].ok) throw new Error('GitHub request failed');
+      return Promise.all([responses[0].json(), responses[1].json()]);
+    }).then(function (data) {
+      renderGitHubProfile(data[0], data[1]);
+    }).catch(function () {
+      githubLoaded = false;
+      document.getElementById('githubProfile').innerHTML = '<div class="github-error"><div><p>GitHub could not be loaded right now.</p><a class="github-open-profile" href="https://github.com/marinucs" target="_blank" rel="noopener noreferrer">Open profile ↗</a></div></div>';
+    });
+  }
+
   /* ─────────── WINDOW MANAGER ─────────── */
   let zCounter = 100;
   const openWindows = []; // visible (non-minimized) windows, front-most last
@@ -978,6 +1087,7 @@
   function toggleMaximize(win) {
     win.classList.toggle('maximized');
     focusWindow(win);
+    syncNav();
   }
 
   function delById(arr, win) { const i = arr.indexOf(win); if (i > -1) arr.splice(i, 1); }
@@ -999,16 +1109,14 @@
 
   function renderTaskbar() {
     taskbar.innerHTML = '';
-    minimized.forEach(function (win) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'task-btn';
-      btn.textContent = windowTitle(win);
-      btn.setAttribute('aria-label', 'Restore ' + windowTitle(win));
-      btn.setAttribute('data-testid', 'task-' + win.id);
-      btn.addEventListener('click', function () { restoreWindow(win); });
-      taskbar.appendChild(btn);
-    });
+  }
+
+  function windowBelongsTo(target, win) {
+    if (target === 'about') return win.id === 'win-about' || win.id === 'win-about-content';
+    if (target === 'contact') return win.id === 'win-contact';
+    if (target === 'projects') return win.id === 'win-projects' || win.id === 'win-projects-content';
+    if (target === 'github') return win.id === 'win-github';
+    return false;
   }
 
   function syncNav() {
@@ -1018,18 +1126,20 @@
       if (top.id === 'win-about' || top.id === 'win-about-content') activeName = 'about';
       else if (top.id === 'win-contact') activeName = 'contact';
       else if (top.id === 'win-projects' || top.id === 'win-projects-content') activeName = 'projects';
+      else if (top.id === 'win-github') activeName = 'github';
     }
     document.querySelectorAll('.desktop-icon[data-open]').forEach(function (b) {
       b.classList.toggle('active', b.dataset.open === activeName);
       const name = b.dataset.open;
       const running = openWindows.concat(minimized).some(function (win) {
-        if (name === 'about') return win.id === 'win-about' || win.id === 'win-about-content';
-        if (name === 'contact') return win.id === 'win-contact';
-        if (name === 'projects') return win.id === 'win-projects' || win.id === 'win-projects-content';
-        return false;
+        return windowBelongsTo(name, win);
       });
       b.classList.toggle('running', running);
     });
+    const finderVisible = openWindows.some(function (win) {
+      return win.classList.contains('is-folder') && win.classList.contains('maximized');
+    });
+    document.body.classList.toggle('finder-active', finderVisible);
   }
 
   /* window control buttons (close / minimize / maximize) */
@@ -1049,6 +1159,23 @@
     const target = el.dataset.open;
     el.addEventListener('click', function () {
       if (target === 'reset') { closeAll(); return; }
+      if (target === 'github') loadGitHubProfile();
+      const openMatch = openWindows.slice().reverse().find(function (candidate) {
+        return windowBelongsTo(target, candidate);
+      });
+      if (openMatch) {
+        focusWindow(openMatch);
+        openMatch.focus();
+        syncNav();
+        return;
+      }
+      const minimizedMatch = minimized.slice().reverse().find(function (candidate) {
+        return windowBelongsTo(target, candidate);
+      });
+      if (minimizedMatch) {
+        restoreWindow(minimizedMatch);
+        return;
+      }
       const win = document.getElementById('win-' + target);
       openWindow(win);
       if (FOLDERS[target]) {
@@ -1107,7 +1234,7 @@
     const photo = item.img || item.previewImg;
     let media = '';
     if (photo) media = '<img class="preview-thumb" src="' + photo + '" alt="' + item.title + ' preview" data-lightbox-src="' + photo + '" />';
-    else if (!item.previewRows) media = '<div class="preview-thumb ph" aria-hidden="true">' + (item.glyph || item.emoji || '📄') + '</div>';
+    else if (key !== 'projects' && !item.previewRows) media = '<div class="preview-thumb ph" aria-hidden="true">' + (item.glyph || item.emoji || '📄') + '</div>';
     let body = '<h3>' + item.title + '</h3>';
     body += item.preview ? item.preview : '<p>' + item.desc + '</p>';
     if (item.previewRows) body += item.previewRows;
