@@ -21,7 +21,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+      font-family: 'Ubuntu', sans-serif;
       color: var(--charcoal);
       overflow: hidden;
       background: #2c001e;
@@ -44,7 +44,7 @@
       pointer-events: none;
     }
 
-    /* ── SYSTEM MENU BAR ── */
+    /* ── UBUNTU TOP PANEL ── */
     .topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 600;
       height: 36px; display: flex; justify-content: center; pointer-events: none;
@@ -60,8 +60,16 @@
       color: #f5f5f5; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.01em;
       font-variant-numeric: tabular-nums; pointer-events: none;
     }
+    .menu-left {
+      position: absolute; left: 0.8rem; top: 0; height: 36px; z-index: 1;
+      display: flex; align-items: center; gap: 0.85rem;
+      color: #f5f5f5; font-size: 0.75rem; font-weight: 500;
+      opacity: 0; visibility: hidden; transition: opacity 0.15s ease;
+    }
+    body.file-manager-active .menu-left { opacity: 1; visibility: visible; }
+    .menu-app { font-weight: 700; }
 
-    /* ── SYSTEM DOCK ── */
+    /* ── UBUNTU DOCK ── */
     .icon-layer {
       position: fixed; left: 0.65rem; top: 50%; transform: translateY(-50%); z-index: 500;
       display: flex; flex-direction: column; gap: 0.35rem;
@@ -80,6 +88,12 @@
     }
     .desktop-icon:hover { background: rgba(255,255,255,0.13); }
     .desktop-icon:focus-visible { outline: none; background: rgba(233,84,32,0.22); border-color: rgba(255,255,255,0.45); }
+    .desktop-icon.active { background: rgba(255,255,255,0.1); }
+    .desktop-icon.running::after {
+      content: ""; position: absolute; left: -5px; top: 50%; transform: translateY(-50%);
+      width: 4px; height: 18px; border-radius: 3px; background: #e95420;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.45);
+    }
     .desktop-icon .glyph {
       width: 48px; height: 48px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
@@ -362,221 +376,229 @@
 
     * { scrollbar-color: #aea9b1 #eee; scrollbar-width: thin; }
 
-    @media (max-width: 560px) {
-      .icon-layer { left: 0.4rem; width: 70px; padding-inline: 0.25rem; }
-      .desktop-icon { width: 60px; }
-      .window-body { padding: 1.1rem; }
-    }
-
-    /* ── macOS 26 Tahoe · Liquid Glass theme ── */
-    :root {
-      --dusty-pink: #b6d9f7;
-      --dusty-pink-deep: #3979b5;
-      --light-pink: #f5f9ff;
-      --charcoal: #1d1d1f;
-      --charcoal-soft: #555861;
-      --window-bg: rgba(245, 249, 255, 0.72);
-      --window-chrome: rgba(255, 255, 255, 0.2);
-      --accent: #007aff;
-      --accent-soft: #68b8ff;
-      --shadow: rgba(17, 39, 76, 0.28);
-      color-scheme: light;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
-      background: #13284f;
-    }
-    .desktop {
-      background:
-        radial-gradient(ellipse at 50% 112%, rgba(238,249,255,0.98) 0 8%, rgba(153,213,255,0.72) 18%, transparent 39%),
-        radial-gradient(ellipse at 92% 12%, rgba(255,142,211,0.9) 0 8%, rgba(157,92,214,0.62) 27%, transparent 50%),
-        radial-gradient(ellipse at 8% 10%, rgba(75,208,255,0.94) 0 9%, rgba(30,106,207,0.58) 33%, transparent 55%),
-        linear-gradient(145deg, #091a45 0%, #174f9a 30%, #7765d5 58%, #c44a9d 78%, #f49b99 110%);
-    }
-    .desktop::before {
-      content: ""; position: absolute; inset: -18%; pointer-events: none;
-      background:
-        radial-gradient(ellipse at 38% 58%, transparent 0 21%, rgba(210,242,255,0.38) 21.5% 22.5%, transparent 23%),
-        radial-gradient(ellipse at 62% 54%, transparent 0 31%, rgba(255,255,255,0.2) 31.5% 32.2%, transparent 33%);
-      filter: blur(5px); transform: rotate(-8deg) scale(1.08);
-    }
-    .desktop::after {
-      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 35%, rgba(20,31,81,0.16));
-      box-shadow: inset 0 0 140px rgba(7,20,55,0.22);
-    }
-
-    .topbar { height: 30px; z-index: 600; }
-    .topbar::before {
-      min-height: 30px; background: rgba(255,255,255,0.12);
-      border-bottom: 1px solid rgba(255,255,255,0.22);
-      box-shadow: 0 1px 10px rgba(14,35,74,0.08);
-      backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
-    }
-    .menu-left, .menu-right {
-      position: absolute; top: 0; height: 30px; z-index: 1;
-      display: flex; align-items: center; gap: 0.85rem;
-      color: rgba(255,255,255,0.96); text-shadow: 0 1px 3px rgba(16,36,76,0.48);
-      font-size: 0.76rem; font-weight: 500; pointer-events: none;
-    }
-    .menu-left { left: 0.85rem; }
-    .menu-right { right: 0.85rem; gap: 0.62rem; }
-    .menu-left { opacity: 0; visibility: hidden; transition: opacity 0.16s ease; }
-    body.finder-active .menu-left { opacity: 1; visibility: visible; }
-    .apple-mark { font-size: 1rem; line-height: 1; transform: translateY(-1px); }
-    .menu-app { font-weight: 700; }
-    .menu-status-icon { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; }
-    .panel-clock {
-      position: static; transform: none; color: inherit; font: inherit;
-      letter-spacing: 0; text-shadow: inherit;
-    }
-
-    .icon-layer {
-      left: 50%; right: auto; top: auto; bottom: 12px; transform: translateX(-50%); z-index: 500;
-      width: auto; height: 82px; padding: 7px 10px; gap: 7px; flex-direction: row; align-items: flex-start;
-      background: linear-gradient(145deg, rgba(255,255,255,0.32), rgba(225,239,255,0.16));
-      border: 1px solid rgba(255,255,255,0.52); border-radius: 24px;
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.7), inset 0 -1px 0 rgba(255,255,255,0.15),
-                  0 14px 35px rgba(15,35,74,0.28), 0 2px 7px rgba(15,35,74,0.2);
-      backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
-    }
-    .desktop-icon {
-      width: 60px; min-height: 68px; gap: 3px; padding: 2px; border-radius: 15px;
-      color: #fff; transition: transform 0.18s cubic-bezier(.2,.8,.2,1), background 0.15s;
-    }
-    .desktop-icon:hover { background: rgba(255,255,255,0.15); transform: translateY(-6px) scale(1.08); }
-    .desktop-icon:focus-visible { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.62); }
-    .desktop-icon.active { background: rgba(255,255,255,0.16); }
-    .desktop-icon.running::after {
-      content: ""; position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%);
-      width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.94);
-      box-shadow: 0 1px 3px rgba(12,29,64,0.45);
-    }
-    .desktop-icon .glyph {
-      width: 50px; height: 50px; border-radius: 13px;
-      border: 1px solid rgba(255,255,255,0.54);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.52), 0 6px 13px rgba(18,39,79,0.28);
-    }
-    .desktop-icon .label {
-      position: static; width: 100%; color: rgba(255,255,255,0.98); background: transparent;
-      font-size: 0.61rem; font-weight: 500; line-height: 1.1; text-shadow: 0 1px 3px rgba(12,29,64,0.7);
-    }
-    .glyph-home { background: linear-gradient(145deg, rgba(126,205,255,0.9), rgba(16,102,235,0.94)); }
-    .glyph-about { background: linear-gradient(145deg, rgba(202,157,255,0.9), rgba(108,72,210,0.94)); }
-    .glyph-contact { background: linear-gradient(145deg, rgba(105,212,255,0.94), rgba(0,122,255,0.94)); }
-    .glyph-browser { background: radial-gradient(circle at 42% 38%, #dff8ff 0 16%, #59c8ff 34%, #1677e8 67%, #6748cf 100%); }
-    .glyph-folder::before {
-      background: linear-gradient(160deg, rgba(143,218,255,0.98), rgba(26,143,246,0.98));
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.55), 0 6px 12px rgba(22,85,151,0.28);
-    }
-    .glyph-folder::after { background: linear-gradient(180deg, #c3edff, #78caff); }
-
-    .window {
-      background: linear-gradient(145deg, rgba(250,253,255,0.82), rgba(235,244,253,0.68));
-      border: 1px solid rgba(255,255,255,0.72); border-radius: 18px;
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.88), 0 26px 70px rgba(12,31,69,0.32), 0 5px 16px rgba(12,31,69,0.18);
-      backdrop-filter: blur(34px) saturate(165%); -webkit-backdrop-filter: blur(34px) saturate(165%);
-    }
-    .window-chrome {
-      min-height: 43px; padding: 0.55rem 0.8rem;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0.08));
-      border-bottom: 1px solid rgba(90,115,150,0.16);
-    }
-    .traffic { order: 1; gap: 0.48rem; }
-    .traffic button {
-      width: 13px; height: 13px; border: 0; font-size: 0.58rem; color: transparent;
-      box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.16), inset 0 1px 1px rgba(255,255,255,0.38);
-    }
-    .traffic .tl-close { background: #ff5f57; }
-    .traffic .tl-min { background: #febc2e; }
-    .traffic .tl-max { background: #28c840; }
-    .traffic:hover button { color: rgba(40,40,40,0.65); }
-    .window-title { order: 2; color: rgba(30,34,42,0.88); font-size: 0.79rem; font-weight: 600; }
-    .chrome-spacer { order: 3; width: 57px; }
-    .window.maximized { top: 40px !important; left: 12px !important; right: 12px; bottom: 108px; }
-    .window-body { color: var(--charcoal-soft); }
-    .window-body strong { color: #006bd6; }
-    .window-body h2, .explorer-aside h3 { font-family: inherit; letter-spacing: -0.02em; }
-
-    .explorer-main {
-      background: rgba(255,255,255,0.42); border-right: 1px solid rgba(74,102,139,0.14);
-    }
-    .explorer-aside {
-      background: linear-gradient(160deg, rgba(219,237,252,0.54), rgba(246,250,255,0.32));
-      backdrop-filter: blur(25px) saturate(150%); -webkit-backdrop-filter: blur(25px) saturate(150%);
-    }
-    .fitem { border-radius: 12px; }
-    .fitem:hover { background: rgba(0,122,255,0.08); }
-    .fitem:focus-visible { background: rgba(0,122,255,0.12); border-color: rgba(0,122,255,0.42); }
-    .fitem[aria-selected="true"] { background: rgba(0,122,255,0.15); border-color: rgba(0,122,255,0.45); }
-    .preview-thumb, .proj-card, .contact-link, .logo-row {
-      border-color: rgba(255,255,255,0.7); box-shadow: 0 5px 16px rgba(24,62,109,0.14);
-    }
-    .contact-link, .proj-card, .logo-row { background: rgba(255,255,255,0.48); }
-    .contact-link:hover { border-color: rgba(0,122,255,0.55); background: rgba(255,255,255,0.78); }
-    .contact-link:nth-child(1) svg, .contact-link:nth-child(2) svg { fill: #007aff; }
-    .contact-link:nth-child(3) svg, .meta-row svg { stroke: #007aff; }
-    .tag { background: rgba(0,122,255,0.08); color: #006bd6; border-color: rgba(0,122,255,0.2); }
-    .tl-item::before { background: #007aff; }
     .taskbar { display: none; }
-    .taskbar .task-btn, .hint span {
-      background: rgba(244,249,255,0.52); color: #263348; border: 1px solid rgba(255,255,255,0.66);
-      border-radius: 12px; box-shadow: 0 8px 22px rgba(15,40,79,0.2);
-      backdrop-filter: blur(22px) saturate(165%); -webkit-backdrop-filter: blur(22px) saturate(165%);
-    }
-    .taskbar .task-btn:hover { background: rgba(255,255,255,0.78); border-color: rgba(255,255,255,0.92); }
-    .hint { bottom: 108px; }
-    .lightbox { background: rgba(7,18,42,0.58); backdrop-filter: blur(16px); }
-    .lightbox-close { background: rgba(255,255,255,0.68); backdrop-filter: blur(18px); }
-    * { scrollbar-color: rgba(78,116,158,0.46) transparent; }
 
-    /* Integrated GitHub profile window (GitHub itself blocks iframe embedding). */
-    #win-github .window-body { padding: 0; min-height: 430px; }
+    /* Integrated GitHub profile window. GitHub blocks direct iframe embedding. */
+    #win-github .window-body { padding: 0; min-height: 430px; background: #f7f7f7; }
     .github-addressbar {
-      display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem;
-      background: rgba(255,255,255,0.24); border-bottom: 1px solid rgba(74,102,139,0.14);
-      font-size: 0.73rem; color: #4d596a;
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem;
+      background: #e9e7e9; border-bottom: 1px solid #d2cfd3;
+      color: #5e5c64; font-size: 0.73rem;
     }
     .github-address {
-      flex: 1; min-width: 0; padding: 0.34rem 0.7rem; border-radius: 9px;
-      background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.72);
-      text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      box-shadow: inset 0 1px 2px rgba(37,66,105,0.08);
+      flex: 1; min-width: 0; padding: 0.34rem 0.7rem; border-radius: 7px;
+      background: #fff; border: 1px solid #d2cfd3; text-align: center;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
     }
-    .github-external { color: #006bd6; text-decoration: none; font-weight: 600; padding: 0.25rem 0.4rem; border-radius: 7px; }
-    .github-external:hover { background: rgba(0,122,255,0.1); }
+    .github-external { color: #c64600; text-decoration: none; font-weight: 600; padding: 0.25rem 0.4rem; border-radius: 6px; }
+    .github-external:hover { background: rgba(233,84,32,0.1); }
     .github-view { padding: 1.2rem; color: #24292f; }
-    .github-loading, .github-error { min-height: 320px; display: grid; place-items: center; text-align: center; color: #57606a; }
+    .github-loading, .github-error { min-height: 320px; display: grid; place-items: center; text-align: center; color: #5e5c64; }
     .github-profile-head { display: grid; grid-template-columns: 92px minmax(0,1fr) auto; gap: 1rem; align-items: center; }
-    .github-avatar { width: 92px; height: 92px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.82); box-shadow: 0 5px 16px rgba(24,62,109,0.2); }
+    .github-avatar { width: 92px; height: 92px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 5px 16px rgba(44,0,30,0.18); }
     .github-profile-copy { min-width: 0; }
-    .github-profile-copy h2 { margin: 0; font-size: 1.35rem; color: #1f2328; }
+    .github-profile-copy h2 { margin: 0; font-size: 1.35rem; color: #24292f; }
     .github-login { color: #656d76; font-size: 0.9rem; margin-bottom: 0.35rem; }
     .github-bio { margin: 0; color: #424a53; font-size: 0.84rem; line-height: 1.45; }
     .github-stats { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.55rem; color: #57606a; font-size: 0.76rem; }
     .github-stats strong { color: #24292f; }
-    .github-open-profile { align-self: start; padding: 0.45rem 0.7rem; border-radius: 9px; background: rgba(255,255,255,0.62); border: 1px solid rgba(74,102,139,0.18); color: #0969da; text-decoration: none; font-size: 0.76rem; font-weight: 600; }
+    .github-open-profile { align-self: start; padding: 0.45rem 0.7rem; border-radius: 7px; background: #fff; border: 1px solid #d2cfd3; color: #c64600; text-decoration: none; font-size: 0.76rem; font-weight: 600; }
     .github-repos-title { margin: 1.3rem 0 0.65rem; font-size: 0.9rem; color: #24292f; }
     .github-repos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0.65rem; }
-    .github-repo { display: flex; flex-direction: column; min-width: 0; min-height: 112px; padding: 0.75rem; border-radius: 12px; background: rgba(255,255,255,0.52); border: 1px solid rgba(74,102,139,0.16); color: inherit; text-decoration: none; }
-    .github-repo:hover { background: rgba(255,255,255,0.78); border-color: rgba(0,122,255,0.34); }
-    .github-repo-name { color: #0969da; font-size: 0.82rem; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .github-repo { display: flex; flex-direction: column; min-width: 0; min-height: 112px; padding: 0.75rem; border-radius: 8px; background: #fff; border: 1px solid #d6d1d5; color: inherit; text-decoration: none; }
+    .github-repo:hover { border-color: #e95420; box-shadow: 0 3px 10px rgba(44,0,30,0.1); }
+    .github-repo-name { color: #c64600; font-size: 0.82rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .github-repo-desc { flex: 1; margin: 0.35rem 0; color: #57606a; font-size: 0.72rem; line-height: 1.35; }
     .github-repo-meta { display: flex; gap: 0.75rem; color: #656d76; font-size: 0.68rem; }
 
-    @media (max-width: 620px) {
+    @media (max-width: 560px) {
+      .icon-layer { left: 0.4rem; width: 70px; padding-inline: 0.25rem; }
+      .desktop-icon { width: 60px; }
+      .window-body { padding: 1.1rem; }
       .menu-left .menu-item { display: none; }
-      .menu-left { gap: 0.5rem; }
-      .menu-right .menu-status-icon:first-child { display: none; }
-      .icon-layer { width: auto; height: 75px; padding: 6px 7px; gap: 3px; }
-      .desktop-icon { width: 52px; min-height: 62px; }
-      .desktop-icon .glyph { width: 44px; height: 44px; }
-      .desktop-icon .label { font-size: 0.56rem; }
-      .window.maximized { left: 6px !important; right: 6px; bottom: 98px; }
-      .hint { display: none; }
       .github-profile-head { grid-template-columns: 70px minmax(0,1fr); }
       .github-avatar { width: 70px; height: 70px; }
       .github-open-profile { grid-column: 1 / -1; justify-self: start; }
       .github-repos { grid-template-columns: 1fr; }
+    }
+
+    /* ── Windows 95/98 retro theme ── */
+    :root {
+      --dusty-pink: #c0c0c0;
+      --dusty-pink-deep: #000080;
+      --light-pink: #ffffff;
+      --charcoal: #000000;
+      --charcoal-soft: #222222;
+      --window-bg: #c0c0c0;
+      --window-chrome: #000080;
+      --accent: #000080;
+      --accent-soft: #1084d0;
+      --shadow: rgba(0,0,0,0.42);
+      color-scheme: light;
+    }
+    body {
+      font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
+      font-size: 12px; background: #008080;
+      image-rendering: pixelated;
+    }
+    button, input, a { font-family: inherit; }
+    .desktop {
+      background-color: #008080;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      background-size: 4px 4px;
+    }
+    .desktop::after { background: none; }
+
+    .topbar {
+      top: auto; bottom: 0; height: 40px; z-index: 600;
+      display: block; padding: 3px; pointer-events: auto;
+      background: #c0c0c0; border-top: 2px solid #ffffff;
+      box-shadow: inset 0 1px #dfdfdf;
+    }
+    .topbar::before { display: none; }
+    .start-button {
+      height: 32px; min-width: 88px; padding: 2px 8px 2px 5px;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #c0c0c0; color: #000; font-size: 13px; font-weight: 700;
+      border: 2px solid; border-color: #fff #000 #000 #fff; border-radius: 0;
+      box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; cursor: pointer;
+    }
+    .start-button:active {
+      border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080;
+      padding: 3px 7px 1px 6px;
+    }
+    .windows-logo { width: 22px; height: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; transform: skewY(-8deg); }
+    .windows-logo i:nth-child(1) { background: #f20f19; }
+    .windows-logo i:nth-child(2) { background: #00a2ed; }
+    .windows-logo i:nth-child(3) { background: #1fae29; }
+    .windows-logo i:nth-child(4) { background: #ffdb00; }
+    .panel-clock {
+      position: absolute; right: 4px; top: 4px; transform: none;
+      height: 32px; min-width: 82px; padding: 0 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #000; background: #c0c0c0; font-size: 12px; font-weight: 400;
+      border: 2px solid; border-color: #808080 #fff #fff #808080;
+      text-shadow: none;
+    }
+
+    .icon-layer {
+      position: fixed; inset: 12px auto 46px 10px; transform: none; z-index: 50;
+      width: 100px; padding: 0; display: flex; flex-direction: column; gap: 8px;
+      background: transparent; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none;
+    }
+    .desktop-icon {
+      position: relative !important; width: 88px; min-height: 72px; padding: 3px;
+      display: flex; flex-direction: column; gap: 3px;
+      background: transparent; border: 1px dotted transparent; border-radius: 0;
+      color: #fff; text-decoration: none; cursor: default;
+    }
+    .desktop-icon:hover, .desktop-icon.active {
+      background: rgba(0,0,128,0.48); border-color: rgba(255,255,255,0.85);
+    }
+    .desktop-icon:focus-visible { outline: 1px dotted #fff; background: rgba(0,0,128,0.6); }
+    .desktop-icon.running::after { display: none; }
+    .desktop-icon .glyph {
+      width: 40px; height: 40px; border-radius: 0; box-shadow: none; border: 0;
+      font-size: 1.8rem; background-color: transparent;
+    }
+    .desktop-icon .label {
+      position: static; width: auto; max-width: 86px; padding: 1px 3px;
+      color: #fff; background: #008080; border: 0; box-shadow: none;
+      font-size: 11px; font-weight: 400; line-height: 1.15; text-align: center;
+      text-shadow: 1px 1px #000; white-space: normal;
+    }
+    .desktop-icon:hover .label, .desktop-icon.active .label { background: #000080; }
+    .glyph-home, .glyph-about, .glyph-contact, .glyph-browser { background: transparent; color: #fff; }
+    .glyph-home svg { width: 30px; height: 30px; stroke: #fff; filter: drop-shadow(1px 1px #000); }
+    .glyph-folder::before {
+      left: 4px; right: 4px; top: 13px; bottom: 3px; border-radius: 1px;
+      background: #ffd95a; border: 1px solid #806000; box-shadow: inset 1px 1px #fff2a5, 2px 2px rgba(0,0,0,0.35);
+    }
+    .glyph-folder::after { left: 6px; top: 7px; width: 20px; height: 10px; border-radius: 1px 1px 0 0; background: #ffe582; border: 1px solid #806000; }
+
+    .window {
+      background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff;
+      border-radius: 0; box-shadow: 3px 3px 0 rgba(0,0,0,0.42); backdrop-filter: none;
+      padding: 2px;
+    }
+    .window-chrome {
+      min-height: 24px; padding: 2px 3px; background: #7f7f7f; border: 0; cursor: default;
+    }
+    .window.focused .window-chrome { background: linear-gradient(90deg,#000080,#1084d0); }
+    .window-title {
+      order: 2; color: #d8d8d8; font-size: 12px; font-weight: 700; justify-content: flex-start;
+      padding-left: 3px; text-shadow: none;
+    }
+    .window.focused .window-title { color: #fff; }
+    .traffic { order: 3; gap: 2px; }
+    .traffic button {
+      width: 18px; height: 18px; border-radius: 0; padding: 0;
+      background: #c0c0c0 !important; color: #000; font-size: 12px; font-weight: 700;
+      border: 2px solid; border-color: #fff #000 #000 #fff;
+      box-shadow: inset 1px 1px #dfdfdf; line-height: 1;
+    }
+    .traffic button:active { border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080; }
+    .chrome-spacer { order: 1; width: 0; }
+    .window.maximized { top: 4px !important; left: 4px !important; right: 4px; bottom: 44px; }
+    .window-body { background: #fff; color: #000; padding: 12px; font-size: 12px; line-height: 1.45; }
+    .window-body h2, .explorer-aside h3 { font-family: inherit; color: #000080; }
+    .window-body strong { color: #000080; }
+    .subtitle, .meta-row, .tl-date, .logo-date, .proj-private { color: #555; }
+    .contact-link, .proj-card, .logo-row, .github-repo {
+      background: #fff; border: 1px solid #808080; border-radius: 0; box-shadow: none;
+    }
+    .contact-link:hover, .github-repo:hover { background: #000080; color: #fff; border-color: #000; transform: none; }
+    .contact-link:hover .sub, .github-repo:hover * { color: #fff; }
+    .tags img { image-rendering: auto; }
+
+    .explorer { border: 2px solid; border-color: #808080 #fff #fff #808080; }
+    .explorer-main { background: #fff; border-right: 1px solid #808080; }
+    .explorer-aside { background: #c0c0c0; }
+    .fitem { border-radius: 0; }
+    .fitem .fglyph:not(.photo) { background: transparent; border: 0; box-shadow: none; }
+    .fitem:hover, .fitem:focus-visible, .fitem[aria-selected="true"] { background: #000080; color: #fff; border-color: #000080; }
+    .preview-thumb, .about-portrait { border-radius: 0; border: 2px solid; border-color: #808080 #fff #fff #808080; box-shadow: none; }
+    .proj-thumb { border-radius: 0 !important; }
+    .tag { border-radius: 0; background: #c0c0c0; color: #000080; border-color: #808080; }
+    .tl-item::before { background: #000080; border-radius: 0; }
+
+    #win-github .window-body { background: #fff; }
+    .github-addressbar { background: #c0c0c0; border-bottom: 1px solid #808080; }
+    .github-address { border-radius: 0; border: 2px solid; border-color: #808080 #fff #fff #808080; }
+    .github-external, .github-repo-name, .github-open-profile { color: #000080; }
+    .github-open-profile { border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; }
+    .github-avatar { border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; box-shadow: none; }
+
+    .taskbar {
+      display: flex; position: fixed; left: 98px; right: 94px; bottom: 4px; height: 32px; z-index: 602;
+      align-items: stretch; justify-content: flex-start; gap: 3px; pointer-events: none; overflow: hidden;
+    }
+    .taskbar .task-btn {
+      pointer-events: auto; min-width: 120px; max-width: 190px; padding: 2px 8px;
+      justify-content: flex-start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      color: #000; background: #c0c0c0; border-radius: 0;
+      border: 2px solid; border-color: #fff #000 #000 #fff; box-shadow: inset 1px 1px #dfdfdf;
+      font-size: 11px; font-weight: 400;
+    }
+    .taskbar .task-btn.active { background: #e0e0e0; border-color: #000 #fff #fff #000; font-weight: 700; }
+    .taskbar .task-btn.minimized { color: #555; }
+    .hint { bottom: 46px; }
+    .hint span { background: #ffffcc; color: #000; border: 1px solid #000; border-radius: 0; backdrop-filter: none; box-shadow: 2px 2px rgba(0,0,0,0.3); }
+    .lightbox { background: rgba(0,0,0,0.72); backdrop-filter: none; }
+    .lightbox-close { background: #c0c0c0; border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; }
+    * { scrollbar-color: #c0c0c0 #fff; }
+
+    @media (max-width: 620px) {
+      .icon-layer { inset: 8px auto 44px 5px; width: 76px; }
+      .desktop-icon { width: 70px; }
+      .desktop-icon .label { max-width: 68px; }
+      .taskbar { left: 96px; right: 86px; }
+      .taskbar .task-btn { min-width: 72px; max-width: 110px; }
+      .window.maximized { left: 2px !important; right: 2px; bottom: 42px; }
+      .hint { display: none; }
     }
   </style>
 </head>
@@ -584,24 +606,16 @@
 
 <div class="desktop" id="desktop" tabindex="-1"></div>
 
-<!-- TRANSPARENT macOS MENU BAR -->
+<!-- WINDOWS 95 TASKBAR -->
 <div class="topbar">
-  <div class="menu-left" aria-hidden="true">
-    <span class="apple-mark">&#63743;</span>
-    <span class="menu-app">Finder</span>
-    <span class="menu-item">File</span>
-    <span class="menu-item">View</span>
-    <span class="menu-item">Window</span>
-    <span class="menu-item">Help</span>
-  </div>
-  <div class="menu-right">
-    <svg class="menu-status-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.2a13 13 0 0 1 17 0M6.7 12.5a8.2 8.2 0 0 1 10.6 0M9.8 15.8a3.4 3.4 0 0 1 4.4 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
-    <svg class="menu-status-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="5"/><circle cx="9" cy="10" r="2"/><circle cx="15" cy="14" r="2"/></svg>
-    <time class="panel-clock" id="panelClock" aria-label="Current time"></time>
-  </div>
+  <button class="start-button" type="button" data-open="reset" aria-label="Close all windows and return to the desktop">
+    <span class="windows-logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span>Start</span>
+  </button>
+  <time class="panel-clock" id="panelClock" aria-label="Current time"></time>
 </div>
 
-<!-- LIQUID GLASS DOCK -->
+<!-- DESKTOP ICONS -->
 <div class="icon-layer" id="iconLayer">
 
   <button class="desktop-icon" type="button" data-open="reset" aria-label="Go home" data-testid="icon-home">
@@ -759,8 +773,8 @@
   <img id="lightboxImg" src="" alt="Project preview enlarged" />
 </div>
 
-<!-- TASKBAR (minimized windows reopen here) -->
-<div class="taskbar" id="taskbar" aria-label="Minimized windows" data-testid="taskbar"></div>
+<!-- WINDOWS TASKBAR BUTTONS -->
+<div class="taskbar" id="taskbar" aria-label="Open and minimized windows" data-testid="taskbar"></div>
 
 <div class="hint"><span>Double-click folder items to open or press Esc to close</span></div>
 
@@ -770,7 +784,7 @@
 
   const panelClock = document.getElementById('panelClock');
   const clockFormat = new Intl.DateTimeFormat(undefined, {
-    weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    hour: '2-digit', minute: '2-digit'
   });
   function updatePanelClock() {
     const now = new Date();
@@ -1033,7 +1047,20 @@
   const taskbar = document.getElementById('taskbar');
   const lightbox = document.getElementById('lightbox');
 
-  function focusWindow(win) { zCounter += 1; win.style.zIndex = zCounter; }
+  function focusWindow(win) {
+    zCounter += 1;
+    win.style.zIndex = zCounter;
+    document.querySelectorAll('.window.focused').forEach(function (candidate) {
+      candidate.classList.remove('focused');
+    });
+    if (win.classList.contains('open')) win.classList.add('focused');
+    const index = openWindows.indexOf(win);
+    if (index > -1) {
+      openWindows.splice(index, 1);
+      openWindows.push(win);
+    }
+    renderTaskbar();
+  }
 
   function windowTitle(win) {
     const t = $('.window-title', win);
@@ -1109,6 +1136,25 @@
 
   function renderTaskbar() {
     taskbar.innerHTML = '';
+    openWindows.concat(minimized).forEach(function (win) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'task-btn';
+      if (win.dataset.minimized === 'true') btn.classList.add('minimized');
+      if (openWindows[openWindows.length - 1] === win) btn.classList.add('active');
+      btn.textContent = windowTitle(win);
+      btn.setAttribute('aria-label', (win.dataset.minimized === 'true' ? 'Restore ' : 'Focus ') + windowTitle(win));
+      btn.setAttribute('data-testid', 'task-' + win.id);
+      btn.addEventListener('click', function () {
+        if (win.dataset.minimized === 'true') restoreWindow(win);
+        else {
+          focusWindow(win);
+          win.focus();
+          syncNav();
+        }
+      });
+      taskbar.appendChild(btn);
+    });
   }
 
   function windowBelongsTo(target, win) {
@@ -1136,10 +1182,10 @@
       });
       b.classList.toggle('running', running);
     });
-    const finderVisible = openWindows.some(function (win) {
+    const fileManagerVisible = openWindows.some(function (win) {
       return win.classList.contains('is-folder') && win.classList.contains('maximized');
     });
-    document.body.classList.toggle('finder-active', finderVisible);
+    document.body.classList.toggle('file-manager-active', fileManagerVisible);
   }
 
   /* window control buttons (close / minimize / maximize) */
