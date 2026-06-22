@@ -1047,9 +1047,10 @@
       el.setAttribute('role', 'option');
       el.dataset.id = item.id;
       el.setAttribute('data-testid', key + '-item-' + item.id);
+      const glyphClass = item.glyphClass || (item.emoji ? 'emoji' : 'glyph-folder');
       const glyph = item.img
         ? '<span class="fglyph photo"><img src="' + item.img + '" alt=""></span>'
-        : '<span class="fglyph ' + (item.glyphClass || 'glyph-folder') + '">' + (item.glyph || item.emoji || '📄') + '</span>';
+        : '<span class="fglyph ' + glyphClass + '">' + (item.glyph || item.emoji || '📄') + '</span>';
       el.innerHTML = glyph + '<span class="flabel">' + item.label + '</span>';
       el.addEventListener('click', function () { selectFolderItem(key, item.id); });
       el.addEventListener('dblclick', function () { openFolderContent(key, item.id); });
