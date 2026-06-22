@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marina — Software Engineer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --dusty-pink: #d6b7cc;
@@ -425,22 +422,196 @@
       .github-open-profile { grid-column: 1 / -1; justify-self: start; }
       .github-repos { grid-template-columns: 1fr; }
     }
+
+    /* ── Windows 95/98 retro theme ── */
+    :root {
+      --dusty-pink: #c0c0c0;
+      --dusty-pink-deep: #000080;
+      --light-pink: #ffffff;
+      --charcoal: #000000;
+      --charcoal-soft: #222222;
+      --window-bg: #c0c0c0;
+      --window-chrome: #000080;
+      --accent: #000080;
+      --accent-soft: #1084d0;
+      --shadow: rgba(0,0,0,0.42);
+      color-scheme: light;
+    }
+    body {
+      font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
+      font-size: 12px; background: #008080;
+      image-rendering: pixelated;
+    }
+    button, input, a { font-family: inherit; }
+    .desktop {
+      background-color: #008080;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      background-size: 4px 4px;
+    }
+    .desktop::after { background: none; }
+
+    .topbar {
+      top: auto; bottom: 0; height: 40px; z-index: 600;
+      display: block; padding: 3px; pointer-events: auto;
+      background: #c0c0c0; border-top: 2px solid #ffffff;
+      box-shadow: inset 0 1px #dfdfdf;
+    }
+    .topbar::before { display: none; }
+    .start-button {
+      height: 32px; min-width: 88px; padding: 2px 8px 2px 5px;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #c0c0c0; color: #000; font-size: 13px; font-weight: 700;
+      border: 2px solid; border-color: #fff #000 #000 #fff; border-radius: 0;
+      box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; cursor: pointer;
+    }
+    .start-button:active {
+      border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080;
+      padding: 3px 7px 1px 6px;
+    }
+    .windows-logo { width: 22px; height: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; transform: skewY(-8deg); }
+    .windows-logo i:nth-child(1) { background: #f20f19; }
+    .windows-logo i:nth-child(2) { background: #00a2ed; }
+    .windows-logo i:nth-child(3) { background: #1fae29; }
+    .windows-logo i:nth-child(4) { background: #ffdb00; }
+    .panel-clock {
+      position: absolute; right: 4px; top: 4px; transform: none;
+      height: 32px; min-width: 82px; padding: 0 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #000; background: #c0c0c0; font-size: 12px; font-weight: 400;
+      border: 2px solid; border-color: #808080 #fff #fff #808080;
+      text-shadow: none;
+    }
+
+    .icon-layer {
+      position: fixed; inset: 12px auto 46px 10px; transform: none; z-index: 50;
+      width: 100px; padding: 0; display: flex; flex-direction: column; gap: 8px;
+      background: transparent; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none;
+    }
+    .desktop-icon {
+      position: relative !important; width: 88px; min-height: 72px; padding: 3px;
+      display: flex; flex-direction: column; gap: 3px;
+      background: transparent; border: 1px dotted transparent; border-radius: 0;
+      color: #fff; text-decoration: none; cursor: default;
+    }
+    .desktop-icon:hover, .desktop-icon.active {
+      background: rgba(0,0,128,0.48); border-color: rgba(255,255,255,0.85);
+    }
+    .desktop-icon:focus-visible { outline: 1px dotted #fff; background: rgba(0,0,128,0.6); }
+    .desktop-icon.running::after { display: none; }
+    .desktop-icon .glyph {
+      width: 40px; height: 40px; border-radius: 0; box-shadow: none; border: 0;
+      font-size: 1.8rem; background-color: transparent;
+    }
+    .desktop-icon .label {
+      position: static; width: auto; max-width: 86px; padding: 1px 3px;
+      color: #fff; background: #008080; border: 0; box-shadow: none;
+      font-size: 11px; font-weight: 400; line-height: 1.15; text-align: center;
+      text-shadow: 1px 1px #000; white-space: normal;
+    }
+    .desktop-icon:hover .label, .desktop-icon.active .label { background: #000080; }
+    .glyph-home, .glyph-about, .glyph-contact, .glyph-browser { background: transparent; color: #fff; }
+    .glyph-home svg { width: 30px; height: 30px; stroke: #fff; filter: drop-shadow(1px 1px #000); }
+    .glyph-folder::before {
+      left: 4px; right: 4px; top: 13px; bottom: 3px; border-radius: 1px;
+      background: #ffd95a; border: 1px solid #806000; box-shadow: inset 1px 1px #fff2a5, 2px 2px rgba(0,0,0,0.35);
+    }
+    .glyph-folder::after { left: 6px; top: 7px; width: 20px; height: 10px; border-radius: 1px 1px 0 0; background: #ffe582; border: 1px solid #806000; }
+
+    .window {
+      background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff;
+      border-radius: 0; box-shadow: 3px 3px 0 rgba(0,0,0,0.42); backdrop-filter: none;
+      padding: 2px;
+    }
+    .window-chrome {
+      min-height: 24px; padding: 2px 3px; background: #7f7f7f; border: 0; cursor: default;
+    }
+    .window.focused .window-chrome { background: linear-gradient(90deg,#000080,#1084d0); }
+    .window-title {
+      order: 2; color: #d8d8d8; font-size: 12px; font-weight: 700; justify-content: flex-start;
+      padding-left: 3px; text-shadow: none;
+    }
+    .window.focused .window-title { color: #fff; }
+    .traffic { order: 3; gap: 2px; }
+    .traffic button {
+      width: 18px; height: 18px; border-radius: 0; padding: 0;
+      background: #c0c0c0 !important; color: #000; font-size: 12px; font-weight: 700;
+      border: 2px solid; border-color: #fff #000 #000 #fff;
+      box-shadow: inset 1px 1px #dfdfdf; line-height: 1;
+    }
+    .traffic button:active { border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080; }
+    .chrome-spacer { order: 1; width: 0; }
+    .window.maximized { top: 4px !important; left: 4px !important; right: 4px; bottom: 44px; }
+    .window-body { background: #fff; color: #000; padding: 12px; font-size: 12px; line-height: 1.45; }
+    .window-body h2, .explorer-aside h3 { font-family: inherit; color: #000080; }
+    .window-body strong { color: #000080; }
+    .subtitle, .meta-row, .tl-date, .logo-date, .proj-private { color: #555; }
+    .contact-link, .proj-card, .logo-row, .github-repo {
+      background: #fff; border: 1px solid #808080; border-radius: 0; box-shadow: none;
+    }
+    .contact-link:hover, .github-repo:hover { background: #000080; color: #fff; border-color: #000; transform: none; }
+    .contact-link:hover .sub, .github-repo:hover * { color: #fff; }
+    .tags img { image-rendering: auto; }
+
+    .explorer { border: 2px solid; border-color: #808080 #fff #fff #808080; }
+    .explorer-main { background: #fff; border-right: 1px solid #808080; }
+    .explorer-aside { background: #c0c0c0; }
+    .fitem { border-radius: 0; }
+    .fitem .fglyph:not(.photo) { background: transparent; border: 0; box-shadow: none; }
+    .fitem:hover, .fitem:focus-visible, .fitem[aria-selected="true"] { background: #000080; color: #fff; border-color: #000080; }
+    .preview-thumb, .about-portrait { border-radius: 0; border: 2px solid; border-color: #808080 #fff #fff #808080; box-shadow: none; }
+    .proj-thumb { border-radius: 0 !important; }
+    .tag { border-radius: 0; background: #c0c0c0; color: #000080; border-color: #808080; }
+    .tl-item::before { background: #000080; border-radius: 0; }
+
+    #win-github .window-body { background: #fff; }
+    .github-addressbar { background: #c0c0c0; border-bottom: 1px solid #808080; }
+    .github-address { border-radius: 0; border: 2px solid; border-color: #808080 #fff #fff #808080; }
+    .github-external, .github-repo-name, .github-open-profile { color: #000080; }
+    .github-open-profile { border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; }
+    .github-avatar { border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; box-shadow: none; }
+
+    .taskbar {
+      display: flex; position: fixed; left: 98px; right: 94px; bottom: 4px; height: 32px; z-index: 602;
+      align-items: stretch; justify-content: flex-start; gap: 3px; pointer-events: none; overflow: hidden;
+    }
+    .taskbar .task-btn {
+      pointer-events: auto; min-width: 120px; max-width: 190px; padding: 2px 8px;
+      justify-content: flex-start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      color: #000; background: #c0c0c0; border-radius: 0;
+      border: 2px solid; border-color: #fff #000 #000 #fff; box-shadow: inset 1px 1px #dfdfdf;
+      font-size: 11px; font-weight: 400;
+    }
+    .taskbar .task-btn.active { background: #e0e0e0; border-color: #000 #fff #fff #000; font-weight: 700; }
+    .taskbar .task-btn.minimized { color: #555; }
+    .hint { bottom: 46px; }
+    .hint span { background: #ffffcc; color: #000; border: 1px solid #000; border-radius: 0; backdrop-filter: none; box-shadow: 2px 2px rgba(0,0,0,0.3); }
+    .lightbox { background: rgba(0,0,0,0.72); backdrop-filter: none; }
+    .lightbox-close { background: #c0c0c0; border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; }
+    * { scrollbar-color: #c0c0c0 #fff; }
+
+    @media (max-width: 620px) {
+      .icon-layer { inset: 8px auto 44px 5px; width: 76px; }
+      .desktop-icon { width: 70px; }
+      .desktop-icon .label { max-width: 68px; }
+      .taskbar { left: 96px; right: 86px; }
+      .taskbar .task-btn { min-width: 72px; max-width: 110px; }
+      .window.maximized { left: 2px !important; right: 2px; bottom: 42px; }
+      .hint { display: none; }
+    }
   </style>
 </head>
 <body>
 
 <div class="desktop" id="desktop" tabindex="-1"></div>
 
-<!-- TOP PILL NAV -->
+<!-- WINDOWS 95 TASKBAR -->
 <div class="topbar">
-  <div class="menu-left" aria-hidden="true">
-    <span class="menu-app">Files</span>
-    <span class="menu-item">File</span>
-    <span class="menu-item">Edit</span>
-    <span class="menu-item">View</span>
-    <span class="menu-item">Go</span>
-    <span class="menu-item">Help</span>
-  </div>
+  <button class="start-button" type="button" data-open="reset" aria-label="Close all windows and return to the desktop">
+    <span class="windows-logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span>Start</span>
+  </button>
   <time class="panel-clock" id="panelClock" aria-label="Current time"></time>
 </div>
 
@@ -602,8 +773,8 @@
   <img id="lightboxImg" src="" alt="Project preview enlarged" />
 </div>
 
-<!-- TASKBAR (minimized windows reopen here) -->
-<div class="taskbar" id="taskbar" aria-label="Minimized windows" data-testid="taskbar"></div>
+<!-- WINDOWS TASKBAR BUTTONS -->
+<div class="taskbar" id="taskbar" aria-label="Open and minimized windows" data-testid="taskbar"></div>
 
 <div class="hint"><span>Double-click folder items to open or press Esc to close</span></div>
 
@@ -613,7 +784,7 @@
 
   const panelClock = document.getElementById('panelClock');
   const clockFormat = new Intl.DateTimeFormat(undefined, {
-    weekday: 'short', hour: '2-digit', minute: '2-digit'
+    hour: '2-digit', minute: '2-digit'
   });
   function updatePanelClock() {
     const now = new Date();
@@ -876,7 +1047,20 @@
   const taskbar = document.getElementById('taskbar');
   const lightbox = document.getElementById('lightbox');
 
-  function focusWindow(win) { zCounter += 1; win.style.zIndex = zCounter; }
+  function focusWindow(win) {
+    zCounter += 1;
+    win.style.zIndex = zCounter;
+    document.querySelectorAll('.window.focused').forEach(function (candidate) {
+      candidate.classList.remove('focused');
+    });
+    if (win.classList.contains('open')) win.classList.add('focused');
+    const index = openWindows.indexOf(win);
+    if (index > -1) {
+      openWindows.splice(index, 1);
+      openWindows.push(win);
+    }
+    renderTaskbar();
+  }
 
   function windowTitle(win) {
     const t = $('.window-title', win);
@@ -952,6 +1136,25 @@
 
   function renderTaskbar() {
     taskbar.innerHTML = '';
+    openWindows.concat(minimized).forEach(function (win) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'task-btn';
+      if (win.dataset.minimized === 'true') btn.classList.add('minimized');
+      if (openWindows[openWindows.length - 1] === win) btn.classList.add('active');
+      btn.textContent = windowTitle(win);
+      btn.setAttribute('aria-label', (win.dataset.minimized === 'true' ? 'Restore ' : 'Focus ') + windowTitle(win));
+      btn.setAttribute('data-testid', 'task-' + win.id);
+      btn.addEventListener('click', function () {
+        if (win.dataset.minimized === 'true') restoreWindow(win);
+        else {
+          focusWindow(win);
+          win.focus();
+          syncNav();
+        }
+      });
+      taskbar.appendChild(btn);
+    });
   }
 
   function windowBelongsTo(target, win) {
