@@ -423,75 +423,64 @@
       .github-repos { grid-template-columns: 1fr; }
     }
 
-    /* ── Windows 95/98 × vaporwave theme ── */
+    /* ── Windows 95/98 retro theme ── */
     :root {
-      --dusty-pink: #d8b7ee;
-      --dusty-pink-deep: #722a8d;
-      --light-pink: #fff2ff;
-      --charcoal: #241038;
-      --charcoal-soft: #493458;
-      --window-bg: #d9c2ef;
-      --window-chrome: #4b167a;
-      --accent: #d517a8;
-      --accent-soft: #26e6ff;
-      --shadow: rgba(22,4,48,0.52);
+      --dusty-pink: #c0c0c0;
+      --dusty-pink-deep: #000080;
+      --light-pink: #ffffff;
+      --charcoal: #000000;
+      --charcoal-soft: #222222;
+      --window-bg: #c0c0c0;
+      --window-chrome: #000080;
+      --accent: #000080;
+      --accent-soft: #1084d0;
+      --shadow: rgba(0,0,0,0.42);
       color-scheme: light;
     }
     body {
       font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
-      font-size: 12px; background: #190633;
+      font-size: 12px; background: #f47b9c;
       image-rendering: pixelated;
     }
     button, input, a { font-family: inherit; }
     .desktop {
-      background:
-        radial-gradient(circle at 76% 28%, rgba(255,232,106,0.98) 0 8%, rgba(255,103,182,0.92) 8.2% 14%, transparent 14.4%),
-        radial-gradient(ellipse at 78% 35%, rgba(255,82,194,0.32), transparent 34%),
-        linear-gradient(180deg, #16062e 0%, #4b197f 42%, #cc2ca7 70%, #ff76b8 100%);
+      background-color: #f47b9c;
+      background-image: url('assets/windows-retro-vaporwave-wallpaper.webp');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
-    .desktop::before {
-      content: ""; position: absolute; left: -18%; right: -18%; bottom: -24%; height: 58%;
-      background-image:
-        linear-gradient(rgba(38,230,255,0.9) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(38,230,255,0.9) 1px, transparent 1px);
-      background-size: 42px 25px; transform: perspective(360px) rotateX(58deg);
-      transform-origin: center bottom; box-shadow: 0 -2px 18px rgba(38,230,255,0.6);
-      pointer-events: none;
-    }
-    .desktop::after {
-      background: repeating-linear-gradient(180deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 4px);
-      mix-blend-mode: overlay;
-    }
+    .desktop::after { background: none; }
 
     .topbar {
       top: auto; bottom: 0; height: 40px; z-index: 600;
       display: block; padding: 3px; pointer-events: auto;
-      background: #d4b5e8; border-top: 2px solid #fff0ff;
-      box-shadow: inset 0 1px #f6dcff, 0 -3px 10px rgba(38,230,255,0.28);
+      background: #c0c0c0; border-top: 2px solid #ffffff;
+      box-shadow: inset 0 1px #dfdfdf;
     }
     .topbar::before { display: none; }
     .start-button {
       height: 32px; min-width: 88px; padding: 2px 8px 2px 5px;
       display: inline-flex; align-items: center; gap: 6px;
-      background: linear-gradient(135deg,#ff8ed7,#b989e6); color: #251035; font-size: 13px; font-weight: 700;
-      border: 2px solid; border-color: #fff4ff #4a205e #4a205e #fff4ff; border-radius: 0;
-      box-shadow: inset 1px 1px #ffd8f4, inset -1px -1px #8b55a4; cursor: pointer;
+      background: #c0c0c0; color: #000; font-size: 13px; font-weight: 700;
+      border: 2px solid; border-color: #fff #000 #000 #fff; border-radius: 0;
+      box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080; cursor: pointer;
     }
     .start-button:active {
-      border-color: #4a205e #fff4ff #fff4ff #4a205e; box-shadow: inset 1px 1px #8b55a4;
+      border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080;
       padding: 3px 7px 1px 6px;
     }
     .windows-logo { width: 22px; height: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; transform: skewY(-8deg); }
-    .windows-logo i:nth-child(1) { background: #ff4fc3; }
-    .windows-logo i:nth-child(2) { background: #26e6ff; }
-    .windows-logo i:nth-child(3) { background: #9d67ff; }
-    .windows-logo i:nth-child(4) { background: #ffe66d; }
+    .windows-logo i:nth-child(1) { background: #f20f19; }
+    .windows-logo i:nth-child(2) { background: #00a2ed; }
+    .windows-logo i:nth-child(3) { background: #1fae29; }
+    .windows-logo i:nth-child(4) { background: #ffdb00; }
     .panel-clock {
       position: absolute; right: 4px; top: 4px; transform: none;
       height: 32px; min-width: 82px; padding: 0 8px;
       display: flex; align-items: center; justify-content: center;
-      color: #261038; background: #e7cef3; font-size: 12px; font-weight: 400;
-      border: 2px solid; border-color: #714a86 #fff5ff #fff5ff #714a86;
+      color: #000; background: #c0c0c0; font-size: 12px; font-weight: 400;
+      border: 2px solid; border-color: #808080 #fff #fff #808080;
       text-shadow: none;
     }
 
@@ -507,9 +496,9 @@
       color: #fff; text-decoration: none; cursor: default;
     }
     .desktop-icon:hover, .desktop-icon.active {
-      background: rgba(213,23,168,0.5); border-color: #26e6ff;
+      background: rgba(0,0,128,0.48); border-color: rgba(255,255,255,0.85);
     }
-    .desktop-icon:focus-visible { outline: 1px dotted #26e6ff; background: rgba(101,30,151,0.7); }
+    .desktop-icon:focus-visible { outline: 1px dotted #fff; background: rgba(0,0,128,0.6); }
     .desktop-icon.running::after { display: none; }
     .desktop-icon .glyph {
       width: 40px; height: 40px; border-radius: 0; box-shadow: none; border: 0;
@@ -517,28 +506,28 @@
     }
     .desktop-icon .label {
       position: static; width: auto; max-width: 86px; padding: 1px 3px;
-      color: #fff; background: rgba(40,8,67,0.72); border: 0; box-shadow: none;
+      color: #fff; background: #008080; border: 0; box-shadow: none;
       font-size: 11px; font-weight: 400; line-height: 1.15; text-align: center;
       text-shadow: 1px 1px #000; white-space: normal;
     }
-    .desktop-icon:hover .label, .desktop-icon.active .label { background: #7a176f; }
+    .desktop-icon:hover .label, .desktop-icon.active .label { background: #000080; }
     .glyph-home, .glyph-about, .glyph-contact, .glyph-browser { background: transparent; color: #fff; }
     .glyph-home svg { width: 30px; height: 30px; stroke: #fff; filter: drop-shadow(1px 1px #000); }
     .glyph-folder::before {
       left: 4px; right: 4px; top: 13px; bottom: 3px; border-radius: 1px;
-      background: #30e2f4; border: 1px solid #154f79; box-shadow: inset 1px 1px #c8fbff, 2px 2px rgba(28,4,55,0.48);
+      background: #ffd95a; border: 1px solid #806000; box-shadow: inset 1px 1px #fff2a5, 2px 2px rgba(0,0,0,0.35);
     }
-    .glyph-folder::after { left: 6px; top: 7px; width: 20px; height: 10px; border-radius: 1px 1px 0 0; background: #99f8ff; border: 1px solid #154f79; }
+    .glyph-folder::after { left: 6px; top: 7px; width: 20px; height: 10px; border-radius: 1px 1px 0 0; background: #ffe582; border: 1px solid #806000; }
 
     .window {
-      background: #d9c2ef; border: 2px solid; border-color: #fff2ff #371549 #371549 #fff2ff;
-      border-radius: 0; box-shadow: 5px 5px 0 rgba(30,4,57,0.52), 0 0 18px rgba(38,230,255,0.18); backdrop-filter: none;
+      background: #c0c0c0; border: 2px solid; border-color: #fff #000 #000 #fff;
+      border-radius: 0; box-shadow: 3px 3px 0 rgba(0,0,0,0.42); backdrop-filter: none;
       padding: 2px;
     }
     .window-chrome {
-      min-height: 24px; padding: 2px 3px; background: #765184; border: 0; cursor: default;
+      min-height: 24px; padding: 2px 3px; background: #7f7f7f; border: 0; cursor: default;
     }
-    .window.focused .window-chrome { background: linear-gradient(90deg,#3c1171 0%,#d517a8 58%,#19bfd5 100%); }
+    .window.focused .window-chrome { background: linear-gradient(90deg,#000080,#1084d0); }
     .window-title {
       order: 2; color: #d8d8d8; font-size: 12px; font-weight: 700; justify-content: flex-start;
       padding-left: 3px; text-shadow: none;
@@ -547,43 +536,41 @@
     .traffic { order: 3; gap: 2px; }
     .traffic button {
       width: 18px; height: 18px; border-radius: 0; padding: 0;
-      background: #d9c2ef !important; color: #281036; font-size: 12px; font-weight: 700;
-      border: 2px solid; border-color: #fff2ff #3e174f #3e174f #fff2ff;
-      box-shadow: inset 1px 1px #f5dcff; line-height: 1;
+      background: #c0c0c0 !important; color: #000; font-size: 12px; font-weight: 700;
+      border: 2px solid; border-color: #fff #000 #000 #fff;
+      box-shadow: inset 1px 1px #dfdfdf; line-height: 1;
     }
-    .traffic button:active { border-color: #3e174f #fff2ff #fff2ff #3e174f; box-shadow: inset 1px 1px #87569a; }
+    .traffic button:active { border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080; }
     .chrome-spacer { order: 1; width: 0; }
     .window.maximized { top: 4px !important; left: 4px !important; right: 4px; bottom: 44px; }
-    .window-body { background: #fff4ff; color: #281036; padding: 12px; font-size: 12px; line-height: 1.45; }
-    .window-body h2, .explorer-aside h3 { font-family: inherit; color: #6c1779; }
-    .window-body strong { color: #b70b91; }
-    .subtitle, .meta-row, .tl-date, .logo-date, .proj-private { color: #704a79; }
+    .window-body { background: #fff; color: #000; padding: 12px; font-size: 12px; line-height: 1.45; }
+    .window-body h2, .explorer-aside h3 { font-family: inherit; color: #000080; }
+    .window-body strong { color: #000080; }
+    .subtitle, .meta-row, .tl-date, .logo-date, .proj-private { color: #555; }
     .contact-link, .proj-card, .logo-row, .github-repo {
-      background: #fff8ff; border: 1px solid #8d64a1; border-radius: 0; box-shadow: none;
+      background: #fff; border: 1px solid #808080; border-radius: 0; box-shadow: none;
     }
-    .contact-link:hover, .github-repo:hover { background: #8c197f; color: #fff; border-color: #26e6ff; transform: none; }
+    .contact-link:hover, .github-repo:hover { background: #000080; color: #fff; border-color: #000; transform: none; }
     .contact-link:hover .sub, .github-repo:hover * { color: #fff; }
-    .contact-link:nth-child(1) svg, .contact-link:nth-child(2) svg { fill: #d517a8; }
-    .contact-link:nth-child(3) svg, .meta-row svg { stroke: #d517a8; }
     .tags img { image-rendering: auto; }
 
-    .explorer { border: 2px solid; border-color: #744b88 #fff5ff #fff5ff #744b88; }
-    .explorer-main { background: #fff5ff; border-right: 1px solid #9b76ad; }
-    .explorer-aside { background: #e3ccf1; }
+    .explorer { border: 2px solid; border-color: #808080 #fff #fff #808080; }
+    .explorer-main { background: #fff; border-right: 1px solid #808080; }
+    .explorer-aside { background: #c0c0c0; }
     .fitem { border-radius: 0; }
     .fitem .fglyph:not(.photo) { background: transparent; border: 0; box-shadow: none; }
-    .fitem:hover, .fitem:focus-visible, .fitem[aria-selected="true"] { background: #9b1c8d; color: #fff; border-color: #26e6ff; }
-    .preview-thumb, .about-portrait { border-radius: 0; border: 2px solid; border-color: #744b88 #fff5ff #fff5ff #744b88; box-shadow: none; }
+    .fitem:hover, .fitem:focus-visible, .fitem[aria-selected="true"] { background: #000080; color: #fff; border-color: #000080; }
+    .preview-thumb, .about-portrait { border-radius: 0; border: 2px solid; border-color: #808080 #fff #fff #808080; box-shadow: none; }
     .proj-thumb { border-radius: 0 !important; }
-    .tag { border-radius: 0; background: #e1c6ed; color: #701477; border-color: #9366a7; }
-    .tl-item::before { background: #d517a8; border-radius: 0; }
+    .tag { border-radius: 0; background: #c0c0c0; color: #000080; border-color: #808080; }
+    .tl-item::before { background: #000080; border-radius: 0; }
 
-    #win-github .window-body { background: #fff4ff; }
-    .github-addressbar { background: #d9c2ef; border-bottom: 1px solid #8d64a1; }
-    .github-address { background: #fff8ff; border-radius: 0; border: 2px solid; border-color: #765087 #fff5ff #fff5ff #765087; }
-    .github-external, .github-repo-name, .github-open-profile { color: #a10d87; }
-    .github-open-profile { border-radius: 0; border: 2px solid; border-color: #fff2ff #421951 #421951 #fff2ff; background: #e1c6ed; }
-    .github-avatar { border-radius: 0; border: 2px solid; border-color: #fff2ff #421951 #421951 #fff2ff; box-shadow: 3px 3px #26e6ff; }
+    #win-github .window-body { background: #fff; }
+    .github-addressbar { background: #c0c0c0; border-bottom: 1px solid #808080; }
+    .github-address { border-radius: 0; border: 2px solid; border-color: #808080 #fff #fff #808080; }
+    .github-external, .github-repo-name, .github-open-profile { color: #000080; }
+    .github-open-profile { border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; background: #c0c0c0; }
+    .github-avatar { border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; box-shadow: none; }
 
     .taskbar {
       display: flex; position: fixed; left: 98px; right: 94px; bottom: 4px; height: 32px; z-index: 602;
@@ -592,17 +579,17 @@
     .taskbar .task-btn {
       pointer-events: auto; min-width: 120px; max-width: 190px; padding: 2px 8px;
       justify-content: flex-start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      color: #281036; background: #d9c2ef; border-radius: 0;
-      border: 2px solid; border-color: #fff2ff #421951 #421951 #fff2ff; box-shadow: inset 1px 1px #f5dcff;
+      color: #000; background: #c0c0c0; border-radius: 0;
+      border: 2px solid; border-color: #fff #000 #000 #fff; box-shadow: inset 1px 1px #dfdfdf;
       font-size: 11px; font-weight: 400;
     }
-    .taskbar .task-btn.active { background: linear-gradient(90deg,#ff8ed7,#7eefff); border-color: #421951 #fff2ff #fff2ff #421951; font-weight: 700; }
-    .taskbar .task-btn.minimized { color: #6f4b78; background: #c6a8d8; }
+    .taskbar .task-btn.active { background: #e0e0e0; border-color: #000 #fff #fff #000; font-weight: 700; }
+    .taskbar .task-btn.minimized { color: #555; }
     .hint { bottom: 46px; }
-    .hint span { background: #ffe0f4; color: #421951; border: 1px solid #26e6ff; border-radius: 0; backdrop-filter: none; box-shadow: 3px 3px #7a176f; }
-    .lightbox { background: rgba(24,3,52,0.78); backdrop-filter: none; }
-    .lightbox-close { background: #e1c6ed; border-radius: 0; border: 2px solid; border-color: #fff2ff #421951 #421951 #fff2ff; }
-    * { scrollbar-color: #c596d9 #fff4ff; }
+    .hint span { background: #ffffcc; color: #000; border: 1px solid #000; border-radius: 0; backdrop-filter: none; box-shadow: 2px 2px rgba(0,0,0,0.3); }
+    .lightbox { background: rgba(0,0,0,0.72); backdrop-filter: none; }
+    .lightbox-close { background: #c0c0c0; border-radius: 0; border: 2px solid; border-color: #fff #000 #000 #fff; }
+    * { scrollbar-color: #c0c0c0 #fff; }
 
     @media (max-width: 620px) {
       .icon-layer { inset: 8px auto 44px 5px; width: 76px; }
