@@ -145,6 +145,10 @@
       border: 1px solid rgba(255,255,255,0.13); line-height: 1;
       font-size: 0.72rem; color: #f3f3f3; transition: background 0.12s, filter 0.12s;
     }
+    .traffic .tl-max .max-icon {
+      width: 0.55rem; height: 0.48rem; display: block;
+      border: 1.5px solid currentColor; border-radius: 1px;
+    }
     .traffic .tl-close { background: #e95420; }
     .traffic .tl-min, .traffic .tl-max { background: #66616b; }
     .traffic button:hover { filter: brightness(1.18); }
@@ -486,10 +490,30 @@
       width: 13px; height: 13px; border: 0; font-size: 0.58rem; color: transparent;
       box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.16), inset 0 1px 1px rgba(255,255,255,0.38);
     }
+    .traffic .tl-max .max-icon {
+      position: relative; width: 8px; height: 8px; border: 0; opacity: 0;
+      color: rgba(40,40,40,0.65);
+    }
+    .traffic .tl-max .max-icon::before,
+    .traffic .tl-max .max-icon::after {
+      content: ""; position: absolute; width: 0; height: 0;
+      border-style: solid;
+    }
+    .traffic .tl-max .max-icon::before {
+      top: 0; right: 0;
+      border-width: 0 4px 4px 0;
+      border-color: transparent currentColor transparent transparent;
+    }
+    .traffic .tl-max .max-icon::after {
+      left: 0; bottom: 0;
+      border-width: 4px 0 0 4px;
+      border-color: transparent transparent transparent currentColor;
+    }
     .traffic .tl-close { background: #ff5f57; }
     .traffic .tl-min { background: #febc2e; }
     .traffic .tl-max { background: #28c840; }
     .traffic:hover button { color: rgba(40,40,40,0.65); }
+    .traffic:hover .tl-max .max-icon { opacity: 1; }
     .window-title { order: 2; color: rgba(30,34,42,0.88); font-size: 0.79rem; font-weight: 600; }
     .chrome-spacer { order: 3; width: 57px; }
     .window.maximized { top: 40px !important; left: 12px !important; right: 12px; bottom: 108px; }
@@ -639,7 +663,7 @@
     <span class="traffic">
       <button type="button" class="tl-close" data-ctl="close" aria-label="Close About folder" data-testid="about-ctl-close">&times;</button>
       <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize About folder" data-testid="about-ctl-min">&minus;</button>
-      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize About folder" data-testid="about-ctl-max">+</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize About folder" data-testid="about-ctl-max"><span class="max-icon" aria-hidden="true"></span></button>
     </span>
     <span class="window-title" id="win-about-title">📁 About</span>
     <span class="chrome-spacer" aria-hidden="true"></span>
@@ -658,7 +682,7 @@
     <span class="traffic">
       <button type="button" class="tl-close" data-ctl="close" aria-label="Close window" data-testid="aboutcontent-ctl-close">&times;</button>
       <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize window" data-testid="aboutcontent-ctl-min">&minus;</button>
-      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize window" data-testid="aboutcontent-ctl-max">+</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize window" data-testid="aboutcontent-ctl-max"><span class="max-icon" aria-hidden="true"></span></button>
     </span>
     <span class="window-title" id="win-about-content-title">About</span>
     <span class="chrome-spacer" aria-hidden="true"></span>
@@ -672,7 +696,7 @@
     <span class="traffic">
       <button type="button" class="tl-close" data-ctl="close" aria-label="Close Contact window" data-testid="contact-ctl-close">&times;</button>
       <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize Contact window" data-testid="contact-ctl-min">&minus;</button>
-      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize Contact window" data-testid="contact-ctl-max">+</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize Contact window" data-testid="contact-ctl-max"><span class="max-icon" aria-hidden="true"></span></button>
     </span>
     <span class="window-title" id="win-contact-title">✉️ Contact</span>
     <span class="chrome-spacer" aria-hidden="true"></span>
@@ -703,7 +727,7 @@
     <span class="traffic">
       <button type="button" class="tl-close" data-ctl="close" aria-label="Close GitHub window">&times;</button>
       <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize GitHub window">&minus;</button>
-      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize GitHub window">+</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize GitHub window"><span class="max-icon" aria-hidden="true"></span></button>
     </span>
     <span class="window-title" id="win-github-title">GitHub — marinucs</span>
     <span class="chrome-spacer" aria-hidden="true"></span>
@@ -726,7 +750,7 @@
     <span class="traffic">
       <button type="button" class="tl-close" data-ctl="close" aria-label="Close Projects folder" data-testid="projects-ctl-close">&times;</button>
       <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize Projects folder" data-testid="projects-ctl-min">&minus;</button>
-      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize Projects folder" data-testid="projects-ctl-max">+</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize Projects folder" data-testid="projects-ctl-max"><span class="max-icon" aria-hidden="true"></span></button>
     </span>
     <span class="window-title" id="win-projects-title">📁 Projects</span>
     <span class="chrome-spacer" aria-hidden="true"></span>
@@ -745,7 +769,7 @@
     <span class="traffic">
       <button type="button" class="tl-close" data-ctl="close" aria-label="Close window" data-testid="projcontent-ctl-close">&times;</button>
       <button type="button" class="tl-min" data-ctl="min" aria-label="Minimize window" data-testid="projcontent-ctl-min">&minus;</button>
-      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize window" data-testid="projcontent-ctl-max">+</button>
+      <button type="button" class="tl-max" data-ctl="max" aria-label="Maximize window" data-testid="projcontent-ctl-max"><span class="max-icon" aria-hidden="true"></span></button>
     </span>
     <span class="window-title" id="win-projects-content-title">Project</span>
     <span class="chrome-spacer" aria-hidden="true"></span>
