@@ -371,7 +371,10 @@
     .hint {
       position: fixed; bottom: 0.9rem; left: 0; right: 0; z-index: 60;
       display: flex; justify-content: center; pointer-events: none;
+      opacity: 0; visibility: hidden; transform: translateY(8px);
+      transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
     }
+    body.folder-hint-visible .hint { opacity: 1; visibility: visible; transform: translateY(0); }
     .hint span {
       background: rgba(35,31,38,0.82); color: #f5f5f5;
       font-size: 0.72rem; padding: 0.34rem 0.85rem; border-radius: 8px;
@@ -1194,7 +1197,11 @@
     const fileManagerVisible = openWindows.some(function (win) {
       return win.classList.contains('is-folder') && win.classList.contains('maximized');
     });
+    const folderHintVisible = openWindows.some(function (win) {
+      return win.classList.contains('is-folder');
+    });
     document.body.classList.toggle('file-manager-active', fileManagerVisible);
+    document.body.classList.toggle('folder-hint-visible', folderHintVisible);
   }
 
   /* window control buttons (close / minimize / maximize) */
