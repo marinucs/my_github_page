@@ -620,7 +620,7 @@
 
 <!-- WINDOWS 95 TASKBAR -->
 <div class="topbar">
-  <button class="start-button" type="button" data-open="reset" aria-label="Close all windows and return to the desktop">
+  <button class="start-button" type="button" data-open="reset" aria-label="Minimize open folders">
     <span class="windows-logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     <span>Start</span>
   </button>
@@ -1130,10 +1130,16 @@
     if (openWindows.length) closeWindow(openWindows[openWindows.length - 1]);
   }
 
-  function closeAll() {
-    openWindows.slice().forEach(closeWindow);
-    minimized.slice().forEach(closeWindow);
-    syncNav();
+  function minimizeOpenFolders() {
+    const openFolders = openWindows.slice().filter(function (win) {
+      return win.classList.contains('is-folder');
+    });
+    if (!openFolders.length) {
+      syncNav();
+      focusDesktopOrTop();
+      return;
+    }
+    openFolders.forEach(minimizeWindow);
   }
 
   function focusDesktopOrTop() {
@@ -1215,7 +1221,7 @@
     if (el.tagName === 'A') return;
     const target = el.dataset.open;
     el.addEventListener('click', function () {
-      if (target === 'reset') { closeAll(); return; }
+      if (target === 'reset') { minimizeOpenFolders(); return; }
       if (target === 'github') loadGitHubProfile();
       const openMatch = openWindows.slice().reverse().find(function (candidate) {
         return windowBelongsTo(target, candidate);
